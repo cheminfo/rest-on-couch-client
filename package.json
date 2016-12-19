@@ -1,0 +1,13 @@
+{
+  "name": "rest-on-couch-client",
+  "version": "0.0.0",
+  "description": "A rest-on-couch client for node.js",
+  "main": "src/Roc.js",
+  "repository": "git@github.com:cheminfo/rest-on-couch-client.git",
+  "author": "Daniel Kostro <kostro.d@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "superagent": "^3.3.1",
+    "urijs": "^1.18.4"
+  }
+}
