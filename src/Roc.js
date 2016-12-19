@@ -24,7 +24,6 @@ class Roc {
         this.agent = superagent.agent();
         this.username = encodeURIComponent(this.username);
         this.password = encodeURIComponent(this.password);
-        console.log(this.username, this.password);
         this.databaseUrl = new URI(this.url).segment('db').segmentCoded(this.database).normalize().href();
         this.authUrl = new URI(this.url).segment('auth/login/couchdb').normalize().href();
         this.entryUrl = new URI(this.databaseUrl).segment('entry').normalize().href();
@@ -34,7 +33,6 @@ class Roc {
     auth() {
         if (!this.username || !this.password) return Promise.resolve();
         if (Date.now() - this.lastSuccess < this.authTimeout) return Promise.resolve();
-        console.log('auth expired');
         return this.agent
             .post(this.authUrl)
             .send(`username=${this.username}`)
