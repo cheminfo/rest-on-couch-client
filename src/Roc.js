@@ -20,6 +20,7 @@ class Roc {
             }
         }
 
+        this.authInterval = this.authInterval || 0;
         this.agent = superagent.agent();
         this.username = encodeURIComponent(this.username);
         this.password = encodeURIComponent(this.password);
@@ -32,7 +33,7 @@ class Roc {
 
     auth() {
         if (!this.username || !this.password) return Promise.resolve();
-        if (Date.now() - this.lastSuccess < 1000) return Promise.resolve();
+        if (Date.now() - this.lastSuccess < this.authInterval) return Promise.resolve();
         console.log('auth expired');
         return this.agent
             .post(this.authUrl)
