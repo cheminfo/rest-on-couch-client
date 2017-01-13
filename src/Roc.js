@@ -29,10 +29,8 @@ class Roc {
     }
 
     auth() {
-        console.log(this.authTimeout)
         if (!this.username || !this.password) return Promise.resolve();
         if (Date.now() - this.lastSuccess < this.authTimeout) return Promise.resolve();
-        console.log('do auth', this.username, this.password);
         return this.agent
             .post(this.authUrl)
             .send({
@@ -42,12 +40,10 @@ class Roc {
             .then(res => {
 
                 if (res.status === 200) {
-                    console.log('success', res.body || res.text);
                     this.lastSuccess = Date.now()
                 }
             })
             .catch(err => {
-                console.error('authentification error', err.message);
                 throw err;
             });
     }
