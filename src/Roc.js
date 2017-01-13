@@ -22,8 +22,6 @@ class Roc {
 
         this.authTimeout = this.authTimeout || 0;
         this.agent = superagent.agent();
-        this.username = encodeURIComponent(this.username);
-        this.password = encodeURIComponent(this.password);
         this.databaseUrl = new URI(this.url).segment('db').segmentCoded(this.database).normalize().href();
         this.authUrl = new URI(this.url).segment('auth/login/couchdb').normalize().href();
         this.entryUrl = new URI(this.databaseUrl).segment('entry').normalize().href();
@@ -31,14 +29,20 @@ class Roc {
     }
 
     auth() {
+        console.log(this.authTimeout)
         if (!this.username || !this.password) return Promise.resolve();
         if (Date.now() - this.lastSuccess < this.authTimeout) return Promise.resolve();
+        console.log('do auth', this.username, this.password);
         return this.agent
             .post(this.authUrl)
-            .send(`username=${this.username}`)
-            .send(`password=${this.password}`)
+            .send({
+                username: this.username,
+                password: this.password
+            })
             .then(res => {
+
                 if (res.status === 200) {
+                    console.log('success', res.body || res.text);
                     this.lastSuccess = Date.now()
                 }
             })
