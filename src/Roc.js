@@ -43,9 +43,6 @@ class Roc {
                     this.lastSuccess = Date.now()
                 }
             })
-            .catch(err => {
-                throw err;
-            });
     }
 
     get(entry) {
