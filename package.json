@@ -1,6 +1,6 @@
 {
   "name": "rest-on-couch-client",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A rest-on-couch client for node.js",
   "main": "src/Roc.js",
   "repository": "git@github.com:cheminfo/rest-on-couch-client.git",
