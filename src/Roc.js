@@ -1,6 +1,7 @@
 'use strict';
+
 const superagent = require('superagent');
-const URI = require('urijs');
+const URL = require('url').URL;
 
 const viewSearchJsonify = ['key', 'startkey', 'endkey'];
 const viewSearch = ['limit', 'mine', 'groups', 'descending', 'reduce'];
@@ -22,9 +23,9 @@ class Roc {
 
         this.authTimeout = this.authTimeout || 0;
         this.agent = superagent.agent();
-        this.databaseUrl = new URI(this.url).segment('db').segmentCoded(this.database).normalize().href();
-        this.authUrl = new URI(this.url).segment('auth/login/couchdb').normalize().href();
-        this.entryUrl = new URI(this.databaseUrl).segment('entry').normalize().href();
+        this.url = new URL(this.url);
+        this.databaseUrl = new URL(`db/${this.database}/`, this.url);
+        this.authUrl = new URL('auth/login/couchdb', this.url);
         this.lastSuccess = 0;
     }
 
@@ -32,26 +33,25 @@ class Roc {
         if (!this.username || !this.password) return Promise.resolve();
         if (Date.now() - this.lastSuccess < this.authTimeout) return Promise.resolve();
         return this.agent
-            .post(this.authUrl)
+            .post(this.authUrl.href)
             .send({
                 username: this.username,
                 password: this.password
             })
             .then(res => {
-
                 if (res.status === 200) {
-                    this.lastSuccess = Date.now()
+                    this.lastSuccess = Date.now();
                 }
-            })
+            });
     }
 
     get(entry) {
         return this.auth().then(() => {
             const uuid = getUuid(entry);
-            const url = new URI(this.entryUrl).segmentCoded(uuid).normalize().href();
-            return this.agent.get(url)
+            const url = new URL(`entry/${uuid}`, this.databaseUrl);
+            return this.agent.get(url.href)
                 .then(res => {
-                    if (res.body && res.status == 200) {
+                    if (res.body && res.status === 200) {
                         return res.body;
                     }
                 });
@@ -64,7 +64,8 @@ class Roc {
                 if (!entry.$kind) {
                     entry.$kind = this.kind;
                 }
-                return this.agent.post(this.entryUrl)
+                const url = new URL('entry', this.databaseUrl);
+                return this.agent.post(url.href)
                     .send(entry)
                     .then(res => {
                         if (res.body && res.status <= 201) {
@@ -78,11 +79,11 @@ class Roc {
 
     update(entry) {
         return this.auth().then(() => {
-            const url = new URI(this.entryUrl).segment(entry._id).normalize().href();
-            return this.agent.put(url)
+            const url = new URL(`entry/${entry._id}`, this.databaseUrl);
+            return this.agent.put(url.href)
                 .send(entry)
                 .then(res => {
-                    if (res.body && res.status == 200) {
+                    if (res.body && res.status === 200) {
                         entry._rev = res.body.rev;
                         entry.$creationDate = res.body.$creationDate;
                         entry.$modificationDate = res.body.$modificationDate;
@@ -93,15 +94,14 @@ class Roc {
     }
 
     view(viewName, options) {
+        options = options || {};
         return this.auth().then(() => {
-            let url = new URI(this.databaseUrl).segment(`_view/${viewName}`);
+            const url = new URL(`_view/${viewName}`, this.databaseUrl);
             addSearch(url, options);
-
-            url = url.normalize().href();
-
-            return this.agent.get(url)
+            console.log(url);
+            return this.agent.get(url.href)
                 .then(res => {
-                    if (res && res.body && res.status == 200) {
+                    if (res && res.body && res.status === 200) {
                         if (options.filter) {
                             res.body = res.body.filter(options.filter);
                         }
@@ -115,14 +115,13 @@ class Roc {
     }
 
     query(viewName, options) {
-        return this.url().then(() => {
-            let requestUrl = new URI(this.databaseUrl).segment(`_query/${viewName}`);
+        return this.auth().then(() => {
+            let requestUrl = new URL(`_query/${viewName}`, this.databaseUrl);
             addSearch(requestUrl, options);
-            requestUrl = requestUrl.normalize().href();
 
-            return this.agent.get(requestUrl)
+            return this.agent.get(requestUrl.href)
                 .then(res => {
-                    if (res && res.body && res.status == 200) {
+                    if (res && res.body && res.status === 200) {
                         if (options.filter) {
                             res.body = res.body.filter(options.filter);
                         }
@@ -153,13 +152,13 @@ function getUuid(entry) {
 function addSearch(requestUrl, options) {
     for (let i = 0; i < viewSearchJsonify.length; i++) {
         if (options[viewSearchJsonify[i]]) {
-            requestUrl.addSearch(viewSearchJsonify[i], JSON.stringify(options[viewSearchJsonify[i]]));
+            requestUrl.searchParams.append(viewSearchJsonify[i], JSON.stringify(options[viewSearchJsonify[i]]));
         }
     }
 
     for (let i = 0; i < viewSearch.length; i++) {
         if (options[viewSearch[i]]) {
-            requestUrl.addSearch(viewSearch[i], options[viewSearch[i]]);
+            requestUrl.searchParams.append(viewSearch[i], options[viewSearch[i]]);
         }
     }
 }
