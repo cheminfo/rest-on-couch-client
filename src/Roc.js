@@ -10,10 +10,8 @@ const mandatoryOptions = ['url', 'database'];
 class Roc {
     constructor(opts) {
         opts = opts || {};
-        for (var key in opts) {
-            if (opts.hasOwnProperty(key)) {
-                this[key] = opts[key];
-            }
+        for (const key in opts) {
+            this[key] = opts[key];
         }
         for (let i = 0; i < mandatoryOptions.length; i++) {
             if (!this[mandatoryOptions[i]]) {
@@ -54,6 +52,7 @@ class Roc {
                     if (res.body && res.status === 200) {
                         return res.body;
                     }
+                    return null;
                 });
         });
     }
@@ -73,6 +72,7 @@ class Roc {
                             entry._rev = res.body.rev;
                             return entry;
                         }
+                        return null;
                     });
             });
     }
@@ -98,7 +98,6 @@ class Roc {
         return this.auth().then(() => {
             const url = new URL(`_view/${viewName}`, this.databaseUrl);
             addSearch(url, options);
-            console.log(url);
             return this.agent.get(url.href)
                 .then(res => {
                     if (res && res.body && res.status === 200) {
