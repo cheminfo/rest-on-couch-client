@@ -140,6 +140,15 @@ class Roc {
         });
     }
 
+    session() {
+        return this.auth().then(() => {
+            let requestUrl = new URL('auth/session', this.url);
+            return this.agent.get(requestUrl.href)
+                .withCredentials()
+                .then(res => res.body);
+        });
+    }
+
 }
 
 function getUuid(entry) {
