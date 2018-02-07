@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "detect-node": "^2.0.3",
-    "superagent": "^3.4.1"
+    "superagent": "^3.8.2"
   },
   "devDependencies": {
     "eslint": "^4.17.0",
