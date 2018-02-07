@@ -1,9 +1,11 @@
 'use strict';
 
-const URL = isNode ? require('url').URL : window.URL;
 
 const superagent = require('superagent');
 const isNode = require('detect-node');
+
+const URL = isNode ? require('url').URL : window.URL; // eslint-disable-line import/order
+
 
 const viewSearchJsonify = ['key', 'startkey', 'endkey'];
 const viewSearch = ['limit', 'mine', 'groups', 'descending', 'reduce'];
@@ -29,6 +31,10 @@ class Roc {
     this.lastSuccess = 0;
   }
 
+  _withCredentials(request) {
+    return isNode ? request.set('Cookie', this.cookies) : request.withCredentials();
+  }
+
   auth() {
     if (!this.username || !this.password) return Promise.resolve();
     if (Date.now() - this.lastSuccess < this.authTimeout) {
@@ -36,12 +42,12 @@ class Roc {
     }
     return this.agent
       .post(this.authUrl.href)
-      .withCredentials()
       .send({
         username: this.username,
         password: this.password
       })
       .then((res) => {
+        this.cookies = res.headers['set-cookie'];
         if (res.status === 200) {
           this.lastSuccess = Date.now();
         }
@@ -52,15 +58,14 @@ class Roc {
     return this.auth().then(() => {
       const uuid = getUuid(entry);
       const url = new URL(`entry/${uuid}`, this.databaseUrl);
-      return this.agent
-        .get(url.href)
-        .withCredentials()
-        .then((res) => {
-          if (res.body && res.status === 200) {
-            return res.body;
-          }
-          return null;
-        });
+      return this._withCredentials(
+        this.agent.get(url.href)
+      ) .then((res) => {
+        if (res.body && res.status === 200) {
+          return res.body;
+        }
+        return null;
+      });
     });
   }
 
@@ -70,36 +75,35 @@ class Roc {
         entry.$kind = this.kind;
       }
       const url = new URL('entry', this.databaseUrl);
-      return this.agent
-        .post(url.href)
-        .withCredentials()
-        .send(entry)
-        .then((res) => {
-          if (res.body && res.status <= 201) {
-            entry._id = res.body.id;
-            entry._rev = res.body.rev;
-            return entry;
-          }
-          return null;
-        });
+      return this._withCredentials(
+        this.agent
+          .post(url.href)
+          .send(entry)
+      ).then((res) => {
+        if (res.body && res.status <= 201) {
+          entry._id = res.body.id;
+          entry._rev = res.body.rev;
+          return entry;
+        }
+        return null;
+      });
     });
   }
 
   update(entry) {
     return this.auth().then(() => {
       const url = new URL(`entry/${entry._id}`, this.databaseUrl);
-      return this.agent
+      return this._withCredentials(this.agent
         .put(url.href)
-        .withCredentials()
         .send(entry)
-        .then((res) => {
-          if (res.body && res.status === 200) {
-            entry._rev = res.body.rev;
-            entry.$creationDate = res.body.$creationDate;
-            entry.$modificationDate = res.body.$modificationDate;
-          }
-          return entry;
-        });
+      ).then((res) => {
+        if (res.body && res.status === 200) {
+          entry._rev = res.body.rev;
+          entry.$creationDate = res.body.$creationDate;
+          entry.$modificationDate = res.body.$modificationDate;
+        }
+        return entry;
+      });
     });
   }
 
@@ -108,20 +112,19 @@ class Roc {
     return this.auth().then(() => {
       const url = new URL(`_view/${viewName}`, this.databaseUrl);
       addSearch(url, options);
-      return this.agent
-        .get(url.href)
-        .withCredentials()
-        .then((res) => {
-          if (res && res.body && res.status === 200) {
-            if (options.filter) {
-              res.body = res.body.filter(options.filter);
-            }
-            if (options.sort) {
-              res.body = res.body.sort(options.sort);
-            }
+      return this._withCredentials(
+        this.agent.get(url.href)
+      ).then((res) => {
+        if (res && res.body && res.status === 200) {
+          if (options.filter) {
+            res.body = res.body.filter(options.filter);
           }
-          return res.body;
-        });
+          if (options.sort) {
+            res.body = res.body.sort(options.sort);
+          }
+        }
+        return res.body;
+      });
     });
   }
 
@@ -130,30 +133,30 @@ class Roc {
       let requestUrl = new URL(`_query/${viewName}`, this.databaseUrl);
       addSearch(requestUrl, options);
 
-      return this.agent
-        .get(requestUrl.href)
-        .withCredentials()
-        .then((res) => {
-          if (res && res.body && res.status === 200) {
-            if (options.filter) {
-              res.body = res.body.filter(options.filter);
-            }
-            if (options.sort) {
-              res.body = res.body.sort(options.sort);
-            }
+      return this._withCredentials(
+        this.agent
+          .get(requestUrl.href)
+      ).then((res) => {
+        if (res && res.body && res.status === 200) {
+          if (options.filter) {
+            res.body = res.body.filter(options.filter);
           }
-          return res.body;
-        });
+          if (options.sort) {
+            res.body = res.body.sort(options.sort);
+          }
+        }
+        return res.body;
+      });
     });
   }
 
   session() {
     return this.auth().then(() => {
       let requestUrl = new URL('auth/session', this.url);
-      return this.agent
-        .get(requestUrl.href)
-        .withCredentials()
-        .then((res) => res.body);
+      return this._withCredentials(
+        this.agent
+          .get(requestUrl.href)
+      ).then((res) => res.body);
     });
   }
 }
