@@ -1,14 +1,19 @@
 'use strict';
 
-
 const superagent = require('superagent');
 const isNode = require('detect-node');
 
 const URL = isNode ? require('url').URL : window.URL; // eslint-disable-line import/order
 
-
 const viewSearchJsonify = ['key', 'startkey', 'endkey'];
-const viewSearch = ['limit', 'mine', 'groups', 'descending', 'reduce'];
+const viewSearch = [
+  'limit',
+  'mine',
+  'group',
+  'group_level',
+  'descending',
+  'reduce'
+];
 const mandatoryOptions = ['url', 'database'];
 
 class Roc {
@@ -32,7 +37,9 @@ class Roc {
   }
 
   _withCredentials(request) {
-    return isNode ? request.set('Cookie', this.cookies) : request.withCredentials();
+    return isNode
+      ? request.set('Cookie', this.cookies)
+      : request.withCredentials();
   }
 
   auth() {
@@ -58,9 +65,7 @@ class Roc {
     return this.auth().then(() => {
       const uuid = getUuid(entry);
       const url = new URL(`entry/${uuid}`, this.databaseUrl);
-      return this._withCredentials(
-        this.agent.get(url.href)
-      ) .then((res) => {
+      return this._withCredentials(this.agent.get(url.href)).then((res) => {
         if (res.body && res.status === 200) {
           return res.body;
         }
@@ -75,35 +80,32 @@ class Roc {
         entry.$kind = this.kind;
       }
       const url = new URL('entry', this.databaseUrl);
-      return this._withCredentials(
-        this.agent
-          .post(url.href)
-          .send(entry)
-      ).then((res) => {
-        if (res.body && res.status <= 201) {
-          entry._id = res.body.id;
-          entry._rev = res.body.rev;
-          return entry;
+      return this._withCredentials(this.agent.post(url.href).send(entry)).then(
+        (res) => {
+          if (res.body && res.status <= 201) {
+            entry._id = res.body.id;
+            entry._rev = res.body.rev;
+            return entry;
+          }
+          return null;
         }
-        return null;
-      });
+      );
     });
   }
 
   update(entry) {
     return this.auth().then(() => {
       const url = new URL(`entry/${entry._id}`, this.databaseUrl);
-      return this._withCredentials(this.agent
-        .put(url.href)
-        .send(entry)
-      ).then((res) => {
-        if (res.body && res.status === 200) {
-          entry._rev = res.body.rev;
-          entry.$creationDate = res.body.$creationDate;
-          entry.$modificationDate = res.body.$modificationDate;
+      return this._withCredentials(this.agent.put(url.href).send(entry)).then(
+        (res) => {
+          if (res.body && res.status === 200) {
+            entry._rev = res.body.rev;
+            entry.$creationDate = res.body.$creationDate;
+            entry.$modificationDate = res.body.$modificationDate;
+          }
+          return entry;
         }
-        return entry;
-      });
+      );
     });
   }
 
@@ -112,9 +114,7 @@ class Roc {
     return this.auth().then(() => {
       const url = new URL(`_view/${viewName}`, this.databaseUrl);
       addSearch(url, options);
-      return this._withCredentials(
-        this.agent.get(url.href)
-      ).then((res) => {
+      return this._withCredentials(this.agent.get(url.href)).then((res) => {
         if (res && res.body && res.status === 200) {
           if (options.filter) {
             res.body = res.body.filter(options.filter);
@@ -133,30 +133,28 @@ class Roc {
       let requestUrl = new URL(`_query/${viewName}`, this.databaseUrl);
       addSearch(requestUrl, options);
 
-      return this._withCredentials(
-        this.agent
-          .get(requestUrl.href)
-      ).then((res) => {
-        if (res && res.body && res.status === 200) {
-          if (options.filter) {
-            res.body = res.body.filter(options.filter);
+      return this._withCredentials(this.agent.get(requestUrl.href)).then(
+        (res) => {
+          if (res && res.body && res.status === 200) {
+            if (options.filter) {
+              res.body = res.body.filter(options.filter);
+            }
+            if (options.sort) {
+              res.body = res.body.sort(options.sort);
+            }
           }
-          if (options.sort) {
-            res.body = res.body.sort(options.sort);
-          }
+          return res.body;
         }
-        return res.body;
-      });
+      );
     });
   }
 
   session() {
     return this.auth().then(() => {
       let requestUrl = new URL('auth/session', this.url);
-      return this._withCredentials(
-        this.agent
-          .get(requestUrl.href)
-      ).then((res) => res.body);
+      return this._withCredentials(this.agent.get(requestUrl.href)).then(
+        (res) => res.body
+      );
     });
   }
 }
