@@ -109,6 +109,37 @@ class Roc {
     });
   }
 
+  async inlineUploads(entry, files) {
+    const base64 = await Promise.all(
+      files.map((file) => {
+        return new Promise((resolve, reject) => {
+          let reader = new FileReader();
+          reader.onload = function (e) {
+            resolve(dataURLtoBase64(e.target.result));
+          };
+          reader.onerror = function () {
+            return reject(new Error('Error while reading file'));
+          };
+          reader.readAsDataURL(file);
+        });
+      })
+    );
+
+    if (!entry._attachments) {
+      entry._attachments = {};
+    }
+    for (let i = 0; i < files.length; i++) {
+      entry._attachments[files[i].name] = {
+        content_type: files[i].type, // eslint-disable-line camelcase
+        data: base64[i]
+      };
+    }
+    await this.update(entry);
+    const updatedEntry = await this.get(entry);
+    entry._attachments = updatedEntry._attachments;
+    return entry;
+  }
+
   view(viewName, options) {
     options = options || {};
     return this.auth().then(() => {
@@ -190,3 +221,21 @@ function addSearch(requestUrl, options) {
 }
 
 module.exports = Roc;
+
+function dataURLtoBase64(data) {
+  let pos;
+  const l = Math.min(100, data.length);
+  for (let i = 0; i < l; i++) {
+    if (data[i] === ';') {
+      pos = i + 1;
+      break;
+    }
+  }
+  const t = data.slice(pos, pos + 7);
+  if (pos && t === 'base64,') {
+    pos = pos + 7;
+    return data.slice(pos);
+  } else {
+    throw new Error('Could not parse dataurl');
+  }
+}
