@@ -61,52 +61,47 @@ class Roc {
       });
   }
 
-  get(entry) {
-    return this.auth().then(() => {
-      const uuid = getUuid(entry);
-      const url = new URL(`entry/${uuid}`, this.databaseUrl);
-      return this._withCredentials(this.agent.get(url.href)).then((res) => {
-        if (res.body && res.status === 200) {
-          return res.body;
-        }
-        return null;
-      });
-    });
+  async get(entry) {
+    await this.auth();
+    const uuid = getUuid(entry);
+    const url = new URL(`entry/${uuid}`, this.databaseUrl);
+    const res = await this._withCredentials(this.agent.get(url.href));
+    if (res.body && res.status === 200) {
+      return res.body;
+    }
+    return null;
   }
 
-  create(entry) {
-    return this.auth().then(() => {
-      if (!entry.$kind) {
-        entry.$kind = this.kind;
-      }
-      const url = new URL('entry', this.databaseUrl);
-      return this._withCredentials(this.agent.post(url.href).send(entry)).then(
-        (res) => {
-          if (res.body && res.status <= 201) {
-            entry._id = res.body.id;
-            entry._rev = res.body.rev;
-            return entry;
-          }
-          return null;
-        }
-      );
-    });
+  async create(entry) {
+    await this.auth();
+    if (!entry.$kind) {
+      entry.$kind = this.kind;
+    }
+
+    const url = new URL('entry', this.databaseUrl);
+    const res = await this._withCredentials(
+      this.agent.post(url.href).send(entry)
+    );
+    if (res.body && res.status <= 201) {
+      entry._id = res.body.id;
+      entry._rev = res.body.rev;
+      return entry;
+    }
+    return null;
   }
 
-  update(entry) {
-    return this.auth().then(() => {
-      const url = new URL(`entry/${entry._id}`, this.databaseUrl);
-      return this._withCredentials(this.agent.put(url.href).send(entry)).then(
-        (res) => {
-          if (res.body && res.status === 200) {
-            entry._rev = res.body.rev;
-            entry.$creationDate = res.body.$creationDate;
-            entry.$modificationDate = res.body.$modificationDate;
-          }
-          return entry;
-        }
-      );
-    });
+  async update(entry) {
+    await this.auth();
+    const url = new URL(`entry/${entry._id}`, this.databaseUrl);
+    const res = await this._withCredentials(
+      this.agent.put(url.href).send(entry)
+    );
+    if (res.body && res.status === 200) {
+      entry._rev = res.body.rev;
+      entry.$creationDate = res.body.$creationDate;
+      entry.$modificationDate = res.body.$modificationDate;
+    }
+    return entry;
   }
 
   async inlineUploads(entry, files) {
@@ -140,53 +135,45 @@ class Roc {
     return entry;
   }
 
-  view(viewName, options) {
+  async view(viewName, options) {
     options = options || {};
-    return this.auth().then(() => {
-      const url = new URL(`_view/${viewName}`, this.databaseUrl);
-      addSearch(url, options);
-      return this._withCredentials(this.agent.get(url.href)).then((res) => {
-        if (res && res.body && res.status === 200) {
-          if (options.filter) {
-            res.body = res.body.filter(options.filter);
-          }
-          if (options.sort) {
-            res.body = res.body.sort(options.sort);
-          }
-        }
-        return res.body;
-      });
-    });
+    await this.auth();
+    const url = new URL(`_view/${viewName}`, this.databaseUrl);
+    addSearch(url, options);
+    const res = await this._withCredentials(this.agent.get(url.href));
+    if (res && res.body && res.status === 200) {
+      if (options.filter) {
+        res.body = res.body.filter(options.filter);
+      }
+      if (options.sort) {
+        res.body = res.body.sort(options.sort);
+      }
+    }
+    return res.body;
   }
 
-  query(viewName, options) {
-    return this.auth().then(() => {
-      let requestUrl = new URL(`_query/${viewName}`, this.databaseUrl);
-      addSearch(requestUrl, options);
+  async query(viewName, options) {
+    await this.auth();
+    let requestUrl = new URL(`_query/${viewName}`, this.databaseUrl);
+    addSearch(requestUrl, options);
 
-      return this._withCredentials(this.agent.get(requestUrl.href)).then(
-        (res) => {
-          if (res && res.body && res.status === 200) {
-            if (options.filter) {
-              res.body = res.body.filter(options.filter);
-            }
-            if (options.sort) {
-              res.body = res.body.sort(options.sort);
-            }
-          }
-          return res.body;
-        }
-      );
-    });
+    const res = await this._withCredentials(this.agent.get(requestUrl.href));
+    if (res && res.body && res.status === 200) {
+      if (options.filter) {
+        res.body = res.body.filter(options.filter);
+      }
+      if (options.sort) {
+        res.body = res.body.sort(options.sort);
+      }
+    }
+    return res.body;
   }
 
-  session() {
-    return this.auth().then(() => {
-      let requestUrl = new URL('auth/session', this.url);
-      return this._withCredentials(this.agent.get(requestUrl.href)).then(
-        (res) => res.body
-      );
-    });
+  async session() {
+    await this.auth();
+    let requestUrl = new URL('auth/session', this.url);
+    const res = await this._withCredentials(this.agent.get(requestUrl.href));
+    return res.body;
   }
 }
 
