@@ -1,4 +1,6 @@
 /* tslint:disable max-classes-per-file */
+import { randomBytes } from 'crypto';
+
 import { RocHTTPError } from '../Error';
 import {
   BaseRoc,
@@ -15,8 +17,13 @@ export interface IRocData {
 
 export class FakeDocument extends BaseRocDocument<FakeRoc> {
   protected roc: FakeRoc;
-  constructor(roc: FakeRoc, uuid: string) {
-    super(roc, uuid);
+  constructor(roc: FakeRoc, data: string | IDocument) {
+    if (typeof data === 'string') {
+      super(roc, data);
+    } else {
+      super(roc, data._id);
+      this.value = data;
+    }
     this.roc = roc;
   }
 
@@ -83,16 +90,21 @@ export class FakeRoc extends BaseRoc<FakeDocument> {
   }
 
   public async create(newDocument: INewDocument): Promise<FakeDocument> {
-    const uuid = '';
+    const uuid = randomBytes(16).toString('hex');
+    const rev = '1-' + randomBytes(16).toString('hex');
     const document: IDocument = {
       ...newDocument,
       _id: uuid,
-      _rev: '',
+      _rev: rev,
       $modificationDate: Date.now(),
-      $creationDate: Date.now()
+      $creationDate: Date.now(),
+      $owner: ['test@test.com', ...newDocument.$owner]
     };
+    if (!this.data[uuid]) {
+      this.data[uuid] = [];
+    }
     this.data[uuid].push(document);
-    return new FakeDocument(this, document._id);
+    return new FakeDocument(this, document);
   }
 
   public async getUser() {
