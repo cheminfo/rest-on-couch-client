@@ -20,7 +20,34 @@ export interface IDocument extends INewDocument, INewRevisionMeta {
   $creationDate: number;
 }
 
-type DocumentAttachments = Map<string, Blob>;
+export interface INewAttachment {
+  /* The name of the resource */
+  name: string;
+  /* The resource's mime type */
+  content_type: string;
+  /* blob or base64 encoded url containing attachment data*/
+  data: Blob | string;
+}
+
+export interface IAttachment extends ICouchAttachment {
+  /* The name of the resource */
+  name: string;
+  /* The url of the resource */
+  url: string;
+}
+
+export interface ICouchAttachment {
+  /* The resource's mime type */
+  content_type: string;
+  /* base64 md5 digest of the resource */
+  digest: string;
+  /* Length in bytes of the resource */
+  length: number;
+}
+
+export interface ICouchAttachmentList {
+  [key: string]: ICouchAttachment;
+}
 
 export interface IRocOptions {
   url: string;
@@ -34,38 +61,35 @@ export interface IRocDocumentOptions {
   pollInterval?: number;
 }
 
-export abstract class BaseRoc {
+export abstract class BaseRoc<DocType> {
   public abstract getUser(): Promise<string>;
+  public abstract getDocument(uuid: string): Promise<DocType>;
+  public abstract create(newDocument: INewDocument): Promise<DocType>;
 }
 
-export abstract class BaseRocDocument {
+export abstract class BaseRocDocument<RocType> {
   public uuid: string;
   public rev?: string;
 
-  protected roc: BaseRoc;
-  protected attachments: DocumentAttachments = new Map();
+  protected roc: RocType;
   protected value?: IDocument;
-  constructor(roc: BaseRoc, uuid: string) {
+  constructor(roc: RocType, uuid: string) {
     this.roc = roc;
     this.uuid = uuid;
   }
 
   public abstract fetch(rev?: string): Promise<object>;
-  public abstract updateContent(content: object): Promise<IDocument>;
+  public abstract update(
+    content: object,
+    newAttachments?: INewAttachment[],
+    deleteAttachments?: string[]
+  ): Promise<this>;
 
-  public getValue(): object | undefined {
+  public getValue() {
     return this.value;
   }
 
   public setValue(val: IDocument) {
     this.value = val;
-  }
-
-  public addAttachment(name: string, attachment: Blob) {
-    this.attachments.set(name, attachment);
-  }
-
-  public removeAttachment(name: string) {
-    this.attachments.delete(name);
   }
 }

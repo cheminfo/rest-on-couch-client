@@ -4,6 +4,7 @@ import {
   BaseRoc,
   BaseRocDocument,
   IDocument,
+  INewAttachment,
   INewDocument,
   INewRevisionMeta
 } from '../RocBase';
@@ -12,9 +13,7 @@ export interface IRocData {
   [key: string]: IDocument[];
 }
 
-const data: IRocData = {};
-
-export class FakeDocument extends BaseRocDocument {
+export class FakeDocument extends BaseRocDocument<FakeRoc> {
   protected roc: FakeRoc;
   constructor(roc: FakeRoc, uuid: string) {
     super(roc, uuid);
@@ -37,7 +36,14 @@ export class FakeDocument extends BaseRocDocument {
     return doc;
   }
 
-  public async updateContent(content: object) {
+  public async update(
+    content: object,
+    newAttachments?: INewAttachment[],
+    deleteAttachments?: string[]
+  ) {
+    if (newAttachments || deleteAttachments) {
+      throw new Error('attachments not supported yet');
+    }
     if (this.value === undefined) {
       await this.fetch();
     }
@@ -50,7 +56,8 @@ export class FakeDocument extends BaseRocDocument {
     };
 
     this.roc.data[this.uuid].push(newDocument);
-    return newDocument;
+    this.value = newDocument;
+    return this;
   }
 }
 
@@ -62,7 +69,7 @@ function getNewRevisionMeta(oldRev: string): INewRevisionMeta {
   };
 }
 
-export class FakeRoc extends BaseRoc {
+export class FakeRoc extends BaseRoc<FakeDocument> {
   public static x: number = 2;
   public data: IRocData;
 
