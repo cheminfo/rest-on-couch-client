@@ -5,8 +5,8 @@ function getData(): IRocData {
   return {
     uuid1: [
       {
-        _id: '_id1',
-        _rev: '_rev1',
+        _id: '2f4bcb77945db3b9aa870256d0aa824e',
+        _rev: '1-db302401f0df79e06b79f10f79c1f0f9',
         $content: {},
         $modificationDate: 0,
         $creationDate: 0,
@@ -39,16 +39,32 @@ describe('fake roc', () => {
     expect(document.getValue()._id).toHaveLength(32);
     expect(document.getValue()._rev.substr(0, 1)).toEqual('1');
   });
-  it('getDocument', async () => {
+
+  it('get user', async () => {
     const data = getData();
     const roc = new FakeRoc(data);
     const user = await roc.getUser();
     expect(user).toEqual('test@test.com');
+  });
+
+  it('getDocument', async () => {
+    const data = getData();
+    const roc = new FakeRoc(data);
     const document = await roc.getDocument('uuid1');
     const doc = await document.fetch(); // Fetch latest revision if it's out of sync
     expect(doc).toEqual(data.uuid1[0]);
     //   await document.forceFetch(); // Fetch latest revision even if revision is up to date
     const val = document.getValue(); // document json
     expect(val).toEqual(data.uuid1[0]);
+  });
+
+  it('update content', async () => {
+    const data = getData();
+    const roc = new FakeRoc(data);
+    const document = await roc.getDocument('uuid1');
+    const newDocument = (await document.update({
+      test: 43
+    })).getValue();
+    expect(newDocument._rev.substr(0, 1)).toEqual('2');
   });
 });
