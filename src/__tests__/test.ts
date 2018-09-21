@@ -5,7 +5,7 @@ function getData(): IRocData {
   return {
     uuid1: [
       {
-        _id: '2f4bcb77945db3b9aa870256d0aa824e',
+        _id: 'uuid1',
         _rev: '1-db302401f0df79e06b79f10f79c1f0f9',
         $content: {},
         $modificationDate: 0,
@@ -74,5 +74,27 @@ describe('fake roc', () => {
     const doc = await roc.getDocument('uuid1');
     const val = JSON.parse(JSON.stringify(await doc.fetch()));
     expect(val).toEqual(data.uuid1[0]);
+  });
+
+  it('add group', async () => {
+    const data = getData();
+    const roc = new FakeRoc(data);
+    const doc = await roc.getDocument('uuid1');
+    const groups = await doc.addGroups('group1');
+    expect(groups).toEqual(['test@test.com', 'group1']);
+    expect(doc.getValue().$owner).toEqual(['test@test.com', 'group1']);
+  });
+
+  it('add groups', async () => {
+    const data = getData();
+    const roc = new FakeRoc(data);
+    const doc = await roc.getDocument('uuid1');
+    const groups = await doc.addGroups(['group1', 'group2']);
+    expect(groups).toEqual(['test@test.com', 'group1', 'group2']);
+    expect(doc.getValue().$owner).toEqual([
+      'test@test.com',
+      'group1',
+      'group2'
+    ]);
   });
 });

@@ -84,7 +84,7 @@ export abstract class BaseRocDocument<RocType> {
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[]
   ): Promise<IDocument>;
-  // public abstract addGroup(groups: string | string[]): void;
+  public abstract addGroups(groups: string | string[]): string[];
 
   public getValue() {
     return this.value;

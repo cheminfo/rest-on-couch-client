@@ -54,6 +54,8 @@ export class FakeDocument extends BaseRocDocument<FakeRoc> {
     if (this.value === undefined) {
       await this.fetch();
     }
+
+    this.checkConflict();
     // value must be defined after fetch
     const doc = this.value!;
     const newMeta = getNewRevisionMeta(doc._rev);
@@ -66,6 +68,25 @@ export class FakeDocument extends BaseRocDocument<FakeRoc> {
     this.roc.data[this.uuid].push(newDocument);
     this.value = newDocument;
     return newDocument;
+  }
+
+  public async addGroups(groups: string | string[]) {
+    if (this.value === undefined) {
+      await this.fetch();
+    }
+
+    this.checkConflict();
+    const doc = this.value!;
+    if (typeof groups === 'string') {
+      doc.$owner.push(groups);
+    } else {
+      doc.$owner = doc.$owner.concat(groups);
+    }
+    return doc.$owner;
+  }
+
+  private checkConflict() {
+    return;
   }
 }
 
