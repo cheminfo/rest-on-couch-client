@@ -54,7 +54,8 @@ export class FakeDocument extends BaseRocDocument<FakeRoc> {
     if (this.value === undefined) {
       await this.fetch();
     }
-    const doc = this.value as IDocument;
+    // value must be defined after fetch
+    const doc = this.value!;
     const newMeta = getNewRevisionMeta(doc._rev);
     const newDocument: IDocument = {
       ...doc,
@@ -64,7 +65,7 @@ export class FakeDocument extends BaseRocDocument<FakeRoc> {
 
     this.roc.data[this.uuid].push(newDocument);
     this.value = newDocument;
-    return this;
+    return newDocument;
   }
 }
 

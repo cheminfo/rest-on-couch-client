@@ -40,14 +40,14 @@ describe('fake roc', () => {
     expect(document.getValue()._rev.substr(0, 1)).toEqual('1');
   });
 
-  it('get user', async () => {
+  it('roc get user', async () => {
     const data = getData();
     const roc = new FakeRoc(data);
     const user = await roc.getUser();
     expect(user).toEqual('test@test.com');
   });
 
-  it('getDocument', async () => {
+  it('get document', async () => {
     const data = getData();
     const roc = new FakeRoc(data);
     const document = await roc.getDocument('uuid1');
@@ -58,13 +58,21 @@ describe('fake roc', () => {
     expect(val).toEqual(data.uuid1[0]);
   });
 
-  it('update content', async () => {
+  it('document update content', async () => {
     const data = getData();
     const roc = new FakeRoc(data);
     const document = await roc.getDocument('uuid1');
-    const newDocument = (await document.update({
+    const newDocument = await document.update({
       test: 43
-    })).getValue();
+    });
     expect(newDocument._rev.substr(0, 1)).toEqual('2');
+  });
+
+  it('document toJSON', async () => {
+    const data = getData();
+    const roc = new FakeRoc(data);
+    const doc = await roc.getDocument('uuid1');
+    const val = JSON.parse(JSON.stringify(await doc.fetch()));
+    expect(val).toEqual(data.uuid1[0]);
   });
 });

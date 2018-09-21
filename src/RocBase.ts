@@ -78,18 +78,19 @@ export abstract class BaseRocDocument<RocType> {
     this.uuid = uuid;
   }
 
-  public abstract fetch(rev?: string): Promise<object>;
+  public abstract fetch(rev?: string): Promise<IDocument>;
   public abstract update(
     content: object,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[]
-  ): Promise<this>;
+  ): Promise<IDocument>;
+  // public abstract addGroup(groups: string | string[]): void;
 
   public getValue() {
     return this.value;
   }
 
-  public setValue(val: IDocument) {
-    this.value = val;
+  public toJSON() {
+    return this.getValue();
   }
 }
