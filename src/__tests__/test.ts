@@ -26,7 +26,7 @@ describe('fake roc', () => {
       $content: {
         test: 42
       },
-      $owner: ['group1', 'group2']
+      $owner: ['group1', 'group2', 'group1']
     };
     const document = await roc.create(newDoc);
     expect(document.getValue().$content).toEqual({ test: 42 });
@@ -89,7 +89,7 @@ describe('fake roc', () => {
     const data = getData();
     const roc = new FakeRoc(data);
     const doc = await roc.getDocument('uuid1');
-    const groups = await doc.addGroups(['group1', 'group2']);
+    const groups = await doc.addGroups(['group1', 'group2', 'group1']);
     expect(groups).toEqual(['test@test.com', 'group1', 'group2']);
     expect(doc.getValue().$owner).toEqual([
       'test@test.com',

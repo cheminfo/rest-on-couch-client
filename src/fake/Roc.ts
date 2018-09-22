@@ -77,12 +77,14 @@ export class FakeDocument extends BaseRocDocument<FakeRoc> {
 
     this.checkConflict();
     const doc = this.value!;
+    const owners = new Set(doc.$owner);
     if (typeof groups === 'string') {
-      doc.$owner.push(groups);
+      owners.add(groups);
     } else {
-      doc.$owner = doc.$owner.concat(groups);
+      groups.forEach(group => owners.add(group));
     }
-    return doc.$owner;
+    doc.$owner = Array.from(owners);
+    return doc.$owner.slice();
   }
 
   private checkConflict() {
@@ -122,7 +124,7 @@ export class FakeRoc extends BaseRoc<FakeDocument> {
       _rev: rev,
       $modificationDate: Date.now(),
       $creationDate: Date.now(),
-      $owner: ['test@test.com', ...newDocument.$owner]
+      $owner: ['test@test.com', ...Array.from(new Set(newDocument.$owner))]
     };
     if (!this.data[uuid]) {
       this.data[uuid] = [];
