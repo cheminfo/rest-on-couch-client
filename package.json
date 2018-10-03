@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "clean": "rimraf lib lib-es6",
-    "prepublishOnly": "npm run tsc",
+    "prepare": "npm run tsc",
     "test": "run-s test-only tslint",
     "test-only": "jest",
     "test-coverage": "jest --coverage",
