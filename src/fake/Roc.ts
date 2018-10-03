@@ -93,7 +93,14 @@ export class FakeDocument extends BaseRocDocument<FakeRoc> {
 }
 
 function getNewRevisionMeta(oldRev: string): INewRevisionMeta {
-  const oldInc = oldRev.substr(0, 1);
+  const revMatch = oldRev.match(/^(\d+)/);
+  let oldInc: string;
+  if(!revMatch) {
+    oldInc = '0';
+  }
+  else {
+    oldInc = revMatch[0];
+  }
   const newInc = +oldInc + 1;
   const rev = randomBytes(16).toString('hex');
   return {
