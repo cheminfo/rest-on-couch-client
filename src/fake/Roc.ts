@@ -33,7 +33,7 @@ export class FakeDocument extends BaseRocDocument<FakeRoc> {
       throw new RocHTTPError(404, 'document not found');
     }
     const doc: IDocument | undefined = rev
-      ? revs.find(d => d._rev === rev)
+      ? revs.find((d) => d._rev === rev)
       : revs[revs.length - 1];
 
     if (doc === undefined) {
@@ -81,7 +81,7 @@ export class FakeDocument extends BaseRocDocument<FakeRoc> {
     if (typeof groups === 'string') {
       owners.add(groups);
     } else {
-      groups.forEach(group => owners.add(group));
+      groups.forEach((group) => owners.add(group));
     }
     doc.$owner = Array.from(owners);
     return doc.$owner.slice();
@@ -95,10 +95,9 @@ export class FakeDocument extends BaseRocDocument<FakeRoc> {
 function getNewRevisionMeta(oldRev: string): INewRevisionMeta {
   const revMatch = oldRev.match(/^(\d+)/);
   let oldInc: string;
-  if(!revMatch) {
+  if (!revMatch) {
     oldInc = '0';
-  }
-  else {
+  } else {
     oldInc = revMatch[0];
   }
   const newInc = +oldInc + 1;
@@ -124,7 +123,7 @@ export class FakeRoc extends BaseRoc<FakeDocument> {
 
   public async create(newDocument: INewDocument): Promise<FakeDocument> {
     const uuid = randomBytes(16).toString('hex');
-    const rev = '1-' + randomBytes(16).toString('hex');
+    const rev = `1-${randomBytes(16).toString('hex')}`;
     const document: IDocument = {
       ...newDocument,
       _id: uuid,
