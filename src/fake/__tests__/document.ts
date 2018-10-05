@@ -8,14 +8,15 @@ describe('fake document', () => {
     const roc = new FakeRoc(data);
     const newDoc: INewDocument = {
       $kind: 'kind',
+      $id: 'newDocument',
       $content: {
         test: 42
       },
-      $owner: ['group1', 'group2', 'group1']
+      $owners: ['group1', 'group2', 'group1']
     };
     const document = await roc.create(newDoc);
     expect(document.getValue().$content).toEqual({ test: 42 });
-    expect(document.getValue().$owner).toEqual([
+    expect(document.getValue().$owners).toEqual([
       'test@test.com',
       'group1',
       'group2'
@@ -30,10 +31,10 @@ describe('fake document', () => {
     const roc = new FakeRoc(data);
     const document = await roc.getDocument('uuid1');
     const doc = await document.fetch(); // Fetch latest revision if it's out of sync
-    expect(doc).toEqual(data.uuid1[0]);
+    expect(doc).toEqual(data.documents.uuid1[0]);
     //   await document.forceFetch(); // Fetch latest revision even if revision is up to date
     const val = document.getValue(); // document json
-    expect(val).toEqual(data.uuid1[0]);
+    expect(val).toEqual(data.documents.uuid1[0]);
   });
 
   it('document update content', async () => {
@@ -51,6 +52,6 @@ describe('fake document', () => {
     const roc = new FakeRoc(data);
     const doc = await roc.getDocument('uuid1');
     const val = JSON.parse(JSON.stringify(await doc.fetch()));
-    expect(val).toEqual(data.uuid1[0]);
+    expect(val).toEqual(data.documents.uuid1[0]);
   });
 });

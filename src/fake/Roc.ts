@@ -5,30 +5,51 @@ import { RocHTTPError } from '../Error';
 import {
   BaseRoc,
   BaseRocDocument,
+  BaseRocQuery,
   IDocument,
   INewAttachment,
   INewDocument,
-  INewRevisionMeta
+  INewRevisionMeta,
+  IQueryOptions,
+  IQueryResult
 } from '../RocBase';
 
 export interface IRocData {
-  [key: string]: IDocument[];
+  documents: {
+    [key: string]: IDocument[];
+  };
+  query: {
+    [key: string]: IQueryResult[];
+  };
 }
 
-export class FakeDocument extends BaseRocDocument<FakeRoc> {
+export class FakeQuery<A, B> extends BaseRocQuery {
+  protected roc: FakeRoc;
+  constructor(roc: FakeRoc, viewName: string) {
+    super(viewName);
+    this.roc = roc;
+  }
+  public async fetch(
+    option: IQueryOptions = {}
+  ): Promise<Array<IQueryResult<A, B>>> {
+    return this.roc.data.query[this.viewName];
+  }
+}
+
+export class FakeDocument extends BaseRocDocument {
   protected roc: FakeRoc;
   constructor(roc: FakeRoc, data: string | IDocument) {
     if (typeof data === 'string') {
-      super(roc, data);
+      super(data);
     } else {
-      super(roc, data._id);
+      super(data._id);
       this.value = data;
     }
     this.roc = roc;
   }
 
   public async fetch(rev?: string) {
-    const revs = this.roc.data[this.uuid];
+    const revs = this.roc.data.documents[this.uuid];
     if (!revs) {
       throw new RocHTTPError(404, 'document not found');
     }
@@ -65,7 +86,7 @@ export class FakeDocument extends BaseRocDocument<FakeRoc> {
       ...newMeta
     };
 
-    this.roc.data[this.uuid].push(newDocument);
+    this.roc.data.documents[this.uuid].push(newDocument);
     this.value = newDocument;
     return newDocument;
   }
@@ -77,14 +98,14 @@ export class FakeDocument extends BaseRocDocument<FakeRoc> {
 
     this.checkConflict();
     const doc = this.value!;
-    const owners = new Set(doc.$owner);
+    const owners = new Set(doc.$owners);
     if (typeof groups === 'string') {
       owners.add(groups);
     } else {
       groups.forEach((group) => owners.add(group));
     }
-    doc.$owner = Array.from(owners);
-    return doc.$owner.slice();
+    doc.$owners = Array.from(owners);
+    return doc.$owners.slice();
   }
 
   private checkConflict() {
@@ -121,6 +142,10 @@ export class FakeRoc extends BaseRoc<FakeDocument> {
     return new FakeDocument(this, uuid);
   }
 
+  public getQuery<KeyType = any, ValueType = any>(viewName: string) {
+    return new FakeQuery<KeyType, ValueType>(this, viewName);
+  }
+
   public async create(newDocument: INewDocument): Promise<FakeDocument> {
     const uuid = randomBytes(16).toString('hex');
     const rev = `1-${randomBytes(16).toString('hex')}`;
@@ -128,14 +153,16 @@ export class FakeRoc extends BaseRoc<FakeDocument> {
       ...newDocument,
       _id: uuid,
       _rev: rev,
+      $type: 'entry',
+      $lastModification: 'test@test.com',
       $modificationDate: Date.now(),
       $creationDate: Date.now(),
-      $owner: ['test@test.com', ...Array.from(new Set(newDocument.$owner))]
+      $owners: ['test@test.com', ...Array.from(new Set(newDocument.$owners))]
     };
-    if (!this.data[uuid]) {
-      this.data[uuid] = [];
+    if (!this.data.documents[uuid]) {
+      this.data.documents[uuid] = [];
     }
-    this.data[uuid].push(document);
+    this.data.documents[uuid].push(document);
     return new FakeDocument(this, document);
   }
 

@@ -5,9 +5,10 @@ export interface IRocDocumentOptions {
 }
 
 export interface INewDocument {
+  $id: any;
   $content: object;
   $kind: string;
-  $owner: string[];
+  $owners: string[];
 }
 
 export interface INewRevisionMeta {
@@ -17,7 +18,12 @@ export interface INewRevisionMeta {
 
 export interface IDocument extends INewDocument, INewRevisionMeta {
   _id: string;
+  $type: 'entry' | 'group';
   $creationDate: number;
+  $lastModification: string;
+  _attachments?: {
+    [key: string]: ICouchAttachment;
+  };
 }
 
 export interface INewAttachment {
@@ -43,11 +49,36 @@ export interface ICouchAttachment {
   digest: string;
   /* Length in bytes of the resource */
   length: number;
+  revpos: number;
+  stub: boolean;
 }
 
 export interface ICouchAttachmentList {
   [key: string]: ICouchAttachment;
 }
+
+// Queries
+export interface IQueryOptions {
+  startKey?: any;
+  endKey?: any;
+  key?: any;
+  mine?: boolean;
+  group?: boolean;
+  groupLevel?: number;
+  keys?: any[];
+  reduce?: boolean;
+  descending?: boolean;
+  includeDocs?: boolean;
+}
+
+export interface IQueryResult<KeyType = any, ValueType = any> {
+  id: string;
+  key: KeyType;
+  doc?: IDocument;
+  value: ValueType;
+}
+
+export type ViewResult = IDocument[];
 
 export interface IRocOptions {
   url: string;
@@ -61,20 +92,35 @@ export interface IRocDocumentOptions {
   pollInterval?: number;
 }
 
+interface IGenericQuery<KeyType, ValueType> {
+  query(options: IQueryOptions): Promise<IQueryResult<KeyType, ValueType>>;
+}
+
 export abstract class BaseRoc<DocType> {
   public abstract getUser(): Promise<string>;
   public abstract getDocument(uuid: string): Promise<DocType>;
+  public abstract getQuery<KeyType = any, ValueType = any>(
+    viewName: string
+  ): BaseRocQuery<KeyType, ValueType>;
   public abstract create(newDocument: INewDocument): Promise<DocType>;
 }
 
-export abstract class BaseRocDocument<RocType> {
+export abstract class BaseRocQuery<KeyType = any, ValueType = any> {
+  public readonly viewName: string;
+  constructor(viewName: string) {
+    this.viewName = viewName;
+  }
+  public abstract fetch(
+    options: IQueryOptions
+  ): Promise<Array<IQueryResult<KeyType, ValueType>>>;
+}
+
+export abstract class BaseRocDocument {
   public uuid: string;
   public rev?: string;
 
-  protected roc: RocType;
   protected value?: IDocument;
-  constructor(roc: RocType, uuid: string) {
-    this.roc = roc;
+  constructor(uuid: string) {
     this.uuid = uuid;
   }
 
