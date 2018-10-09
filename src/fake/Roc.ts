@@ -11,13 +11,21 @@ import {
   INewDocument,
   INewRevisionMeta,
   IQueryOptions,
-  IQueryResult
+  IQueryResult,
+  ICouchAttachments
 } from '../RocBase';
 
 export interface IRocData {
   documents: {
     [key: string]: IDocument[];
   };
+  attachments: {
+    // document uuid
+    [key: string]: {
+      // attachment name
+      [key: string]: string // attachment data base64
+    }
+  }
   query: {
     [key: string]: IQueryResult[];
   };
@@ -64,12 +72,21 @@ export class FakeDocument extends BaseRocDocument {
     return doc;
   }
 
+  private saveAttachment(uuid: string, name: string, data: Buffer | string) {
+    const attachments = this.roc.data.attachments[uuid] || {};
+    if(Buffer.isBuffer(data)) {
+      attachments[name] = data.toString('base64');
+    } else {
+      attachments[name] = data;
+    }
+  }
+
   public async update(
     content: object,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[]
   ) {
-    if (newAttachments || deleteAttachments) {
+    if (deleteAttachments) {
       throw new Error('attachments not supported yet');
     }
     if (this.value === undefined) {
@@ -79,14 +96,40 @@ export class FakeDocument extends BaseRocDocument {
     this.checkConflict();
     // value must be defined after fetch
     const doc = this.value!;
+
     const newMeta = getNewRevisionMeta(doc._rev);
+
+    const updatedAttachments: ICouchAttachments = Object.assign(doc._attachments);
+    if(newAttachments) {
+      for(let attachment of newAttachments) {
+        const prevAttachment = doc._attachments[attachment.name];
+        let revpos = 1;
+        if(prevAttachment) {
+          revpos = prevAttachment.revpos + 1;
+        }
+        this.saveAttachment(doc._id, attachment.name, attachment.data);
+        if(Buffer.isBuffer(attachment.data) || typeof attachment.data === 'string') {
+          updatedAttachments[attachment.name] = {
+            content_type: attachment.content_type,
+            length: attachment.data.length,
+            revpos,
+            digest: Math.random().toString(36).substr(2),
+            stub: true
+          }
+        }
+      }
+    }
+
     const newDocument: IDocument = {
       ...doc,
       $content: content,
-      ...newMeta
+      ...newMeta,
+      _attachments: updatedAttachments
     };
 
     this.roc.data.documents[this.uuid].push(newDocument);
+
+    
     this.value = newDocument;
     return newDocument;
   }
@@ -157,7 +200,8 @@ export class FakeRoc extends BaseRoc<FakeDocument> {
       $lastModification: 'test@test.com',
       $modificationDate: Date.now(),
       $creationDate: Date.now(),
-      $owners: ['test@test.com', ...Array.from(new Set(newDocument.$owners))]
+      $owners: ['test@test.com', ...Array.from(new Set(newDocument.$owners))],
+      _attachments: {}
     };
     if (!this.data.documents[uuid]) {
       this.data.documents[uuid] = [];

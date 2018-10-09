@@ -21,6 +21,11 @@ export function getTestData(): IRocData {
         }
       ]
     },
+    attachments: {
+      uuid1: {
+        attachment1: 'dGVzdA=='
+      }
+    },
     query: {
       documentByOwner: sampleToc
     }

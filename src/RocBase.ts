@@ -21,9 +21,7 @@ export interface IDocument extends INewDocument, INewRevisionMeta {
   $type: 'entry' | 'group';
   $creationDate: number;
   $lastModification: string;
-  _attachments?: {
-    [key: string]: ICouchAttachment;
-  };
+  _attachments: ICouchAttachments
 }
 
 export interface INewAttachment {
@@ -31,18 +29,26 @@ export interface INewAttachment {
   name: string;
   /* The resource's mime type */
   content_type: string;
-  /* blob or base64 encoded url containing attachment data*/
-  data: Blob | string;
+  /* Buffer or base64 encoded url containing attachment data */
+  /* TODO: add Blob support for the browser */
+  data: Buffer | string;
 }
 
-export interface IAttachment extends ICouchAttachment {
+export interface ICouchAttachments {
+  [key: string]: ICouchAttachmentStub;
+};
+export interface ICouchAttachmentWithContent extends ICouchAttachmentStub {
+  /* base64 string with attachment data */
+  data: string;
+}
+export interface IAttachment extends ICouchAttachmentStub {
   /* The name of the resource */
   name: string;
   /* The url of the resource */
   url: string;
 }
 
-export interface ICouchAttachment {
+interface ICouchAttachment {
   /* The resource's mime type */
   content_type: string;
   /* base64 md5 digest of the resource */
@@ -50,11 +56,17 @@ export interface ICouchAttachment {
   /* Length in bytes of the resource */
   length: number;
   revpos: number;
-  stub: boolean;
+}
+export interface ICouchAttachmentStub extends ICouchAttachment {
+  stub: true;
+}
+
+export interface ICouchAttachmentData extends ICouchAttachment {
+  data: string;
 }
 
 export interface ICouchAttachmentList {
-  [key: string]: ICouchAttachment;
+  [key: string]: ICouchAttachmentStub;
 }
 
 // Queries
@@ -90,10 +102,6 @@ export interface IRocOptions {
 
 export interface IRocDocumentOptions {
   pollInterval?: number;
-}
-
-interface IGenericQuery<KeyType, ValueType> {
-  query(options: IQueryOptions): Promise<IQueryResult<KeyType, ValueType>>;
 }
 
 export abstract class BaseRoc<DocType> {
