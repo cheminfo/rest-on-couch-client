@@ -69,6 +69,8 @@ export interface ICouchAttachmentList {
   [key: string]: ICouchAttachmentStub;
 }
 
+export type Encoding = 'utf-8' | 'latin1' | 'base64';
+
 // Queries
 export interface IQueryOptions {
   startKey?: any;
@@ -132,6 +134,7 @@ export abstract class BaseRocDocument {
     this.uuid = uuid;
   }
 
+  public abstract fetchAttachment(name: string, encoding?: Encoding): Promise<Buffer | string>;
   public abstract fetch(rev?: string): Promise<IDocument>;
   public abstract update(
     content: object,

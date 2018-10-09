@@ -15,6 +15,8 @@ describe('fake attachments', () => {
         }
         await doc.update(doc.getValue().$content, [attachment])
         expect(doc.getValue()._attachments.attachment1).toBeDefined();
+
+        const attachmentContent = await doc.fetchAttachment('attachment1', 'utf-8');
+        expect(attachmentContent).toEqual('test');
     });
-  
 });

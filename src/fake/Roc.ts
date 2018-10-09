@@ -12,7 +12,8 @@ import {
   INewRevisionMeta,
   IQueryOptions,
   IQueryResult,
-  ICouchAttachments
+  ICouchAttachments,
+  Encoding
 } from '../RocBase';
 
 export interface IRocData {
@@ -56,6 +57,21 @@ export class FakeDocument extends BaseRocDocument {
     this.roc = roc;
   }
 
+  public async fetchAttachment(name: string, encoding?: Encoding) {
+    const attachments = this.roc.data.attachments[this.uuid];
+    if(attachments) {
+      const data = attachments[name];
+      if(data) {
+        const buffer = new Buffer(data, 'base64');
+        if(!encoding) {
+          return buffer;
+        } else {
+          return buffer.toString(encoding);
+        }
+      }
+    }
+    throw new Error('attachment does not exist');
+  }
   public async fetch(rev?: string) {
     const revs = this.roc.data.documents[this.uuid];
     if (!revs) {
@@ -107,7 +123,7 @@ export class FakeDocument extends BaseRocDocument {
         if(prevAttachment) {
           revpos = prevAttachment.revpos + 1;
         }
-        this.saveAttachment(doc._id, attachment.name, attachment.data);
+        this.saveAttachment(this.uuid, attachment.name, attachment.data);
         if(Buffer.isBuffer(attachment.data) || typeof attachment.data === 'string') {
           updatedAttachments[attachment.name] = {
             content_type: attachment.content_type,
