@@ -6,14 +6,14 @@ import {
   BaseRoc,
   BaseRocDocument,
   BaseRocQuery,
+  Encoding,
+  ICouchAttachments,
   IDocument,
   INewAttachment,
   INewDocument,
   INewRevisionMeta,
   IQueryOptions,
-  IQueryResult,
-  ICouchAttachments,
-  Encoding
+  IQueryResult
 } from '../RocBase';
 
 export interface IRocData {
@@ -26,7 +26,7 @@ export interface IRocData {
       // attachment name
       [key: string]: string // attachment data base64
     }
-  }
+  };
   query: {
     [key: string]: IQueryResult[];
   };
@@ -88,23 +88,11 @@ export class FakeDocument extends BaseRocDocument {
     return doc;
   }
 
-  private saveAttachment(uuid: string, name: string, data: Buffer | string) {
-    const attachments = this.roc.data.attachments[uuid] || {};
-    if(Buffer.isBuffer(data)) {
-      attachments[name] = data.toString('base64');
-    } else {
-      attachments[name] = data;
-    }
-  }
-
   public async update(
     content: object,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[]
   ) {
-    if (deleteAttachments) {
-      throw new Error('attachments not supported yet');
-    }
     if (this.value === undefined) {
       await this.fetch();
     }
@@ -113,11 +101,18 @@ export class FakeDocument extends BaseRocDocument {
     // value must be defined after fetch
     const doc = this.value!;
 
+    if (deleteAttachments) {
+      for(const attachment of deleteAttachments) {
+        delete this.roc.data.documents[this.uuid][0]._attachments[attachment];
+        delete this.roc.data.attachments[this.uuid][attachment];
+      }
+    }
+    
     const newMeta = getNewRevisionMeta(doc._rev);
 
     const updatedAttachments: ICouchAttachments = Object.assign(doc._attachments);
     if(newAttachments) {
-      for(let attachment of newAttachments) {
+      for(const attachment of newAttachments) {
         const prevAttachment = doc._attachments[attachment.name];
         let revpos = 1;
         if(prevAttachment) {
@@ -131,7 +126,7 @@ export class FakeDocument extends BaseRocDocument {
             revpos,
             digest: Math.random().toString(36).substr(2),
             stub: true
-          }
+          };
         }
       }
     }
@@ -165,6 +160,15 @@ export class FakeDocument extends BaseRocDocument {
     }
     doc.$owners = Array.from(owners);
     return doc.$owners.slice();
+  }
+
+  private saveAttachment(uuid: string, name: string, data: Buffer | string) {
+    const attachments = this.roc.data.attachments[uuid] || {};
+    if(Buffer.isBuffer(data)) {
+      attachments[name] = data.toString('base64');
+    } else {
+      attachments[name] = data;
+    }
   }
 
   private checkConflict() {

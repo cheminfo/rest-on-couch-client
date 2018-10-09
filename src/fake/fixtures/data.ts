@@ -17,7 +17,15 @@ export function getTestData(): IRocData {
           $lastModification: 'test@test.com',
           $kind: 'kind',
           $owners: ['test@test.com'],
-          _attachments: {}
+          _attachments: {
+            attachment1: {
+              digest: 'digest',
+              content_type: 'text/plain',
+              revpos: 1,
+              length: 4,
+              stub: true
+            }
+          }
         }
       ]
     },

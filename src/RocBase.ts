@@ -21,7 +21,7 @@ export interface IDocument extends INewDocument, INewRevisionMeta {
   $type: 'entry' | 'group';
   $creationDate: number;
   $lastModification: string;
-  _attachments: ICouchAttachments
+  _attachments: ICouchAttachments;
 }
 
 export interface INewAttachment {
@@ -36,7 +36,7 @@ export interface INewAttachment {
 
 export interface ICouchAttachments {
   [key: string]: ICouchAttachmentStub;
-};
+}
 export interface ICouchAttachmentWithContent extends ICouchAttachmentStub {
   /* base64 string with attachment data */
   data: string;
