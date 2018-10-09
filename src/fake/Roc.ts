@@ -24,8 +24,8 @@ export interface IRocData {
     // document uuid
     [key: string]: {
       // attachment name
-      [key: string]: string // attachment data base64
-    }
+      [key: string]: string; // attachment data base64
+    };
   };
   query: {
     [key: string]: IQueryResult[];
@@ -59,11 +59,11 @@ export class FakeDocument extends BaseRocDocument {
 
   public async fetchAttachment(name: string, encoding?: Encoding) {
     const attachments = this.roc.data.attachments[this.uuid];
-    if(attachments) {
+    if (attachments) {
       const data = attachments[name];
-      if(data) {
+      if (data) {
         const buffer = new Buffer(data, 'base64');
-        if(!encoding) {
+        if (!encoding) {
           return buffer;
         } else {
           return buffer.toString(encoding);
@@ -102,29 +102,39 @@ export class FakeDocument extends BaseRocDocument {
     const doc = this.value!;
 
     if (deleteAttachments) {
-      for(const attachment of deleteAttachments) {
-        delete this.roc.data.documents[this.uuid][0]._attachments[attachment];
+      for (const attachment of deleteAttachments) {
+        const att = this.roc.data.documents[this.uuid][0]._attachments;
+        if (!att || !att[attachment]) {
+          throw new Error('attachment to delete does not exist');
+        }
+        delete att[attachment];
         delete this.roc.data.attachments[this.uuid][attachment];
       }
     }
-    
+
     const newMeta = getNewRevisionMeta(doc._rev);
 
-    const updatedAttachments: ICouchAttachments = Object.assign(doc._attachments);
-    if(newAttachments) {
-      for(const attachment of newAttachments) {
-        const prevAttachment = doc._attachments[attachment.name];
+    const attachments = doc._attachments || {};
+    const updatedAttachments: ICouchAttachments = Object.assign(attachments);
+    if (newAttachments) {
+      for (const attachment of newAttachments) {
+        const prevAttachment = attachments[attachment.name];
         let revpos = 1;
-        if(prevAttachment) {
+        if (prevAttachment) {
           revpos = prevAttachment.revpos + 1;
         }
         this.saveAttachment(this.uuid, attachment.name, attachment.data);
-        if(Buffer.isBuffer(attachment.data) || typeof attachment.data === 'string') {
+        if (
+          Buffer.isBuffer(attachment.data) ||
+          typeof attachment.data === 'string'
+        ) {
           updatedAttachments[attachment.name] = {
             content_type: attachment.content_type,
             length: attachment.data.length,
             revpos,
-            digest: Math.random().toString(36).substr(2),
+            digest: Math.random()
+              .toString(36)
+              .substr(2),
             stub: true
           };
         }
@@ -140,7 +150,6 @@ export class FakeDocument extends BaseRocDocument {
 
     this.roc.data.documents[this.uuid].push(newDocument);
 
-    
     this.value = newDocument;
     return newDocument;
   }
@@ -164,7 +173,7 @@ export class FakeDocument extends BaseRocDocument {
 
   private saveAttachment(uuid: string, name: string, data: Buffer | string) {
     const attachments = this.roc.data.attachments[uuid] || {};
-    if(Buffer.isBuffer(data)) {
+    if (Buffer.isBuffer(data)) {
       attachments[name] = data.toString('base64');
     } else {
       attachments[name] = data;

@@ -21,7 +21,7 @@ export interface IDocument extends INewDocument, INewRevisionMeta {
   $type: 'entry' | 'group';
   $creationDate: number;
   $lastModification: string;
-  _attachments: ICouchAttachments;
+  _attachments?: ICouchAttachments;
 }
 
 export interface INewAttachment {
@@ -134,7 +134,10 @@ export abstract class BaseRocDocument {
     this.uuid = uuid;
   }
 
-  public abstract fetchAttachment(name: string, encoding?: Encoding): Promise<Buffer | string>;
+  public abstract fetchAttachment(
+    name: string,
+    encoding?: Encoding
+  ): Promise<Buffer | string>;
   public abstract fetch(rev?: string): Promise<IDocument>;
   public abstract update(
     content: object,
