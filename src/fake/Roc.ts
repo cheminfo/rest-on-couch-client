@@ -42,6 +42,9 @@ export class FakeQuery<A, B> extends BaseRocQuery {
   public async fetch(
     option: IQueryOptions = {}
   ): Promise<Array<IQueryResult<A, B>>> {
+    if (!this.roc.data.query[this.viewName]) {
+      throw new RocHTTPError(401, `${this.viewName} is not a view with owner`);
+    }
     return this.roc.data.query[this.viewName];
   }
 }

@@ -1,3 +1,4 @@
+import { RocHTTPError } from '../../Error';
 import { getTestData } from '../fixtures/data';
 import { FakeRoc } from '../Roc';
 
@@ -8,5 +9,16 @@ describe('fake queries', () => {
     const query = roc.getQuery('documentByOwner');
     const queryResult = await query.fetch();
     expect(queryResult).toHaveLength(11);
+  });
+
+  it('fetch view not found', async () => {
+    const data = getTestData();
+    const roc = new FakeRoc(data);
+    const query = roc.getQuery('inexistant');
+    async function fetchQuery() {
+      await query.fetch();
+    }
+    expect(fetchQuery()).rejects.toThrowError(RocHTTPError);
+    expect(fetchQuery()).rejects.toThrowError(/not a view with owner/);
   });
 });
