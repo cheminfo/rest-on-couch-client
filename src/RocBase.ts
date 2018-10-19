@@ -134,6 +134,9 @@ export abstract class BaseRocDocument {
     this.uuid = uuid;
   }
 
+  public abstract getAttachmentList(): IAttachment[];
+  public abstract getAttachment(name: string): IAttachment;
+
   public abstract fetchAttachment(
     name: string,
     encoding?: Encoding

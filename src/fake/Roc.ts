@@ -1,12 +1,13 @@
 /* tslint:disable max-classes-per-file */
 import { randomBytes } from 'crypto';
 
-import { RocHTTPError } from '../Error';
+import { RocClientError, RocHTTPError } from '../Error';
 import {
   BaseRoc,
   BaseRocDocument,
   BaseRocQuery,
   Encoding,
+  IAttachment,
   ICouchAttachments,
   IDocument,
   INewAttachment,
@@ -57,6 +58,43 @@ export class FakeDocument extends BaseRocDocument {
     this.roc = roc;
   }
 
+  public getAttachmentList(): IAttachment[] {
+    if (this.value === undefined) {
+      throw new RocClientError(
+        'You must fetch the document in order to get the attachment list'
+      );
+    }
+
+    // value must be defined after fetch
+    const doc = this.value!;
+    const attachments = doc._attachments || {};
+    const list = [];
+    for (const key in attachments) {
+      list.push(this.getAttachment(key));
+    }
+    return list;
+  }
+
+  public getAttachment(name: string): IAttachment {
+    if (this.value === undefined) {
+      throw new RocClientError(
+        'You must fetch the document in order to get an attachment'
+      );
+    }
+    const doc = this.value!;
+    const attachments = doc._attachments || {};
+    if (!attachments[name]) {
+      throw new RocClientError(`attachment ${name} does not exist`);
+    }
+    return {
+      ...attachments[name],
+      name,
+      url: `https://${this.roc.fakeHost}/db/${this.roc.fakeDatabase}/entry/${
+        doc._id
+      }/${name}`
+    };
+  }
+
   public async fetchAttachment(name: string, encoding?: Encoding) {
     const attachments = this.roc.data.attachments[this.uuid];
     if (attachments) {
@@ -70,7 +108,7 @@ export class FakeDocument extends BaseRocDocument {
         }
       }
     }
-    throw new Error('attachment does not exist');
+    throw new RocClientError('attachment does not exist');
   }
   public async fetch(rev?: string) {
     const revs = this.roc.data.documents[this.uuid];
@@ -105,7 +143,7 @@ export class FakeDocument extends BaseRocDocument {
       for (const attachment of deleteAttachments) {
         const att = this.roc.data.documents[this.uuid][0]._attachments;
         if (!att || !att[attachment]) {
-          throw new Error('attachment to delete does not exist');
+          throw new RocClientError('attachment to delete does not exist');
         }
         delete att[attachment];
         delete this.roc.data.attachments[this.uuid][attachment];
@@ -204,10 +242,14 @@ function getNewRevisionMeta(oldRev: string): INewRevisionMeta {
 export class FakeRoc extends BaseRoc<FakeDocument> {
   public static x: number = 2;
   public data: IRocData;
+  public fakeDatabase: string;
+  public fakeHost: string;
 
   constructor(rocData: IRocData) {
     super();
     this.data = rocData;
+    this.fakeDatabase = 'eln';
+    this.fakeHost = 'mydb.cheminfo.org';
   }
 
   public async getDocument(uuid: string) {
