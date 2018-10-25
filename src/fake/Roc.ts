@@ -156,7 +156,7 @@ export class FakeDocument extends BaseRocDocument {
     const newMeta = getNewRevisionMeta(doc._rev);
 
     const attachments = doc._attachments || {};
-    const updatedAttachments: ICouchAttachments = Object.assign(attachments);
+    const updatedAttachments: ICouchAttachments = Object.assign({}, attachments);
     if (newAttachments) {
       for (const attachment of newAttachments) {
         const prevAttachment = attachments[attachment.name];
