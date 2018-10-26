@@ -33,9 +33,8 @@ export class Roc extends BaseRoc {
     throw new Error('UNIMPLEMENTED create');
   }
 
-  public async getDocument(uuid: string): Promise<RocDocument> {
-    const response = await this.dbRequest.get(uuid);
-    return new RocDocument(uuid, response.data);
+  public getDocument(uuid: string): RocDocument {
+    return new RocDocument(uuid, this.dbRequest);
   }
 
   public getQuery<KeyType = any, ValueType = any>(

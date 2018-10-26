@@ -115,7 +115,7 @@ export interface ICouchUser {
 
 export abstract class BaseRoc {
   public abstract getUser(): Promise<ICouchUser>;
-  public abstract getDocument(uuid: string): Promise<BaseRocDocument>;
+  public abstract getDocument(uuid: string): BaseRocDocument;
   public abstract getQuery<KeyType = any, ValueType = any>(
     viewName: string
   ): BaseRocQuery<KeyType, ValueType>;

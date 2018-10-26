@@ -257,7 +257,7 @@ export class FakeRoc extends BaseRoc {
     this.fakeHost = 'mydb.cheminfo.org';
   }
 
-  public async getDocument(uuid: string) {
+  public getDocument(uuid: string) {
     return new FakeDocument(this, uuid);
   }
 

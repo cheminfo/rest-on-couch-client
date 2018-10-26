@@ -29,7 +29,7 @@ describe('fake document', () => {
   it('get document', async () => {
     const data = getTestData();
     const roc = new FakeRoc(data);
-    const document = await roc.getDocument('uuid1');
+    const document = roc.getDocument('uuid1');
     const doc = await document.fetch(); // Fetch latest revision if it's out of sync
     expect(doc).toEqual(data.documents.uuid1[0]);
     //   await document.forceFetch(); // Fetch latest revision even if revision is up to date
@@ -40,7 +40,7 @@ describe('fake document', () => {
   it('document update content', async () => {
     const data = getTestData();
     const roc = new FakeRoc(data);
-    const document = await roc.getDocument('uuid1');
+    const document = roc.getDocument('uuid1');
     const newDocument = await document.update({
       test: 43
     });
@@ -50,7 +50,7 @@ describe('fake document', () => {
   it('document toJSON', async () => {
     const data = getTestData();
     const roc = new FakeRoc(data);
-    const doc = await roc.getDocument('uuid1');
+    const doc = roc.getDocument('uuid1');
     const val = JSON.parse(JSON.stringify(await doc.fetch()));
     expect(val).toEqual(data.documents.uuid1[0]);
   });
