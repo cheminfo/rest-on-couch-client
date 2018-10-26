@@ -1,8 +1,8 @@
-import { IRocData } from '../Roc';
+import { IFakeRocData } from '../Roc';
 
 import sampleToc from './sampleToc';
 
-export function getTestData(): IRocData {
+export function getTestData(): IFakeRocData {
   return {
     documents: {
       uuid1: [

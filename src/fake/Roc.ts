@@ -17,7 +17,7 @@ import {
   IQueryResult
 } from '../RocBase';
 
-export interface IRocData {
+export interface IFakeRocData {
   documents: {
     [key: string]: IDocument[];
   };
@@ -246,11 +246,11 @@ function getNewRevisionMeta(oldRev: string): INewRevisionMeta {
 }
 
 export class FakeRoc extends BaseRoc {
-  public data: IRocData;
+  public data: IFakeRocData;
   public fakeDatabase: string;
   public fakeHost: string;
 
-  constructor(rocData: IRocData) {
+  constructor(rocData: IFakeRocData) {
     super();
     this.data = rocData;
     this.fakeDatabase = 'eln';
