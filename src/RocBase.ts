@@ -106,8 +106,15 @@ export interface IRocDocumentOptions {
   pollInterval?: number;
 }
 
+export interface ICouchUser {
+  username: string;
+  admin: boolean;
+  provider: string;
+  authenticated: boolean;
+}
+
 export abstract class BaseRoc<DocType> {
-  public abstract getUser(): Promise<string>;
+  public abstract getUser(): Promise<ICouchUser>;
   public abstract getDocument(uuid: string): Promise<DocType>;
   public abstract getQuery<KeyType = any, ValueType = any>(
     viewName: string

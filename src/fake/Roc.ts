@@ -156,7 +156,10 @@ export class FakeDocument extends BaseRocDocument {
     const newMeta = getNewRevisionMeta(doc._rev);
 
     const attachments = doc._attachments || {};
-    const updatedAttachments: ICouchAttachments = Object.assign({}, attachments);
+    const updatedAttachments: ICouchAttachments = Object.assign(
+      {},
+      attachments
+    );
     if (newAttachments) {
       for (const attachment of newAttachments) {
         const prevAttachment = attachments[attachment.name];
@@ -285,6 +288,11 @@ export class FakeRoc extends BaseRoc<FakeDocument> {
   }
 
   public async getUser() {
-    return 'test@test.com';
+    return {
+      username: 'test@test.com',
+      provider: 'test',
+      authenticated: true,
+      admin: false
+    };
   }
 }
