@@ -20,10 +20,12 @@ export class Roc extends BaseRoc {
   constructor(config: IRocConfig) {
     super();
     this.request = axios.create({
-      baseURL: config.url
+      baseURL: config.url,
+      withCredentials: true
     });
     this.dbRequest = axios.create({
-      baseURL: new URL(`db/${config.database}/`, config.url).href
+      baseURL: new URL(`db/${config.database}/`, config.url).href,
+      withCredentials: true
     });
   }
 
@@ -32,7 +34,8 @@ export class Roc extends BaseRoc {
   }
 
   public async getDocument(uuid: string): Promise<RocDocument> {
-    throw new Error('UNIMPLEMENTED getDocument');
+    const response = await this.dbRequest.get(uuid);
+    return new RocDocument(uuid, response.data);
   }
 
   public getQuery<KeyType = any, ValueType = any>(

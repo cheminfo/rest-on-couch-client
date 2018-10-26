@@ -7,6 +7,11 @@ import {
 } from './RocBase';
 
 export class RocDocument extends BaseRocDocument {
+  constructor(uuid: string, doc: IDocument) {
+    super(uuid);
+    this.value = doc;
+  }
+
   public getAttachmentList(): IAttachment[] {
     throw new Error('UNIMPLEMENTED getAttachmentList');
   }
