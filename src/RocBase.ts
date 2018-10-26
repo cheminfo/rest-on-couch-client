@@ -113,13 +113,13 @@ export interface ICouchUser {
   authenticated: boolean;
 }
 
-export abstract class BaseRoc<DocType> {
+export abstract class BaseRoc {
   public abstract getUser(): Promise<ICouchUser>;
-  public abstract getDocument(uuid: string): Promise<DocType>;
+  public abstract getDocument(uuid: string): Promise<BaseRocDocument>;
   public abstract getQuery<KeyType = any, ValueType = any>(
     viewName: string
   ): BaseRocQuery<KeyType, ValueType>;
-  public abstract create(newDocument: INewDocument): Promise<DocType>;
+  public abstract create(newDocument: INewDocument): Promise<BaseRocDocument>;
 }
 
 export abstract class BaseRocQuery<KeyType = any, ValueType = any> {

@@ -245,8 +245,7 @@ function getNewRevisionMeta(oldRev: string): INewRevisionMeta {
   };
 }
 
-export class FakeRoc extends BaseRoc<FakeDocument> {
-  public static x: number = 2;
+export class FakeRoc extends BaseRoc {
   public data: IRocData;
   public fakeDatabase: string;
   public fakeHost: string;
@@ -258,15 +257,17 @@ export class FakeRoc extends BaseRoc<FakeDocument> {
     this.fakeHost = 'mydb.cheminfo.org';
   }
 
-  public async getDocument(uuid: string) {
+  public async getDocument(uuid: string): Promise<BaseRocDocument> {
     return new FakeDocument(this, uuid);
   }
 
-  public getQuery<KeyType = any, ValueType = any>(viewName: string) {
+  public getQuery<KeyType = any, ValueType = any>(
+    viewName: string
+  ): BaseRocQuery<KeyType, ValueType> {
     return new FakeQuery<KeyType, ValueType>(this, viewName);
   }
 
-  public async create(newDocument: INewDocument): Promise<FakeDocument> {
+  public async create(newDocument: INewDocument): Promise<BaseRocDocument> {
     const uuid = randomBytes(16).toString('hex');
     const rev = `1-${randomBytes(16).toString('hex')}`;
     const document: IDocument = {
