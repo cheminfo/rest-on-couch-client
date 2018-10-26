@@ -1,7 +1,2 @@
-/**
- * MyModule - returns a very important number
- */
-
-export function myModule() {
-  return 42;
-}
+export { IRocConfig, Roc } from './Roc';
+export { RocDocument } from './RocDocument';
