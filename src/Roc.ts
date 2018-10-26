@@ -13,20 +13,25 @@ export interface IRocConfig {
   database: string;
 }
 
+function createAxios(url: string) {
+  return axios.create({
+    baseURL: url,
+    withCredentials: true
+  });
+}
+
 export class Roc extends BaseRoc {
+  private url: string;
+  private dbUrl: string;
   private request: AxiosInstance;
   private dbRequest: AxiosInstance;
 
   constructor(config: IRocConfig) {
     super();
-    this.request = axios.create({
-      baseURL: config.url,
-      withCredentials: true
-    });
-    this.dbRequest = axios.create({
-      baseURL: new URL(`db/${config.database}/`, config.url).href,
-      withCredentials: true
-    });
+    this.url = config.url;
+    this.request = createAxios(this.url);
+    this.dbUrl = new URL(`db/${config.database}/`, config.url).href;
+    this.dbRequest = createAxios(this.dbUrl);
   }
 
   public async create(newDocument: INewDocument): Promise<BaseRocDocument> {
@@ -34,7 +39,8 @@ export class Roc extends BaseRoc {
   }
 
   public getDocument(uuid: string): RocDocument {
-    return new RocDocument(uuid, this.dbRequest);
+    const url = new URL(`entry/${uuid}/`, this.dbUrl).href;
+    return new RocDocument(uuid, createAxios(url));
   }
 
   public getQuery<KeyType = any, ValueType = any>(
