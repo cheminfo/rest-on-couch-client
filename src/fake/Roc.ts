@@ -257,17 +257,15 @@ export class FakeRoc extends BaseRoc {
     this.fakeHost = 'mydb.cheminfo.org';
   }
 
-  public async getDocument(uuid: string): Promise<BaseRocDocument> {
+  public async getDocument(uuid: string) {
     return new FakeDocument(this, uuid);
   }
 
-  public getQuery<KeyType = any, ValueType = any>(
-    viewName: string
-  ): BaseRocQuery<KeyType, ValueType> {
+  public getQuery<KeyType = any, ValueType = any>(viewName: string) {
     return new FakeQuery<KeyType, ValueType>(this, viewName);
   }
 
-  public async create(newDocument: INewDocument): Promise<BaseRocDocument> {
+  public async create(newDocument: INewDocument) {
     const uuid = randomBytes(16).toString('hex');
     const rev = `1-${randomBytes(16).toString('hex')}`;
     const document: IDocument = {
