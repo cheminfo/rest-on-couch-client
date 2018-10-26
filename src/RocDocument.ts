@@ -35,7 +35,7 @@ export class RocDocument extends BaseRocDocument {
     if (rev) {
       throw new Error('UNIMPLEMENTED fetch with rev');
     }
-    const response = await this.request.get(this.uuid);
+    const response = await this.request.get('');
     return response.data;
   }
 
