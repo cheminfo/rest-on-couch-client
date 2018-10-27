@@ -71,24 +71,34 @@ export interface ICouchAttachmentList {
 
 export type Encoding = 'utf-8' | 'latin1' | 'base64';
 
-// Queries
-export interface IQueryOptions {
+// Common couchdb view options
+export interface ICouchViewBase {
   startKey?: any;
   endKey?: any;
   key?: any;
+}
+
+// Queries
+export interface IQueryOptions extends ICouchViewBase {
   mine?: boolean;
+  includeDocs?: boolean;
+}
+
+// Views
+export interface IReducerOptions extends ICouchViewBase {
   group?: boolean;
   groupLevel?: number;
-  keys?: any[];
-  reduce?: boolean;
-  descending?: boolean;
-  includeDocs?: boolean;
 }
 
 export interface IQueryResult<KeyType = any, ValueType = any> {
   id: string;
   key: KeyType;
   doc?: IDocument;
+  value: ValueType;
+}
+
+export interface IReducerResult<KeyType = any, ValueType = any> {
+  key: KeyType;
   value: ValueType;
 }
 
@@ -119,6 +129,9 @@ export abstract class BaseRoc {
   public abstract getQuery<KeyType = any, ValueType = any>(
     viewName: string
   ): BaseRocQuery<KeyType, ValueType>;
+  public abstract getReducer<KeyType = any, ValueType = any>(
+    viewName: string
+  ): BaseRocReducer<KeyType, ValueType>;
   public abstract create(newDocument: INewDocument): Promise<BaseRocDocument>;
 }
 
@@ -130,6 +143,16 @@ export abstract class BaseRocQuery<KeyType = any, ValueType = any> {
   public abstract fetch(
     options: IQueryOptions
   ): Promise<Array<IQueryResult<KeyType, ValueType>>>;
+}
+
+export abstract class BaseRocReducer<KeyType = any, ValueType = any> {
+  public readonly viewName: string;
+  constructor(viewName: string) {
+    this.viewName = viewName;
+  }
+  public abstract fetch(
+    options: IReducerOptions
+  ): Promise<Array<IReducerResult<KeyType, ValueType>>>;
 }
 
 export abstract class BaseRocDocument {

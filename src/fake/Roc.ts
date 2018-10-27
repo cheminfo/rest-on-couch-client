@@ -6,6 +6,7 @@ import {
   BaseRoc,
   BaseRocDocument,
   BaseRocQuery,
+  BaseRocReducer,
   Encoding,
   IAttachment,
   ICouchAttachments,
@@ -14,7 +15,9 @@ import {
   INewDocument,
   INewRevisionMeta,
   IQueryOptions,
-  IQueryResult
+  IQueryResult,
+  IReducerOptions,
+  IReducerResult
 } from '../RocBase';
 
 export interface IFakeRocData {
@@ -31,6 +34,9 @@ export interface IFakeRocData {
   query: {
     [key: string]: IQueryResult[];
   };
+  reducer?: {
+    [key: string]: IReducerResult[];
+  };
 }
 
 export class FakeQuery<A, B> extends BaseRocQuery {
@@ -46,6 +52,20 @@ export class FakeQuery<A, B> extends BaseRocQuery {
       throw new RocHTTPError(401, `${this.viewName} is not a view with owner`);
     }
     return this.roc.data.query[this.viewName];
+  }
+}
+
+export class FakeReducer<A, B> extends BaseRocReducer {
+  protected roc: FakeRoc;
+  constructor(roc: FakeRoc, viewName: string) {
+    super(viewName);
+    this.roc = roc;
+  }
+
+  public async fetch(
+    option: IReducerOptions = {}
+  ): Promise<Array<IReducerResult<A, B>>> {
+    throw new Error('not implemented');
   }
 }
 
@@ -263,6 +283,10 @@ export class FakeRoc extends BaseRoc {
 
   public getQuery<KeyType = any, ValueType = any>(viewName: string) {
     return new FakeQuery<KeyType, ValueType>(this, viewName);
+  }
+
+  public getReducer<KeyType = any, ValueType = any>(viewName: string) {
+    return new FakeReducer<KeyType, ValueType>(this, viewName);
   }
 
   public async create(newDocument: INewDocument) {

@@ -3,6 +3,7 @@ import {
   BaseRoc,
   BaseRocDocument,
   BaseRocQuery,
+  BaseRocReducer,
   ICouchUser,
   INewDocument
 } from './RocBase';
@@ -47,6 +48,12 @@ export class Roc extends BaseRoc {
     viewName: string
   ): BaseRocQuery<KeyType, ValueType> {
     throw new Error('UNIMPLEMENTED getQuery');
+  }
+
+  public getReducer<KeyType = any, ValueType = any>(
+    viewName: string
+  ): BaseRocReducer<KeyType, ValueType> {
+    throw new Error('UNIMPLEMENTED getReducer');
   }
 
   public async getUser(): Promise<ICouchUser> {
