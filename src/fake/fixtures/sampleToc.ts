@@ -210,7 +210,8 @@ const data: IQueryResult[] = [
       },
       $lastModification: 'sample@cheminfo.org',
       $modificationDate: 1479736117430,
-      $creationDate: 1479736117417
+      $creationDate: 1479736117417,
+      _attachments: {}
     }
   },
   {
@@ -1352,7 +1353,8 @@ const data: IQueryResult[] = [
       },
       $lastModification: 'sample@cheminfo.org',
       $modificationDate: 1479735870307,
-      $creationDate: 1479735870295
+      $creationDate: 1479735870295,
+      _attachments: {}
     }
   },
   {
