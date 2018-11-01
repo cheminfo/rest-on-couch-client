@@ -5,8 +5,10 @@ import {
   Encoding,
   IAttachment,
   IDocument,
+  IDocumentWithInlineAttachments,
   INewAttachment
 } from './RocBase';
+import { addInlineUploads, deleteInlineUploads } from './utils';
 
 export class RocDocument extends BaseRocDocument {
   private request: AxiosInstance;
@@ -39,12 +41,26 @@ export class RocDocument extends BaseRocDocument {
     return response.data;
   }
 
-  public update(
+  public async update(
     content: object,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[]
   ): Promise<IDocument> {
-    throw new Error('UNIMPLEMENTED update');
+    let newDoc: IDocumentWithInlineAttachments = this.value!;
+    if (deleteAttachments !== undefined) {
+      newDoc = deleteInlineUploads(this.value!, deleteAttachments);
+    }
+
+    if (newAttachments !== undefined) {
+      newDoc = await addInlineUploads(this.value!, newAttachments);
+    }
+
+    // Send the new doc
+    const response = await this.request.put('', {
+      data: newDoc
+    });
+
+    return this.value;
   }
 
   public addGroups(groups: string | string[]): Promise<string[]> {

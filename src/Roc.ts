@@ -57,6 +57,7 @@ export class Roc extends BaseRoc {
   }
 
   public async getUser(): Promise<ICouchUser> {
-    throw new Error('UNIMPLEMENTED getUser');
+    const response = await this.request.get('auth/session');
+    return response.data;
   }
 }

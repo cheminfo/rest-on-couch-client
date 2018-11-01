@@ -16,27 +16,37 @@ export interface INewRevisionMeta {
   _rev: string;
 }
 
-export interface IDocument extends INewDocument, INewRevisionMeta {
+export interface IBaseDocument extends INewDocument, INewRevisionMeta {
   _id: string;
   $type: 'entry' | 'group';
   $creationDate: number;
   $lastModification: string;
-  _attachments?: ICouchAttachments;
 }
 
-export interface INewAttachment {
+export interface IDocument extends IBaseDocument {
+  _attachments: {
+    [key: string]: ICouchAttachmentStub;
+  };
+}
+
+export interface IDocumentWithInlineAttachments extends IBaseDocument {
+  _attachments: {
+    [key: string]: ICouchAttachment | ICouchInlineAttachment;
+  };
+}
+
+export interface INewAttachment extends ICouchAttachmentBase {
   /* The name of the resource */
   name: string;
-  /* The resource's mime type */
-  content_type: string;
   /* Buffer or base64 encoded url containing attachment data */
   /* TODO: add Blob support for the browser */
   data: Buffer | string;
 }
 
-export interface ICouchAttachments {
-  [key: string]: ICouchAttachmentStub;
+export interface ICouchInlineAttachment extends ICouchAttachmentBase {
+  data: string;
 }
+
 export interface ICouchAttachmentWithContent extends ICouchAttachmentStub {
   /* base64 string with attachment data */
   data: string;
@@ -48,14 +58,17 @@ export interface IAttachment extends ICouchAttachmentStub {
   url: string;
 }
 
-interface ICouchAttachment {
+interface ICouchAttachmentBase {
   /* The resource's mime type */
   content_type: string;
+}
+
+interface ICouchAttachment extends ICouchAttachmentBase {
   /* base64 md5 digest of the resource */
-  digest: string;
+  digest?: string;
   /* Length in bytes of the resource */
-  length: number;
-  revpos: number;
+  length?: number;
+  revpos?: number;
 }
 export interface ICouchAttachmentStub extends ICouchAttachment {
   stub: true;
@@ -65,7 +78,7 @@ export interface ICouchAttachmentData extends ICouchAttachment {
   data: string;
 }
 
-export interface ICouchAttachmentList {
+export interface ICouchAttachments {
   [key: string]: ICouchAttachmentStub;
 }
 
@@ -173,7 +186,7 @@ export abstract class BaseRocDocument {
   ): Promise<Buffer | string>;
   public abstract fetch(rev?: string): Promise<IDocument>;
   public abstract update(
-    content: object,
+    content: IDocument,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[]
   ): Promise<IDocument>;

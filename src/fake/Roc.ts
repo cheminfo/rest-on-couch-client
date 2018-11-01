@@ -150,7 +150,7 @@ export class FakeDocument extends BaseRocDocument {
   }
 
   public async update(
-    content: object,
+    content: IDocument,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[]
   ) {
@@ -185,7 +185,7 @@ export class FakeDocument extends BaseRocDocument {
         const prevAttachment = attachments[attachment.name];
         let revpos = 1;
         if (prevAttachment) {
-          revpos = prevAttachment.revpos + 1;
+          revpos = prevAttachment.revpos! + 1;
         }
         this.saveAttachment(this.uuid, attachment.name, attachment.data);
         if (
