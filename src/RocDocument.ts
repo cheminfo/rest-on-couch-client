@@ -62,14 +62,7 @@ export class RocDocument extends BaseRocDocument {
     }
 
     // Send the new doc
-    await this.request({
-      method: 'PUT',
-      url: '',
-      data: newDoc,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    await this.request.put('', newDoc);
 
     // Get the new document
     // With updated properties ($lastModifification...)
