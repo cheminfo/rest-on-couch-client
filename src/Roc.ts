@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import Query from './Query';
 import {
   BaseRoc,
   BaseRocDocument,
@@ -47,7 +48,10 @@ export class Roc extends BaseRoc {
   public getQuery<KeyType = any, ValueType = any>(
     viewName: string
   ): BaseRocQuery<KeyType, ValueType> {
-    throw new Error('UNIMPLEMENTED getQuery');
+    return new Query<KeyType, ValueType>(
+      viewName,
+      createAxios(new URL(`_query/${viewName}`, this.dbUrl).href)
+    );
   }
 
   public getReducer<KeyType = any, ValueType = any>(
