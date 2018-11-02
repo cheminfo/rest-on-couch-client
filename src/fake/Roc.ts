@@ -300,7 +300,7 @@ export class FakeRoc extends BaseRoc {
       $lastModification: 'test@test.com',
       $modificationDate: Date.now(),
       $creationDate: Date.now(),
-      $owners: ['test@test.com', ...Array.from(new Set(newDocument.$owners))],
+      $owners: ['test@test.com', ...new Set(newDocument.$owners)],
       _attachments: {}
     };
     if (!this.data.documents[uuid]) {
