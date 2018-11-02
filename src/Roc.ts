@@ -17,8 +17,7 @@ export interface IRocConfig {
 function createAxios(url: string) {
   return axios.create({
     baseURL: url,
-    withCredentials: true,
-    headers: { Accept: 'application/json' }
+    withCredentials: true
   });
 }
 
