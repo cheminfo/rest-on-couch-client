@@ -4,7 +4,7 @@ import {
   ICouchInlineAttachment,
   IDocumentDraft,
   INewAttachment
-} from './types';
+} from '../types';
 
 export async function addInlineUploads(
   entry: IDocumentDraft,

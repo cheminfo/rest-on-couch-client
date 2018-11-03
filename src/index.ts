@@ -1,4 +1,4 @@
-import RocDocument from './RocDocument';
-export { RocDocument };
-export { IRocConfig, Roc } from './Roc';
+export * from './fake';
+export * from './real';
+export * from './base';
 export * from './types';

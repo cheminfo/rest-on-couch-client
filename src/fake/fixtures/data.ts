@@ -1,4 +1,4 @@
-import { IFakeRocData } from '../Roc';
+import { IFakeRocData } from '..';
 
 import sampleToc from './sampleToc';
 

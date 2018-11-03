@@ -1,6 +1,6 @@
+import { FakeRoc } from '..';
 import { INewDocument } from '../../types';
 import { getTestData } from '../fixtures/data';
-import { FakeRoc } from '../Roc';
 
 describe('fake document', () => {
   it('create document', async () => {

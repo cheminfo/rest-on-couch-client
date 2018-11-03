@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
-import BaseRocQuery from './base/BaseRocQuery';
-import { IQueryOptions, PromisedQueryResult } from './types';
+import BaseRocQuery from '../base/BaseRocQuery';
+import { IQueryOptions, PromisedQueryResult } from '../types';
 
 export default class Query<A, B> extends BaseRocQuery {
   private request: AxiosInstance;

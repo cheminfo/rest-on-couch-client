@@ -1,7 +1,7 @@
+import { BaseRocReduceQuery } from '.';
 import { ICouchUser, INewDocument, IQueryOptions } from '../types';
 import BaseRocDocument from './BaseRocDocument';
 import BaseRocQuery from './BaseRocQuery';
-import { BaseRocReduceQuery } from './BaseRocReduceQuery';
 
 export default abstract class BaseRoc {
   public abstract getUser(): Promise<ICouchUser>;

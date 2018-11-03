@@ -1,6 +1,6 @@
+import { FakeRoc } from '../..';
 import { RocHTTPError } from '../../Error';
 import { getTestData } from '../fixtures/data';
-import { FakeRoc } from '../Roc';
 
 describe('fake queries', () => {
   it('fetch', async () => {

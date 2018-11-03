@@ -1,6 +1,6 @@
+import { FakeRoc } from '..';
 import { INewAttachment } from '../../types';
 import { getTestData } from '../fixtures/data';
-import { FakeRoc } from '../Roc';
 
 import { RocClientError } from '../../Error';
 

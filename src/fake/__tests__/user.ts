@@ -1,5 +1,5 @@
+import { FakeRoc } from '../..';
 import { getTestData } from '../fixtures/data';
-import { FakeRoc } from '../Roc';
 
 it('fake roc get user', async () => {
   const data = getTestData();

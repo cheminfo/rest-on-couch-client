@@ -1,12 +1,12 @@
 import { AxiosInstance } from 'axios';
 
-import BaseRocDocument from './base/BaseRocDocument';
+import BaseRocDocument from '../base/BaseRocDocument';
 import {
   IDocument,
   IDocumentDraft,
   IFetchAttachmentOptions,
   INewAttachment
-} from './types';
+} from '../types';
 import { addInlineUploads, deleteInlineUploads } from './utils';
 
 export default class RocDocument extends BaseRocDocument {

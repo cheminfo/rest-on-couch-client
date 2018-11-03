@@ -1,10 +1,10 @@
 /* tslint:disable max-classes-per-file */
 import { randomBytes } from 'crypto';
 
+import { BaseRocReduceQuery } from '../base';
 import BaseRoc from '../base/BaseRoc';
 import BaseRocDocument from '../base/BaseRocDocument';
 import BaseRocQuery from '../base/BaseRocQuery';
-import { BaseRocReduceQuery } from '../base/BaseRocReduceQuery';
 import { RocClientError, RocHTTPError } from '../Error';
 import {
   ICouchAttachments,

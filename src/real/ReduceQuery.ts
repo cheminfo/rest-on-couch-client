@@ -1,11 +1,11 @@
 import { AxiosInstance } from 'axios';
 
-import { BaseRocReduceQuery } from './base/BaseRocReduceQuery';
+import { BaseRocReduceQuery } from '../base';
 import {
   IReduceQueryOptions,
   IRocReduceQueryParams,
   PromisedReduceQueryResult
-} from './types';
+} from '../types';
 
 export default class ReduceQuery<A, B> extends BaseRocReduceQuery {
   private request: AxiosInstance;

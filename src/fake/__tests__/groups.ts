@@ -1,5 +1,5 @@
+import { FakeRoc } from '../..';
 import { getTestData } from '../fixtures/data';
-import { FakeRoc } from '../Roc';
 
 describe('fake groups', () => {
   it('add group', async () => {

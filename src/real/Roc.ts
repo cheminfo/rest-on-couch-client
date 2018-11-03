@@ -1,12 +1,12 @@
 import axios, { AxiosInstance } from 'axios';
-import BaseRoc from './base/BaseRoc';
-import BaseRocDocument from './base/BaseRocDocument';
-import BaseRocQuery from './base/BaseRocQuery';
-import { BaseRocReduceQuery } from './base/BaseRocReduceQuery';
+import { BaseRocReduceQuery } from '../base';
+import BaseRoc from '../base/BaseRoc';
+import BaseRocDocument from '../base/BaseRocDocument';
+import BaseRocQuery from '../base/BaseRocQuery';
+import { ICouchUser, INewDocument, IQueryOptions } from '../types';
 import Query from './Query';
 import ReduceQuery from './ReduceQuery';
 import RocDocument from './RocDocument';
-import { ICouchUser, INewDocument, IQueryOptions } from './types';
 
 export interface IRocConfig {
   url: string;
@@ -20,7 +20,7 @@ function createAxios(url: string) {
   });
 }
 
-export class Roc extends BaseRoc {
+export default class Roc extends BaseRoc {
   private url: string;
   private dbUrl: string;
   private request: AxiosInstance;
