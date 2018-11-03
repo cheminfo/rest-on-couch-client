@@ -1,4 +1,4 @@
-import { INewDocument } from '../../RocBase';
+import { INewDocument } from '../../types';
 import { getTestData } from '../fixtures/data';
 import { FakeRoc } from '../Roc';
 

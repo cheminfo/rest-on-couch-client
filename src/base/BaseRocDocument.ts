@@ -1,3 +1,4 @@
+import { RocClientError } from '../Error';
 import { Encoding, IAttachment, IDocument, INewAttachment } from '../types';
 
 export default abstract class BaseRocDocument {
@@ -9,8 +10,40 @@ export default abstract class BaseRocDocument {
     this.uuid = uuid;
   }
 
-  public abstract getAttachmentList(): IAttachment[];
-  public abstract getAttachment(name: string): IAttachment;
+  public getAttachmentList(): IAttachment[] {
+    if (this.value === undefined) {
+      throw new RocClientError(
+        'You must fetch the document in order to get the attachment list'
+      );
+    }
+
+    // value must be defined after fetch
+    const doc = this.value!;
+    const attachments = doc._attachments || {};
+    const list = [];
+    for (const key in attachments) {
+      list.push(this.getAttachment(key));
+    }
+    return list;
+  }
+
+  public getAttachment(name: string): IAttachment {
+    if (this.value === undefined) {
+      throw new RocClientError(
+        'You must fetch the document in order to get an attachment'
+      );
+    }
+    const doc = this.value!;
+    const attachments = doc._attachments || {};
+    if (!attachments[name]) {
+      throw new RocClientError(`attachment ${name} does not exist`);
+    }
+    return {
+      ...attachments[name],
+      name,
+      url: `${this.getBaseUrl()}${doc._id}/${name}`
+    };
+  }
 
   public abstract fetchAttachment(
     name: string,
@@ -31,4 +64,6 @@ export default abstract class BaseRocDocument {
   public toJSON() {
     return this.getValue();
   }
+
+  protected abstract getBaseUrl(): string;
 }

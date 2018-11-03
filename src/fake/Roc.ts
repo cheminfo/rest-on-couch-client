@@ -82,43 +82,6 @@ export class FakeDocument extends BaseRocDocument {
     this.roc = roc;
   }
 
-  public getAttachmentList(): IAttachment[] {
-    if (this.value === undefined) {
-      throw new RocClientError(
-        'You must fetch the document in order to get the attachment list'
-      );
-    }
-
-    // value must be defined after fetch
-    const doc = this.value!;
-    const attachments = doc._attachments || {};
-    const list = [];
-    for (const key in attachments) {
-      list.push(this.getAttachment(key));
-    }
-    return list;
-  }
-
-  public getAttachment(name: string): IAttachment {
-    if (this.value === undefined) {
-      throw new RocClientError(
-        'You must fetch the document in order to get an attachment'
-      );
-    }
-    const doc = this.value!;
-    const attachments = doc._attachments || {};
-    if (!attachments[name]) {
-      throw new RocClientError(`attachment ${name} does not exist`);
-    }
-    return {
-      ...attachments[name],
-      name,
-      url: `https://${this.roc.fakeHost}/db/${this.roc.fakeDatabase}/entry/${
-        doc._id
-      }/${name}`
-    };
-  }
-
   public async fetchAttachment(name: string, encoding?: Encoding) {
     const attachments = this.roc.data.attachments[this.uuid];
     if (attachments) {
@@ -151,7 +114,7 @@ export class FakeDocument extends BaseRocDocument {
   }
 
   public async update(
-    content: IDocument,
+    content: object,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[]
   ) {
@@ -234,6 +197,10 @@ export class FakeDocument extends BaseRocDocument {
     }
     doc.$owners = Array.from(owners);
     return doc.$owners.slice();
+  }
+
+  protected getBaseUrl() {
+    return `https://${this.roc.fakeHost}/db/${this.roc.fakeDatabase}/entry/`;
   }
 
   private saveAttachment(uuid: string, name: string, data: Buffer | string) {

@@ -18,14 +18,6 @@ export class RocDocument extends BaseRocDocument {
     this.request = request;
   }
 
-  public getAttachmentList(): IAttachment[] {
-    throw new Error('UNIMPLEMENTED getAttachmentList');
-  }
-
-  public getAttachment(name: string): IAttachment {
-    throw new Error('UNIMPLEMENTED getAttachment');
-  }
-
   public fetchAttachment(
     name: string,
     encoding?: Encoding
@@ -74,6 +66,10 @@ export class RocDocument extends BaseRocDocument {
 
   public addGroups(groups: string | string[]): Promise<string[]> {
     throw new Error('UNIMPLEMENTED addGroups');
+  }
+
+  protected getBaseUrl() {
+    return this.request.defaults.baseURL || '';
   }
   private async _fetchIfUnfetched() {
     if (this.value === undefined) {
