@@ -1,13 +1,13 @@
 import { AxiosInstance } from 'axios';
 
+import { BaseRocDocument } from './RocBase';
 import {
-  BaseRocDocument,
   Encoding,
   IAttachment,
   IDocument,
   IDocumentDraft,
   INewAttachment
-} from './RocBase';
+} from './types';
 import { addInlineUploads, deleteInlineUploads } from './utils';
 
 export class RocDocument extends BaseRocDocument {

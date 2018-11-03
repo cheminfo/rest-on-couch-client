@@ -1,4 +1,4 @@
-import { IQueryResult } from '../../RocBase';
+import { IQueryResult } from '../../types';
 
 const data: IQueryResult[] = [
   {

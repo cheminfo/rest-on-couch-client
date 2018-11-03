@@ -2,10 +2,9 @@ import { produce } from 'immer';
 
 import {
   ICouchInlineAttachment,
-  IDocument,
   IDocumentDraft,
   INewAttachment
-} from './RocBase';
+} from './types';
 
 export async function addInlineUploads(
   entry: IDocumentDraft,

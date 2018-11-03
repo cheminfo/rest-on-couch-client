@@ -1,3 +1,17 @@
+// ============================
+// Roc
+// ============================
+export interface IRocOptions {
+  url: string;
+  database: string;
+  username?: string;
+  password?: string;
+  authTimeout?: number;
+}
+
+// ============================
+// Document
+// ============================
 export interface IRocDocumentOptions {
   pollInterval?: number;
 }
@@ -33,29 +47,9 @@ export interface IDocumentDraft extends IBaseDocument {
   };
 }
 
-export interface INewAttachment extends ICouchAttachmentBase {
-  /* The name of the resource */
-  name: string;
-  /* Buffer or base64 encoded url containing attachment data */
-  /* TODO: add Blob support for the browser */
-  data: Buffer | string;
-}
-
-export interface ICouchInlineAttachment extends ICouchAttachmentBase {
-  data: string;
-}
-
-export interface ICouchAttachmentWithContent extends ICouchAttachmentStub {
-  /* base64 string with attachment data */
-  data: string;
-}
-export interface IAttachment extends ICouchAttachmentStub {
-  /* The name of the resource */
-  name: string;
-  /* The url of the resource */
-  url: string;
-}
-
+// ============================
+// Attachments
+// ============================
 interface ICouchAttachmentBase {
   /* The resource's mime type */
   content_type: string;
@@ -67,6 +61,24 @@ interface ICouchAttachment extends ICouchAttachmentBase {
   /* Length in bytes of the resource */
   length: number;
   revpos: number;
+}
+export interface INewAttachment extends ICouchAttachmentBase {
+  /* The name of the resource */
+  name: string;
+  /* Buffer or base64 encoded url containing attachment data */
+  /* TODO: add Blob support for the browser */
+  data: Buffer | string;
+}
+
+export interface ICouchInlineAttachment extends ICouchAttachmentBase {
+  /* base64 string with attachment data */
+  data: string;
+}
+export interface IAttachment extends ICouchAttachmentStub {
+  /* The name of the resource */
+  name: string;
+  /* The url of the resource */
+  url: string;
 }
 export interface ICouchAttachmentStub extends ICouchAttachment {
   stub: true;
@@ -82,7 +94,9 @@ export interface ICouchAttachments {
 
 export type Encoding = 'utf-8' | 'latin1' | 'base64';
 
-// Common couchdb view options
+// ============================
+// View and Query
+// ============================
 export interface ICouchViewBase {
   startKey?: any;
   endKey?: any;
@@ -117,27 +131,6 @@ export interface IReduceQueryResult<KeyType = any, ValueType = any> {
   value: ValueType;
 }
 
-export type ViewResult = IDocument[];
-
-export interface IRocOptions {
-  url: string;
-  database: string;
-  username?: string;
-  password?: string;
-  authTimeout?: number;
-}
-
-export interface IRocDocumentOptions {
-  pollInterval?: number;
-}
-
-export interface ICouchUser {
-  username: string;
-  admin: boolean;
-  provider: string;
-  authenticated: boolean;
-}
-
 export type PromisedQueryResult<KeyType, ValueType> = Promise<
   Array<IQueryResult<KeyType, ValueType>>
 >;
@@ -145,3 +138,10 @@ export type PromisedQueryResult<KeyType, ValueType> = Promise<
 export type PromisedReduceQueryResult<KeyType, ValueType> = Promise<
   Array<IReduceQueryResult<KeyType, ValueType>>
 >;
+
+export interface ICouchUser {
+  username: string;
+  admin: boolean;
+  provider: string;
+  authenticated: boolean;
+}
