@@ -3,7 +3,12 @@ import { BaseRocReduceQuery } from '../base';
 import BaseRoc from '../base/BaseRoc';
 import BaseRocDocument from '../base/BaseRocDocument';
 import BaseRocQuery from '../base/BaseRocQuery';
-import { ICouchUser, INewDocument, IQueryOptions } from '../types';
+import {
+  ICouchUser,
+  INewDocument,
+  IQueryOptions,
+  IReduceQueryOptions
+} from '../types';
 import Query from './Query';
 import ReduceQuery from './ReduceQuery';
 import RocDocument from './RocDocument';
@@ -45,7 +50,7 @@ export default class Roc extends BaseRoc {
 
   public getQuery<KeyType = any, ValueType = any>(
     viewName: string,
-    options: IQueryOptions
+    options: IQueryOptions = {}
   ): BaseRocQuery<KeyType, ValueType> {
     return new Query<KeyType, ValueType>(
       viewName,
@@ -55,10 +60,12 @@ export default class Roc extends BaseRoc {
   }
 
   public getReduceQuery<KeyType = any, ValueType = any>(
-    viewName: string
+    viewName: string,
+    options: IReduceQueryOptions = {}
   ): BaseRocReduceQuery<KeyType, ValueType> {
     return new ReduceQuery<KeyType, ValueType>(
       viewName,
+      options,
       createAxios(new URL(`_view/${viewName}`, this.dbUrl).href)
     );
   }

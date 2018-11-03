@@ -9,15 +9,22 @@ import {
 
 export default class ReduceQuery<A, B> extends BaseRocReduceQuery {
   private request: AxiosInstance;
-  constructor(viewName: string, request: AxiosInstance) {
+  private baseOptions: IReduceQueryOptions;
+  constructor(
+    viewName: string,
+    options: IReduceQueryOptions,
+    request: AxiosInstance
+  ) {
     super(viewName);
     this.request = request;
+    this.baseOptions = options;
   }
 
   public async fetch(
     options: IReduceQueryOptions = {}
   ): PromisedReduceQueryResult<A, B> {
     const requestOptions: IRocReduceQueryParams = {
+      ...this.baseOptions,
       ...options,
       reduce: true
     };

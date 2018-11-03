@@ -55,7 +55,7 @@ export class FakeQuery<A, B> extends BaseRocQuery {
   }
 }
 
-export class FakeReducer<A, B> extends BaseRocReduceQuery {
+export class FakeReduceQuery<A, B> extends BaseRocReduceQuery {
   protected roc: FakeRoc;
   constructor(roc: FakeRoc, viewName: string) {
     super(viewName);
@@ -263,7 +263,7 @@ export class FakeRoc extends BaseRoc {
   }
 
   public getReduceQuery<KeyType = any, ValueType = any>(viewName: string) {
-    return new FakeReducer<KeyType, ValueType>(this, viewName);
+    return new FakeReduceQuery<KeyType, ValueType>(this, viewName);
   }
 
   public async create(newDocument: INewDocument) {

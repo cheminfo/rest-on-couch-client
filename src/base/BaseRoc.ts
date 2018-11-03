@@ -1,5 +1,10 @@
 import { BaseRocReduceQuery } from '.';
-import { ICouchUser, INewDocument, IQueryOptions } from '../types';
+import {
+  ICouchUser,
+  INewDocument,
+  IQueryOptions,
+  IReduceQueryOptions
+} from '../types';
 import BaseRocDocument from './BaseRocDocument';
 import BaseRocQuery from './BaseRocQuery';
 
@@ -8,10 +13,11 @@ export default abstract class BaseRoc {
   public abstract getDocument(uuid: string): BaseRocDocument;
   public abstract getQuery<KeyType = any, ValueType = any>(
     viewName: string,
-    options: IQueryOptions
+    options?: IQueryOptions
   ): BaseRocQuery<KeyType, ValueType>;
   public abstract getReduceQuery<KeyType = any, ValueType = any>(
-    viewName: string
+    viewName: string,
+    options?: IReduceQueryOptions
   ): BaseRocReduceQuery<KeyType, ValueType>;
   public abstract create(newDocument: INewDocument): Promise<BaseRocDocument>;
 }
