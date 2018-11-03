@@ -1,4 +1,4 @@
-import { IQueryOptions, PromisedQueryResult } from '../types';
+import { IQueryOptions, IQueryResult, PromisedQueryResult } from '../types';
 
 export default abstract class BaseRocQuery<KeyType = any, ValueType = any> {
   public readonly viewName: string;
@@ -9,9 +9,9 @@ export default abstract class BaseRocQuery<KeyType = any, ValueType = any> {
   }
 
   public then(
-    resolve: (value: PromisedQueryResult<KeyType, ValueType>) => void
+    resolve: (value: Array<IQueryResult<KeyType, ValueType>>) => void
   ) {
-    resolve(this.fetch());
+    this.fetch().then(resolve);
   }
   public abstract fetch(
     options?: IQueryOptions

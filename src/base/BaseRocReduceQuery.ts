@@ -1,4 +1,8 @@
-import { IReduceQueryOptions, PromisedReduceQueryResult } from '../types';
+import {
+  IReduceQueryOptions,
+  IReduceQueryResult,
+  PromisedReduceQueryResult
+} from '../types';
 
 export default abstract class BaseRocReduceQuery<
   KeyType = any,
@@ -10,12 +14,12 @@ export default abstract class BaseRocReduceQuery<
   }
 
   public then(
-    resolve: (value: PromisedReduceQueryResult<KeyType, ValueType>) => void
+    resolve: (value: Array<IReduceQueryResult<KeyType, ValueType>>) => void
   ) {
-    resolve(this.fetch());
+    this.fetch().then(resolve);
   }
 
-  public abstract fetch(
+  public abstract async fetch(
     options?: IReduceQueryOptions
   ): PromisedReduceQueryResult<KeyType, ValueType>;
 }
