@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { BaseRocReduceQuery } from './RocBase';
 
+import { BaseRocReduceQuery } from './base/BaseRocReduceQuery';
 import {
   IReduceQueryOptions,
   IRocReduceQueryParams,

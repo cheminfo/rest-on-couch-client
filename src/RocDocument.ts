@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 
-import { BaseRocDocument } from './RocBase';
+import BaseRocDocument from './base/BaseRocDocument';
 import {
   Encoding,
   IAttachment,

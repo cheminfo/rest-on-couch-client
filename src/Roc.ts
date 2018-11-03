@@ -1,13 +1,10 @@
 import axios, { AxiosInstance } from 'axios';
+import BaseRoc from './base/BaseRoc';
+import BaseRocDocument from './base/BaseRocDocument';
+import BaseRocQuery from './base/BaseRocQuery';
+import { BaseRocReduceQuery } from './base/BaseRocReduceQuery';
 import Query from './Query';
 import ReduceQuery from './ReduceQuery';
-
-import {
-  BaseRoc,
-  BaseRocDocument,
-  BaseRocQuery,
-  BaseRocReduceQuery
-} from './RocBase';
 import { RocDocument } from './RocDocument';
 import { ICouchUser, INewDocument, IQueryOptions } from './types';
 
