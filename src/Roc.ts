@@ -8,7 +8,8 @@ import {
   BaseRocQuery,
   BaseRocReduceQuery,
   ICouchUser,
-  INewDocument
+  INewDocument,
+  IQueryOptions
 } from './RocBase';
 import { RocDocument } from './RocDocument';
 
@@ -48,10 +49,12 @@ export class Roc extends BaseRoc {
   }
 
   public getQuery<KeyType = any, ValueType = any>(
-    viewName: string
+    viewName: string,
+    options: IQueryOptions
   ): BaseRocQuery<KeyType, ValueType> {
     return new Query<KeyType, ValueType>(
       viewName,
+      options,
       createAxios(new URL(`_query/${viewName}`, this.dbUrl).href)
     );
   }

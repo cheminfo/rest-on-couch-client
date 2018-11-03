@@ -103,6 +103,10 @@ export interface IReduceQueryOptions extends ICouchViewBase {
   groupLevel?: number;
 }
 
+export interface IRocReduceQueryParams extends IReduceQueryOptions {
+  reduce: true;
+}
+
 export interface IQueryResult<KeyType = any, ValueType = any> {
   id: string;
   key: KeyType;
@@ -140,7 +144,8 @@ export abstract class BaseRoc {
   public abstract getUser(): Promise<ICouchUser>;
   public abstract getDocument(uuid: string): BaseRocDocument;
   public abstract getQuery<KeyType = any, ValueType = any>(
-    viewName: string
+    viewName: string,
+    options: IQueryOptions
   ): BaseRocQuery<KeyType, ValueType>;
   public abstract getReduceQuery<KeyType = any, ValueType = any>(
     viewName: string
@@ -148,24 +153,45 @@ export abstract class BaseRoc {
   public abstract create(newDocument: INewDocument): Promise<BaseRocDocument>;
 }
 
+type PromisedQueryResult<KeyType, ValueType> = Promise<
+  Array<IQueryResult<KeyType, ValueType>>
+>;
 export abstract class BaseRocQuery<KeyType = any, ValueType = any> {
   public readonly viewName: string;
-  constructor(viewName: string) {
+  protected baseOptions: IQueryOptions;
+  constructor(viewName: string, options: IQueryOptions) {
     this.viewName = viewName;
+    this.baseOptions = options;
+  }
+
+  public then(
+    resolve: (value: PromisedQueryResult<KeyType, ValueType>) => void
+  ) {
+    resolve(this.fetch());
   }
   public abstract fetch(
-    options: IQueryOptions
-  ): Promise<Array<IQueryResult<KeyType, ValueType>>>;
+    options?: IQueryOptions
+  ): PromisedQueryResult<KeyType, ValueType>;
 }
 
+type PromisedReduceQueryResult<KeyType, ValueType> = Promise<
+  Array<IReduceQueryResult<KeyType, ValueType>>
+>;
 export abstract class BaseRocReduceQuery<KeyType = any, ValueType = any> {
   public readonly viewName: string;
   constructor(viewName: string) {
     this.viewName = viewName;
   }
+
+  public then(
+    resolve: (value: PromisedReduceQueryResult<KeyType, ValueType>) => void
+  ) {
+    resolve(this.fetch());
+  }
+
   public abstract fetch(
-    options: IReduceQueryOptions
-  ): Promise<Array<IReduceQueryResult<KeyType, ValueType>>>;
+    options?: IReduceQueryOptions
+  ): PromisedReduceQueryResult<KeyType, ValueType>;
 }
 
 export abstract class BaseRocDocument {

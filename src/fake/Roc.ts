@@ -41,10 +41,11 @@ export interface IFakeRocData {
 
 export class FakeQuery<A, B> extends BaseRocQuery {
   protected roc: FakeRoc;
-  constructor(roc: FakeRoc, viewName: string) {
-    super(viewName);
+  constructor(roc: FakeRoc, viewName: string, baseOptions: IQueryOptions) {
+    super(viewName, baseOptions);
     this.roc = roc;
   }
+
   public async fetch(
     option: IQueryOptions = {}
   ): Promise<Array<IQueryResult<A, B>>> {
@@ -281,8 +282,11 @@ export class FakeRoc extends BaseRoc {
     return new FakeDocument(this, uuid);
   }
 
-  public getQuery<KeyType = any, ValueType = any>(viewName: string) {
-    return new FakeQuery<KeyType, ValueType>(this, viewName);
+  public getQuery<KeyType = any, ValueType = any>(
+    viewName: string,
+    options: IQueryOptions = {}
+  ) {
+    return new FakeQuery<KeyType, ValueType>(this, viewName, options);
   }
 
   public getReduceQuery<KeyType = any, ValueType = any>(viewName: string) {

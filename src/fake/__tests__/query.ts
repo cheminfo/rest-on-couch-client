@@ -21,4 +21,12 @@ describe('fake queries', () => {
     expect(fetchQuery()).rejects.toThrowError(RocHTTPError);
     expect(fetchQuery()).rejects.toThrowError(/not a view with owner/);
   });
+
+  it('getQuery can be awaited', async () => {
+    const data = getTestData();
+    const roc = new FakeRoc(data);
+    const query = roc.getQuery('documentByOwner');
+    const queryResult = await query;
+    expect(queryResult).toHaveLength(11);
+  });
 });
