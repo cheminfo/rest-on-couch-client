@@ -103,7 +103,7 @@ type ResponseType =
   | 'text'
   | 'stream';
 export interface IFetchAttachmentOptions {
-  type: ResponseType;
+  type: ResponseType | 'buffer';
 }
 
 // ============================
