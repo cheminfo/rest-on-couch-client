@@ -6,12 +6,10 @@ import {
   BaseRoc,
   BaseRocDocument,
   BaseRocQuery,
-  BaseRocReduceQuery,
-  ICouchUser,
-  INewDocument,
-  IQueryOptions
+  BaseRocReduceQuery
 } from './RocBase';
 import { RocDocument } from './RocDocument';
+import { ICouchUser, INewDocument, IQueryOptions } from './types';
 
 export interface IRocConfig {
   url: string;

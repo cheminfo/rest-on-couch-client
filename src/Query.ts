@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { BaseRocQuery, IQueryOptions, IQueryResult } from './RocBase';
+import { BaseRocQuery } from './RocBase';
+import { IQueryOptions, PromisedQueryResult } from './types';
 
 export default class Query<A, B> extends BaseRocQuery {
   private request: AxiosInstance;
@@ -12,9 +13,7 @@ export default class Query<A, B> extends BaseRocQuery {
     this.request = request;
   }
 
-  public async fetch(
-    options: IQueryOptions = {}
-  ): Promise<Array<IQueryResult<A, B>>> {
+  public async fetch(options: IQueryOptions = {}): PromisedQueryResult<A, B> {
     const params = Object.assign({}, this.baseOptions, options);
 
     const response = await this.request({

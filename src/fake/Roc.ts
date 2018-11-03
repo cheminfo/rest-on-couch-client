@@ -6,7 +6,9 @@ import {
   BaseRoc,
   BaseRocDocument,
   BaseRocQuery,
-  BaseRocReduceQuery,
+  BaseRocReduceQuery
+} from '../RocBase';
+import {
   Encoding,
   IAttachment,
   ICouchAttachments,
@@ -18,7 +20,7 @@ import {
   IQueryResult,
   IReduceQueryOptions,
   IReduceQueryResult
-} from '../RocBase';
+} from '../types';
 
 export interface IFakeRocData {
   documents: {
@@ -124,7 +126,7 @@ export class FakeDocument extends BaseRocDocument {
     if (attachments) {
       const data = attachments[name];
       if (data) {
-        const buffer = new Buffer(data, 'base64');
+        const buffer = Buffer.from(data, 'base64');
         if (!encoding) {
           return buffer;
         } else {

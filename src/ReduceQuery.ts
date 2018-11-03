@@ -1,10 +1,11 @@
 import { AxiosInstance } from 'axios';
+import { BaseRocReduceQuery } from './RocBase';
+
 import {
-  BaseRocReduceQuery,
   IReduceQueryOptions,
-  IReduceQueryResult,
-  IRocReduceQueryParams
-} from './RocBase';
+  IRocReduceQueryParams,
+  PromisedReduceQueryResult
+} from './types';
 
 export default class ReduceQuery<A, B> extends BaseRocReduceQuery {
   private request: AxiosInstance;
@@ -15,7 +16,7 @@ export default class ReduceQuery<A, B> extends BaseRocReduceQuery {
 
   public async fetch(
     options: IReduceQueryOptions = {}
-  ): Promise<Array<IReduceQueryResult<A, B>>> {
+  ): PromisedReduceQueryResult<A, B> {
     const requestOptions: IRocReduceQueryParams = {
       ...options,
       reduce: true
