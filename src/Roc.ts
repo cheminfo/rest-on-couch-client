@@ -1,10 +1,12 @@
 import axios, { AxiosInstance } from 'axios';
 import Query from './Query';
+import ReduceQuery from './ReduceQuery';
+
 import {
   BaseRoc,
   BaseRocDocument,
   BaseRocQuery,
-  BaseRocReducer,
+  BaseRocReduceQuery,
   ICouchUser,
   INewDocument
 } from './RocBase';
@@ -54,10 +56,13 @@ export class Roc extends BaseRoc {
     );
   }
 
-  public getReducer<KeyType = any, ValueType = any>(
+  public getReduceQuery<KeyType = any, ValueType = any>(
     viewName: string
-  ): BaseRocReducer<KeyType, ValueType> {
-    throw new Error('UNIMPLEMENTED getReducer');
+  ): BaseRocReduceQuery<KeyType, ValueType> {
+    return new ReduceQuery<KeyType, ValueType>(
+      viewName,
+      createAxios(new URL(`_view/${viewName}`, this.dbUrl).href)
+    );
   }
 
   public async getUser(): Promise<ICouchUser> {

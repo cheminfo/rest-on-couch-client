@@ -6,7 +6,7 @@ import {
   BaseRoc,
   BaseRocDocument,
   BaseRocQuery,
-  BaseRocReducer,
+  BaseRocReduceQuery,
   Encoding,
   IAttachment,
   ICouchAttachments,
@@ -16,8 +16,8 @@ import {
   INewRevisionMeta,
   IQueryOptions,
   IQueryResult,
-  IReducerOptions,
-  IReducerResult
+  IReduceQueryOptions,
+  IReduceQueryResult
 } from '../RocBase';
 
 export interface IFakeRocData {
@@ -35,7 +35,7 @@ export interface IFakeRocData {
     [key: string]: IQueryResult[];
   };
   reducer?: {
-    [key: string]: IReducerResult[];
+    [key: string]: IReduceQueryResult[];
   };
 }
 
@@ -55,7 +55,7 @@ export class FakeQuery<A, B> extends BaseRocQuery {
   }
 }
 
-export class FakeReducer<A, B> extends BaseRocReducer {
+export class FakeReducer<A, B> extends BaseRocReduceQuery {
   protected roc: FakeRoc;
   constructor(roc: FakeRoc, viewName: string) {
     super(viewName);
@@ -63,8 +63,8 @@ export class FakeReducer<A, B> extends BaseRocReducer {
   }
 
   public async fetch(
-    option: IReducerOptions = {}
-  ): Promise<Array<IReducerResult<A, B>>> {
+    option: IReduceQueryOptions = {}
+  ): Promise<Array<IReduceQueryResult<A, B>>> {
     throw new Error('not implemented');
   }
 }
@@ -285,7 +285,7 @@ export class FakeRoc extends BaseRoc {
     return new FakeQuery<KeyType, ValueType>(this, viewName);
   }
 
-  public getReducer<KeyType = any, ValueType = any>(viewName: string) {
+  public getReduceQuery<KeyType = any, ValueType = any>(viewName: string) {
     return new FakeReducer<KeyType, ValueType>(this, viewName);
   }
 

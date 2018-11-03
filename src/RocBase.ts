@@ -98,7 +98,7 @@ export interface IQueryOptions extends ICouchViewBase {
 }
 
 // Views
-export interface IReducerOptions extends ICouchViewBase {
+export interface IReduceQueryOptions extends ICouchViewBase {
   group?: boolean;
   groupLevel?: number;
 }
@@ -110,7 +110,7 @@ export interface IQueryResult<KeyType = any, ValueType = any> {
   value: ValueType;
 }
 
-export interface IReducerResult<KeyType = any, ValueType = any> {
+export interface IReduceQueryResult<KeyType = any, ValueType = any> {
   key: KeyType;
   value: ValueType;
 }
@@ -142,9 +142,9 @@ export abstract class BaseRoc {
   public abstract getQuery<KeyType = any, ValueType = any>(
     viewName: string
   ): BaseRocQuery<KeyType, ValueType>;
-  public abstract getReducer<KeyType = any, ValueType = any>(
+  public abstract getReduceQuery<KeyType = any, ValueType = any>(
     viewName: string
-  ): BaseRocReducer<KeyType, ValueType>;
+  ): BaseRocReduceQuery<KeyType, ValueType>;
   public abstract create(newDocument: INewDocument): Promise<BaseRocDocument>;
 }
 
@@ -158,14 +158,14 @@ export abstract class BaseRocQuery<KeyType = any, ValueType = any> {
   ): Promise<Array<IQueryResult<KeyType, ValueType>>>;
 }
 
-export abstract class BaseRocReducer<KeyType = any, ValueType = any> {
+export abstract class BaseRocReduceQuery<KeyType = any, ValueType = any> {
   public readonly viewName: string;
   constructor(viewName: string) {
     this.viewName = viewName;
   }
   public abstract fetch(
-    options: IReducerOptions
-  ): Promise<Array<IReducerResult<KeyType, ValueType>>>;
+    options: IReduceQueryOptions
+  ): Promise<Array<IReduceQueryResult<KeyType, ValueType>>>;
 }
 
 export abstract class BaseRocDocument {
