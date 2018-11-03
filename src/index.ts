@@ -1,2 +1,4 @@
+import RocDocument from './RocDocument';
+export { RocDocument };
 export { IRocConfig, Roc } from './Roc';
-export { RocDocument } from './RocDocument';
+export * from './types';

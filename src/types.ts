@@ -1,3 +1,5 @@
+import {} from 'axios';
+
 // ============================
 // Roc
 // ============================
@@ -92,7 +94,17 @@ export interface ICouchAttachments {
   [key: string]: ICouchAttachmentStub;
 }
 
-export type Encoding = 'utf-8' | 'latin1' | 'base64';
+// This will be exported in the next version of axios
+type ResponseType =
+  | 'arraybuffer'
+  | 'blob'
+  | 'document'
+  | 'json'
+  | 'text'
+  | 'stream';
+export interface IFetchAttachmentOptions {
+  type: ResponseType;
+}
 
 // ============================
 // View and Query

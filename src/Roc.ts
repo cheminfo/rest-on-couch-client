@@ -5,7 +5,7 @@ import BaseRocQuery from './base/BaseRocQuery';
 import { BaseRocReduceQuery } from './base/BaseRocReduceQuery';
 import Query from './Query';
 import ReduceQuery from './ReduceQuery';
-import { RocDocument } from './RocDocument';
+import RocDocument from './RocDocument';
 import { ICouchUser, INewDocument, IQueryOptions } from './types';
 
 export interface IRocConfig {

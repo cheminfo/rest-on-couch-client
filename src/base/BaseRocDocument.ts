@@ -1,5 +1,10 @@
 import { RocClientError } from '../Error';
-import { Encoding, IAttachment, IDocument, INewAttachment } from '../types';
+import {
+  IAttachment,
+  IDocument,
+  IFetchAttachmentOptions,
+  INewAttachment
+} from '../types';
 
 export default abstract class BaseRocDocument {
   public uuid: string;
@@ -47,7 +52,7 @@ export default abstract class BaseRocDocument {
 
   public abstract fetchAttachment(
     name: string,
-    encoding?: Encoding
+    options?: IFetchAttachmentOptions
   ): Promise<Buffer | string>;
   public abstract fetch(rev?: string): Promise<IDocument>;
   public abstract update(

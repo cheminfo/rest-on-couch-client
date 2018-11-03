@@ -2,15 +2,14 @@ import { AxiosInstance } from 'axios';
 
 import BaseRocDocument from './base/BaseRocDocument';
 import {
-  Encoding,
-  IAttachment,
   IDocument,
   IDocumentDraft,
+  IFetchAttachmentOptions,
   INewAttachment
 } from './types';
 import { addInlineUploads, deleteInlineUploads } from './utils';
 
-export class RocDocument extends BaseRocDocument {
+export default class RocDocument extends BaseRocDocument {
   private request: AxiosInstance;
 
   constructor(uuid: string, request: AxiosInstance) {
@@ -18,11 +17,18 @@ export class RocDocument extends BaseRocDocument {
     this.request = request;
   }
 
-  public fetchAttachment(
+  public async fetchAttachment(
     name: string,
-    encoding?: Encoding
+    options: IFetchAttachmentOptions = {
+      type: 'text'
+    }
   ): Promise<Buffer | string> {
-    throw new Error('UNIMPLEMENTED fetchAttachment');
+    const url = new URL(name, this.getBaseUrl()).href;
+    const response = await this.request({
+      url,
+      responseType: options.type
+    });
+    return response.data;
   }
 
   public async fetch(rev?: string): Promise<IDocument> {

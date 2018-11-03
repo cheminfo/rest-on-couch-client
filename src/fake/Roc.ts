@@ -7,10 +7,9 @@ import BaseRocQuery from '../base/BaseRocQuery';
 import { BaseRocReduceQuery } from '../base/BaseRocReduceQuery';
 import { RocClientError, RocHTTPError } from '../Error';
 import {
-  Encoding,
-  IAttachment,
   ICouchAttachments,
   IDocument,
+  IFetchAttachmentOptions,
   INewAttachment,
   INewDocument,
   INewRevisionMeta,
@@ -82,16 +81,23 @@ export class FakeDocument extends BaseRocDocument {
     this.roc = roc;
   }
 
-  public async fetchAttachment(name: string, encoding?: Encoding) {
+  public async fetchAttachment(
+    name: string,
+    options: IFetchAttachmentOptions = {
+      type: 'text'
+    }
+  ) {
     const attachments = this.roc.data.attachments[this.uuid];
     if (attachments) {
       const data = attachments[name];
       if (data) {
         const buffer = Buffer.from(data, 'base64');
-        if (!encoding) {
+        if (options.type === 'buffer') {
           return buffer;
+        } else if (options.type === 'text') {
+          return buffer.toString();
         } else {
-          return buffer.toString(encoding);
+          throw new RocClientError('unsupported fetch attachment options');
         }
       }
     }
