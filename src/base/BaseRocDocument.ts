@@ -56,7 +56,7 @@ export default abstract class BaseRocDocument {
   ): Promise<Buffer | string>;
   public abstract fetch(rev?: string): Promise<IDocument>;
   public abstract update(
-    content: IDocument,
+    content: object,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[]
   ): Promise<IDocument>;
