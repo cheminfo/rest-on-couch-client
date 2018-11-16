@@ -40,7 +40,8 @@ export default class Roc extends BaseRoc {
   }
 
   public async create(newDocument: INewDocument): Promise<BaseRocDocument> {
-    throw new Error('UNIMPLEMENTED create');
+    const response = await this.request.post('', newDocument);
+    return this.getDocument(response.data._id);
   }
 
   public getDocument(uuid: string): RocDocument {
