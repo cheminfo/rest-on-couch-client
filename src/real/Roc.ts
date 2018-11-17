@@ -21,7 +21,20 @@ export interface IRocConfig {
 function createAxios(url: string) {
   return axios.create({
     baseURL: url,
-    withCredentials: true
+    withCredentials: true,
+    paramsSerializer(params) {
+      const keysToProcess = ['key', 'startkey', 'endkey'];
+      const searchParams = new URLSearchParams();
+      const keys = Object.keys(params);
+      for (const key of keys) {
+        if (keysToProcess.includes(key)) {
+          searchParams.append(key, JSON.stringify(params[key]));
+        } else {
+          searchParams.append(key, params[key]);
+        }
+      }
+      return searchParams.toString();
+    }
   });
 }
 
