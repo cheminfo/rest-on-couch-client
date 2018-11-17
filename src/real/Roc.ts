@@ -53,8 +53,8 @@ export default class Roc extends BaseRoc {
   }
 
   public async create(newDocument: INewDocument): Promise<BaseRocDocument> {
-    const response = await this.request.post('', newDocument);
-    return this.getDocument(response.data._id);
+    const response = await this.dbRequest.post('entry', newDocument);
+    return this.getDocument(response.data.id);
   }
 
   public getDocument(uuid: string): RocDocument {
