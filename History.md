@@ -1,3 +1,12 @@
+# [2.0.0](https://github.com/cheminfo/rest-on-couch-client/compare/v1.0.0...v2.0.0) (2019-03-29)
+
+
+### Features
+
+* rethink the whole API ([#1](https://github.com/cheminfo/rest-on-couch-client/issues/1)) ([064adb2](https://github.com/cheminfo/rest-on-couch-client/commit/064adb2))
+
+
+
 <a name="0.0.6"></a>
 ## [0.0.6](https://github.com/cheminfo/rest-on-couch-client/compare/v0.0.5...v0.0.6) (2018-02-07)
 
