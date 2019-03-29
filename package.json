@@ -1,25 +1,48 @@
 {
   "name": "rest-on-couch-client",
   "version": "1.0.0",
-  "description": "A rest-on-couch client for node.js",
-  "main": "src/Roc.js",
-  "repository": "git@github.com:cheminfo/rest-on-couch-client.git",
-  "author": "Daniel Kostro <kostro.d@gmail.com>",
-  "license": "MIT",
+  "description": "A nodejs / browser client for rest-on-couch backend",
+  "main": "./lib/index.js",
+  "module": "./lib-es6/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "lib-es6"
+  ],
   "scripts": {
-    "eslint": "eslint src",
-    "test": "npm run eslint",
-    "eslint-fix": "eslint src --fix"
+    "clean": "rimraf lib lib-es6",
+    "prepare": "npm run tsc",
+    "test": "npm run test-only",
+    "test-only": "jest",
+    "test-coverage": "jest --coverage",
+    "tsc": "npm run clean && npm run tsc-es5 && npm run tsc-es6",
+    "tsc-es5": "tsc",
+    "tsc-es6": "tsc --project tsconfig.es6.json"
   },
-  "dependencies": {
-    "detect-node": "^2.0.3",
-    "superagent": "^3.8.3"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cheminfo/rest-on-couch-client.git"
+  },
+  "keywords": [],
+  "author": "Daniel Kostro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cheminfo/rest-on-couch-client/issues"
+  },
+  "homepage": "https://github.com/cheminfo/rest-on-couch-client#readme",
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-config-cheminfo": "^1.18.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jest": "^21.18.0",
-    "eslint-plugin-no-only-tests": "^1.1.0"
+    "@types/jest": "^24.0.11",
+    "jest": "^24.5.0",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^24.0.0",
+    "typescript": "^3.3.4000"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "immer": "^2.1.4"
   }
 }
