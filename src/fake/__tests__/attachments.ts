@@ -13,7 +13,7 @@ describe('fake attachments', () => {
     const attachment: INewAttachment = {
       content_type: 'text/plain',
       name: 'attachment2',
-      data: new Buffer('test', 'utf-8')
+      data: Buffer.from('test', 'utf-8')
     };
     await doc.update(doc.getValue().$content, [attachment]);
     expect(doc.getValue()._attachments.attachment2).toBeDefined();

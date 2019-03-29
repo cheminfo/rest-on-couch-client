@@ -1,4 +1,3 @@
-/* tslint:disable max-classes-per-file */
 import { randomBytes } from 'crypto';
 
 import { BaseRocReduceQuery } from '../base';

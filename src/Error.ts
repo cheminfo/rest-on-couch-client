@@ -1,5 +1,3 @@
-// tslint:disable max-classes-per-file
-
 export class RocHTTPError extends Error {
   public code: number;
   constructor(code: number, message: string) {
