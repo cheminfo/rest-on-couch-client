@@ -24,6 +24,7 @@ export default class RocDocument extends BaseRocDocument {
     }
   ): Promise<Buffer | string> {
     const url = new URL(name, this.getBaseUrl()).href;
+    // @ts-ignore
     const response = await this.request({
       url,
       responseType: options.type

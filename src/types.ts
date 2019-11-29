@@ -95,7 +95,7 @@ export interface ICouchAttachments {
 }
 
 export interface IFetchAttachmentOptions {
-  type: ResponseType;
+  type: ResponseType | 'buffer';
 }
 
 // ============================
