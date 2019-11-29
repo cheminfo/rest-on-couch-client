@@ -1,4 +1,4 @@
-import {} from 'axios';
+import { ResponseType } from 'axios';
 
 // ============================
 // Roc
@@ -94,16 +94,8 @@ export interface ICouchAttachments {
   [key: string]: ICouchAttachmentStub;
 }
 
-// This will be exported in the next version of axios
-type ResponseType =
-  | 'arraybuffer'
-  | 'blob'
-  | 'document'
-  | 'json'
-  | 'text'
-  | 'stream';
 export interface IFetchAttachmentOptions {
-  type: ResponseType | 'buffer';
+  type: ResponseType;
 }
 
 // ============================
