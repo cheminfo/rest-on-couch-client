@@ -54,7 +54,7 @@ export default class Roc extends BaseRoc {
       this.url = `${window.location.origin}${this.url}`;
     }
     this.request = createAxios(this.url);
-    this.dbUrl = new URL(`db/${config.database}`, this.url).href;
+    this.dbUrl = new URL(`db/${config.database}/`, this.url).href;
     this.dbRequest = createAxios(this.dbUrl);
   }
 

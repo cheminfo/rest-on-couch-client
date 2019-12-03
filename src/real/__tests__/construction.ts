@@ -15,7 +15,7 @@ test('construct urls', () => {
   // @ts-ignore
   expect(roc.url).toEqual('https://example.com/roc/');
   // @ts-ignore
-  expect(roc.dbUrl).toEqual('https://example.com/roc/db/exampledb');
+  expect(roc.dbUrl).toEqual('https://example.com/roc/db/exampledb/');
 });
 
 test('construct urls when no domain is provided', () => {
@@ -26,5 +26,5 @@ test('construct urls when no domain is provided', () => {
   // @ts-ignore
   expect(roc.url).toEqual('https://www.rocserver.com/roc/');
   // @ts-ignore
-  expect(roc.dbUrl).toEqual('https://www.rocserver.com/roc/db/exampledb');
+  expect(roc.dbUrl).toEqual('https://www.rocserver.com/roc/db/exampledb/');
 });
