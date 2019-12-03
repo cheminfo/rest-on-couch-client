@@ -47,6 +47,9 @@ export default class Roc extends BaseRoc {
   constructor(config: IRocConfig) {
     super();
     this.url = config.url;
+    if (this.url.startsWith('/') && typeof window === 'object') {
+      this.url = `${window.location.origin}${this.url}`;
+    }
     this.request = createAxios(this.url);
     this.dbUrl = new URL(`db/${config.database}/`, config.url).href;
     this.dbRequest = createAxios(this.dbUrl);
