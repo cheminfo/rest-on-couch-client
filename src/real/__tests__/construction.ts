@@ -1,7 +1,7 @@
 import { Roc } from '../index';
 
-// @ts-ignore
 global.window = {
+  // @ts-ignore
   location: {
     origin: 'https://www.rocserver.com'
   }
