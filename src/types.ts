@@ -20,7 +20,7 @@ export interface IRocDocumentOptions {
 
 export interface INewDocument {
   $id: any;
-  $content: object;
+  $content: Record<string, any>;
   $kind: string;
   $owners: string[];
 }

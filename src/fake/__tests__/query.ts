@@ -18,8 +18,8 @@ describe('fake queries', () => {
     async function fetchQuery() {
       await query.fetch();
     }
-    expect(fetchQuery()).rejects.toThrowError(RocHTTPError);
-    expect(fetchQuery()).rejects.toThrowError(/not a view with owner/);
+    await expect(fetchQuery()).rejects.toThrow(RocHTTPError);
+    await expect(fetchQuery()).rejects.toThrow(/not a view with owner/);
   });
 
   it('getQuery can be awaited', async () => {

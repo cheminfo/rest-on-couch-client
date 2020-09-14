@@ -5,14 +5,15 @@ import {
   IDocument,
   IDocumentDraft,
   IFetchAttachmentOptions,
-  INewAttachment
+  INewAttachment,
 } from '../types';
+
 import { addInlineUploads, deleteInlineUploads } from './utils';
 
 export default class RocDocument extends BaseRocDocument {
   private request: AxiosInstance;
 
-  constructor(uuid: string, request: AxiosInstance) {
+  public constructor(uuid: string, request: AxiosInstance) {
     super(uuid);
     this.request = request;
   }
@@ -20,14 +21,14 @@ export default class RocDocument extends BaseRocDocument {
   public async fetchAttachment(
     name: string,
     options: IFetchAttachmentOptions = {
-      type: 'text'
-    }
+      type: 'text',
+    },
   ): Promise<Buffer | string> {
     const url = new URL(name, this.getBaseUrl()).href;
     // @ts-ignore
     const response = await this.request({
       url,
-      responseType: options.type
+      responseType: options.type,
     });
     return response.data;
   }
@@ -42,14 +43,14 @@ export default class RocDocument extends BaseRocDocument {
   }
 
   public async update(
-    content: object,
+    content: Record<string, any>,
     newAttachments?: INewAttachment[],
-    deleteAttachments?: string[]
+    deleteAttachments?: string[],
   ): Promise<IDocument> {
     await this._fetchIfUnfetched();
     let newDoc: IDocumentDraft = {
-      ...this.value!,
-      $content: content
+      ...this.value,
+      $content: content,
     };
 
     if (deleteAttachments !== undefined) {
@@ -68,10 +69,10 @@ export default class RocDocument extends BaseRocDocument {
     // And new attachment list
 
     await this.fetch();
-    return this.value!;
+    return this.value;
   }
 
-  public addGroups(groups: string | string[]): Promise<string[]> {
+  public addGroups(/* groups: string | string[] */): Promise<string[]> {
     throw new Error('UNIMPLEMENTED addGroups');
   }
 

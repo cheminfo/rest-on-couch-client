@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+
 import { BaseRocReduceQuery } from '../base';
 import BaseRoc from '../base/BaseRoc';
 import BaseRocDocument from '../base/BaseRocDocument';
@@ -7,8 +8,9 @@ import {
   ICouchUser,
   INewDocument,
   IQueryOptions,
-  IReduceQueryOptions
+  IReduceQueryOptions,
 } from '../types';
+
 import Query from './Query';
 import ReduceQuery from './ReduceQuery';
 import RocDocument from './RocDocument';
@@ -34,7 +36,7 @@ function createAxios(url: string) {
         }
       }
       return searchParams.toString();
-    }
+    },
   });
 }
 
@@ -44,7 +46,7 @@ export default class Roc extends BaseRoc {
   private request: AxiosInstance;
   private dbRequest: AxiosInstance;
 
-  constructor(config: IRocConfig) {
+  public constructor(config: IRocConfig) {
     super();
     this.url = config.url;
     if (!this.url.endsWith('/')) {
@@ -70,23 +72,23 @@ export default class Roc extends BaseRoc {
 
   public getQuery<KeyType = any, ValueType = any>(
     viewName: string,
-    options: IQueryOptions = {}
+    options: IQueryOptions = {},
   ): BaseRocQuery<KeyType, ValueType> {
     return new Query<KeyType, ValueType>(
       viewName,
       options,
-      createAxios(new URL(`_query/${viewName}`, this.dbUrl).href)
+      createAxios(new URL(`_query/${viewName}`, this.dbUrl).href),
     );
   }
 
   public getReduceQuery<KeyType = any, ValueType = any>(
     viewName: string,
-    options: IReduceQueryOptions = {}
+    options: IReduceQueryOptions = {},
   ): BaseRocReduceQuery<KeyType, ValueType> {
     return new ReduceQuery<KeyType, ValueType>(
       viewName,
       options,
-      createAxios(new URL(`_view/${viewName}`, this.dbUrl).href)
+      createAxios(new URL(`_view/${viewName}`, this.dbUrl).href),
     );
   }
 

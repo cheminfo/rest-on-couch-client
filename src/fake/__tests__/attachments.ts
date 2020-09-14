@@ -1,8 +1,7 @@
 import { FakeRoc } from '..';
+import { RocClientError } from '../../Error';
 import { INewAttachment } from '../../types';
 import { getTestData } from '../fixtures/data';
-
-import { RocClientError } from '../../Error';
 
 describe('fake attachments', () => {
   it('add attachment', async () => {
@@ -13,13 +12,13 @@ describe('fake attachments', () => {
     const attachment: INewAttachment = {
       content_type: 'text/plain',
       name: 'attachment2',
-      data: Buffer.from('test', 'utf-8')
+      data: Buffer.from('test', 'utf-8'),
     };
     await doc.update(doc.getValue().$content, [attachment]);
     expect(doc.getValue()._attachments.attachment2).toBeDefined();
 
     const attachmentContent = await doc.fetchAttachment('attachment2');
-    expect(attachmentContent).toEqual('test');
+    expect(attachmentContent).toStrictEqual('test');
   });
 
   it('delete attachment', async () => {
@@ -28,9 +27,9 @@ describe('fake attachments', () => {
     const doc = roc.getDocument('uuid1');
     await doc.fetch();
     await doc.update(doc.getValue().$content, null, ['attachment1']);
-    expect(doc.getValue()._attachments).toEqual({});
-    expect(doc.fetchAttachment('attachment1')).rejects.toThrow(
-      /does not exist/
+    expect(doc.getValue()._attachments).toStrictEqual({});
+    await expect(doc.fetchAttachment('attachment1')).rejects.toThrow(
+      /does not exist/,
     );
   });
 
@@ -40,7 +39,7 @@ describe('fake attachments', () => {
     const doc = roc.getDocument('uuid1');
     await doc.fetch();
     const list = doc.getAttachmentList();
-    expect(list).toEqual([
+    expect(list).toStrictEqual([
       {
         digest: 'digest',
         content_type: 'text/plain',
@@ -48,8 +47,8 @@ describe('fake attachments', () => {
         length: 4,
         stub: true,
         name: 'attachment1',
-        url: 'https://mydb.cheminfo.org/db/eln/entry/uuid1/attachment1'
-      }
+        url: 'https://mydb.cheminfo.org/db/eln/entry/uuid1/attachment1',
+      },
     ]);
   });
 
@@ -59,14 +58,14 @@ describe('fake attachments', () => {
     const doc = roc.getDocument('uuid1');
     await doc.fetch();
     const attachment = doc.getAttachment('attachment1');
-    expect(attachment).toEqual({
+    expect(attachment).toStrictEqual({
       digest: 'digest',
       content_type: 'text/plain',
       revpos: 1,
       length: 4,
       stub: true,
       name: 'attachment1',
-      url: 'https://mydb.cheminfo.org/db/eln/entry/uuid1/attachment1'
+      url: 'https://mydb.cheminfo.org/db/eln/entry/uuid1/attachment1',
     });
   });
 
@@ -78,8 +77,8 @@ describe('fake attachments', () => {
     function getNonExisting() {
       doc.getAttachment('non-existing');
     }
-    expect(getNonExisting).toThrowError(RocClientError);
-    expect(getNonExisting).toThrowError(/does not exist/);
+    expect(getNonExisting).toThrow(RocClientError);
+    expect(getNonExisting).toThrow(/does not exist/);
   });
 
   it('get an attachment before fetch should throw', async () => {
@@ -89,7 +88,7 @@ describe('fake attachments', () => {
     function getAttachment() {
       doc.getAttachment('attachment1');
     }
-    expect(getAttachment).toThrowError(RocClientError);
-    expect(getAttachment).toThrowError(/must fetch/);
+    expect(getAttachment).toThrow(RocClientError);
+    expect(getAttachment).toThrow(/must fetch/);
   });
 });

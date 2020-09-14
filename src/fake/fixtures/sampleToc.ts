@@ -15,7 +15,7 @@ const data: IQueryResult[] = [
       modificationDate: 1479735881852,
       b64ShortId: 'qqX5fHze',
       names: [],
-      reference: '10-90-2 '
+      reference: '10-90-2 ',
     },
     doc: {
       _id: 'aaa5f97c7cde94741de2938b105a97c4',
@@ -55,9 +55,9 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 7.28567784461834
-                    }
-                  ]
+                      delta: 7.28567784461834,
+                    },
+                  ],
                 },
                 {
                   from: 3.6774016163063687,
@@ -71,11 +71,11 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [
-                        { coupling: 4.576492846887959, multiplicity: 'quint' }
+                        { coupling: 4.576492846887959, multiplicity: 'quint' },
                       ],
-                      delta: 3.7105968865144248
-                    }
-                  ]
+                      delta: 3.7105968865144248,
+                    },
+                  ],
                 },
                 {
                   from: 2.3633781218254977,
@@ -89,11 +89,11 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [
-                        { coupling: 4.267367262143466, multiplicity: 'quint' }
+                        { coupling: 4.267367262143466, multiplicity: 'quint' },
                       ],
-                      delta: 2.4011754629539825
-                    }
-                  ]
+                      delta: 2.4011754629539825,
+                    },
+                  ],
                 },
                 {
                   from: 2.265052792310393,
@@ -106,9 +106,9 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 2.2857780824355256
-                    }
-                  ]
+                      delta: 2.2857780824355256,
+                    },
+                  ],
                 },
                 {
                   from: 2.2550061188419503,
@@ -122,16 +122,16 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 8.015482114918314, multiplicity: 'd' }],
-                      delta: 2.283909196890438
-                    }
-                  ]
-                }
+                      delta: 2.283909196890438,
+                    },
+                  ],
+                },
               ],
-              jcamp: { filename: 'spectra/nmr/168.jdx' }
-            }
-          ]
+              jcamp: { filename: 'spectra/nmr/168.jdx' },
+            },
+          ],
         },
-        misc: { externalID: 421 }
+        misc: { externalID: 421 },
       },
       $lastModification: 'sample@cheminfo.org',
       $modificationDate: 1479735881852,
@@ -142,10 +142,10 @@ const data: IQueryResult[] = [
           revpos: 1,
           digest: 'md5-4OLZEJfiE3GN7NRCRC3HeA==',
           length: 187769,
-          stub: true
-        }
-      }
-    }
+          stub: true,
+        },
+      },
+    },
   },
   {
     id: 'aaa5f97c7cde94741de2938b106656e6',
@@ -155,7 +155,7 @@ const data: IQueryResult[] = [
       mw: 157.554629,
       ocl: {
         value: 'deVDaNFPbNf^RYWZf`@f@@',
-        coordinates: '!Bb@JH_x@b@JH@ox@b@JH_x@'
+        coordinates: '!Bb@JH_x@b@JH@ox@b@JH_x@',
       },
       nb1d: 0,
       nb2d: 0,
@@ -164,7 +164,7 @@ const data: IQueryResult[] = [
       modificationDate: 1479736117430,
       b64ShortId: 'qqX5fHze',
       names: [],
-      reference: '100-00-5 '
+      reference: '100-00-5 ',
     },
     doc: {
       _id: 'aaa5f97c7cde94741de2938b106656e6',
@@ -199,20 +199,20 @@ const data: IQueryResult[] = [
               -2145386494,
               270336,
               0,
-              49152
-            ]
-          }
+              49152,
+            ],
+          },
         },
         identifier: { cas: [{ value: '100-00-5' }] },
         physical: {},
         spectra: {},
-        misc: { externalID: 11189 }
+        misc: { externalID: 11189 },
       },
       $lastModification: 'sample@cheminfo.org',
       $modificationDate: 1479736117430,
       $creationDate: 1479736117417,
-      _attachments: {}
-    }
+      _attachments: {},
+    },
   },
   {
     id: 'aaa5f97c7cde94741de2938b106033e9',
@@ -222,7 +222,7 @@ const data: IQueryResult[] = [
       mw: 138.124276,
       ocl: {
         value: 'deUDAHdDbTyInU~Eh@H@@',
-        coordinates: '!BmpK~@K_}g~w@k_}mvw@k_}'
+        coordinates: '!BmpK~@K_}g~w@k_}mvw@k_}',
       },
       hasNmr: 1,
       has1d: true,
@@ -234,7 +234,7 @@ const data: IQueryResult[] = [
       modificationDate: 1479735996993,
       b64ShortId: 'qqX5fHze',
       names: [],
-      reference: '100-01-6 '
+      reference: '100-01-6 ',
     },
     doc: {
       _id: 'aaa5f97c7cde94741de2938b106033e9',
@@ -269,9 +269,9 @@ const data: IQueryResult[] = [
               -2147483646,
               270336,
               0,
-              1097856
-            ]
-          }
+              1097856,
+            ],
+          },
         },
         identifier: { cas: [{ value: '100-01-6' }] },
         physical: {},
@@ -303,9 +303,9 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 9.14573617231872, multiplicity: 'd' }],
-                      delta: 7.948142492176605
-                    }
-                  ]
+                      delta: 7.948142492176605,
+                    },
+                  ],
                 },
                 {
                   from: 6.6488831978413385,
@@ -318,9 +318,9 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 6.70866064187226
-                    }
-                  ]
+                      delta: 6.70866064187226,
+                    },
+                  ],
                 },
                 {
                   from: 6.580802139235297,
@@ -334,9 +334,9 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 9.145347760749246, multiplicity: 'd' }],
-                      delta: 6.603427795422425
-                    }
-                  ]
+                      delta: 6.603427795422425,
+                    },
+                  ],
                 },
                 {
                   from: 3.3125856727096537,
@@ -349,9 +349,9 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 3.324474608913957
-                    }
-                  ]
+                      delta: 3.324474608913957,
+                    },
+                  ],
                 },
                 {
                   from: 2.489087934378054,
@@ -365,16 +365,16 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 1.9478935420684138, multiplicity: 't' }],
-                      delta: 2.5084154882295993
-                    }
-                  ]
-                }
+                      delta: 2.5084154882295993,
+                    },
+                  ],
+                },
               ],
-              jcamp: { filename: 'spectra/nmr/1703.jdx' }
-            }
-          ]
+              jcamp: { filename: 'spectra/nmr/1703.jdx' },
+            },
+          ],
         },
-        misc: { externalID: 7423 }
+        misc: { externalID: 7423 },
       },
       $lastModification: 'sample@cheminfo.org',
       $modificationDate: 1479735996993,
@@ -385,10 +385,10 @@ const data: IQueryResult[] = [
           revpos: 1,
           digest: 'md5-PyNJXMsVU3DxAbk3pSbxYA==',
           length: 233390,
-          stub: true
-        }
-      }
-    }
+          stub: true,
+        },
+      },
+    },
   },
   {
     id: 'aaa5f97c7cde94741de2938b1059caef',
@@ -398,7 +398,7 @@ const data: IQueryResult[] = [
       mw: 139.109037,
       ocl: {
         value: 'deVLAHAIbTyInU~Eh@H@@',
-        coordinates: '!BmpK~@K_}g~w@k_}mvw@k_}'
+        coordinates: '!BmpK~@K_}g~w@k_}mvw@k_}',
       },
       hasNmr: 1,
       has1d: true,
@@ -410,7 +410,7 @@ const data: IQueryResult[] = [
       modificationDate: 1479735869757,
       b64ShortId: 'qqX5fHze',
       names: [],
-      reference: '100-02-7 '
+      reference: '100-02-7 ',
     },
     doc: {
       _id: 'aaa5f97c7cde94741de2938b1059caef',
@@ -445,9 +445,9 @@ const data: IQueryResult[] = [
               -2147483646,
               270336,
               0,
-              49156
-            ]
-          }
+              49156,
+            ],
+          },
         },
         identifier: { cas: [{ value: '100-02-7' }] },
         physical: {},
@@ -478,9 +478,9 @@ const data: IQueryResult[] = [
                       multiplicity: 'm',
                       kind: '',
                       remark: '',
-                      delta: 8.119518560284074
-                    }
-                  ]
+                      delta: 8.119518560284074,
+                    },
+                  ],
                 },
                 {
                   from: 6.908639282011339,
@@ -494,9 +494,9 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 9.16258298007142, multiplicity: 'd' }],
-                      delta: 6.9353613381483346
-                    }
-                  ]
+                      delta: 6.9353613381483346,
+                    },
+                  ],
                 },
                 {
                   from: 2.4892307009014587,
@@ -510,18 +510,18 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [
-                        { coupling: 1.8420766330739298, multiplicity: 'quint' }
+                        { coupling: 1.8420766330739298, multiplicity: 'quint' },
                       ],
-                      delta: 2.508606931441864
-                    }
-                  ]
-                }
+                      delta: 2.508606931441864,
+                    },
+                  ],
+                },
               ],
-              jcamp: { filename: 'spectra/nmr/1698.jdx' }
-            }
-          ]
+              jcamp: { filename: 'spectra/nmr/1698.jdx' },
+            },
+          ],
         },
-        misc: { externalID: 233 }
+        misc: { externalID: 233 },
       },
       $lastModification: 'sample@cheminfo.org',
       $modificationDate: 1479735869757,
@@ -532,10 +532,10 @@ const data: IQueryResult[] = [
           revpos: 1,
           digest: 'md5-r64EzkdtcsdWUXM+pEv7aA==',
           length: 217458,
-          stub: true
-        }
-      }
-    }
+          stub: true,
+        },
+      },
+    },
   },
   {
     id: 'aaa5f97c7cde94741de2938b105ccefa',
@@ -545,7 +545,7 @@ const data: IQueryResult[] = [
       mw: 149.19008,
       ocl: {
         value: 'dmvH@AAIYWYnX@J`@@',
-        coordinates: '!B`BH@ox@bOvH@h`BbOvH@ox@bOt'
+        coordinates: '!B`BH@ox@bOvH@h`BbOvH@ox@bOt',
       },
       hasNmr: 2,
       has1d: true,
@@ -557,7 +557,7 @@ const data: IQueryResult[] = [
       modificationDate: 1479735932501,
       b64ShortId: 'qqX5fHze',
       names: [],
-      reference: '100-10-7 '
+      reference: '100-10-7 ',
     },
     doc: {
       _id: 'aaa5f97c7cde94741de2938b105ccefa',
@@ -592,9 +592,9 @@ const data: IQueryResult[] = [
               536870914,
               262144,
               266240,
-              131088
-            ]
-          }
+              131088,
+            ],
+          },
         },
         identifier: { cas: [{ value: '100-10-7' }] },
         physical: {},
@@ -625,9 +625,9 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 9.782930918700211
-                    }
-                  ]
+                      delta: 9.782930918700211,
+                    },
+                  ],
                 },
                 {
                   from: 7.741809027532452,
@@ -640,9 +640,9 @@ const data: IQueryResult[] = [
                       multiplicity: 'm',
                       kind: '',
                       remark: '',
-                      delta: 7.772775377839563
-                    }
-                  ]
+                      delta: 7.772775377839563,
+                    },
+                  ],
                 },
                 {
                   from: 6.767393447403711,
@@ -655,9 +655,9 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 6.8260141004068275
-                    }
-                  ]
+                      delta: 6.8260141004068275,
+                    },
+                  ],
                 },
                 {
                   from: 6.801656458075897,
@@ -671,9 +671,9 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 8.875409002735068, multiplicity: 'd' }],
-                      delta: 6.825399723697482
-                    }
-                  ]
+                      delta: 6.825399723697482,
+                    },
+                  ],
                 },
                 {
                   from: 3.094013142425077,
@@ -686,12 +686,12 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 3.104739211463057
-                    }
-                  ]
-                }
+                      delta: 3.104739211463057,
+                    },
+                  ],
+                },
               ],
-              jcamp: { filename: 'spectra/nmr/307.jdx' }
+              jcamp: { filename: 'spectra/nmr/307.jdx' },
             },
             {
               dimension: 1,
@@ -718,9 +718,9 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 9.766758716795179
-                    }
-                  ]
+                      delta: 9.766758716795179,
+                    },
+                  ],
                 },
                 {
                   from: 7.73686174612524,
@@ -734,9 +734,9 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 8.876692948801065, multiplicity: 'd' }],
-                      delta: 7.760559130223968
-                    }
-                  ]
+                      delta: 7.760559130223968,
+                    },
+                  ],
                 },
                 {
                   from: 6.6775260922678,
@@ -749,9 +749,9 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 6.728834033355257
-                    }
-                  ]
+                      delta: 6.728834033355257,
+                    },
+                  ],
                 },
                 {
                   from: 6.70399388120281,
@@ -765,9 +765,9 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 8.892920591873008, multiplicity: 'd' }],
-                      delta: 6.727858643423008
-                    }
-                  ]
+                      delta: 6.727858643423008,
+                    },
+                  ],
                 },
                 {
                   from: 3.0975935174779488,
@@ -780,16 +780,16 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 3.108326855128334
-                    }
-                  ]
-                }
+                      delta: 3.108326855128334,
+                    },
+                  ],
+                },
               ],
-              jcamp: { filename: 'spectra/nmr/1637.jdx' }
-            }
-          ]
+              jcamp: { filename: 'spectra/nmr/1637.jdx' },
+            },
+          ],
         },
-        misc: { externalID: 1029 }
+        misc: { externalID: 1029 },
       },
       $lastModification: 'sample@cheminfo.org',
       $modificationDate: 1479735932501,
@@ -800,17 +800,17 @@ const data: IQueryResult[] = [
           revpos: 1,
           digest: 'md5-dciv11LWPpEuE/SfMMLrBw==',
           length: 174716,
-          stub: true
+          stub: true,
         },
         'spectra/nmr/1637.jdx': {
           content_type: 'chemical/x-jcamp-dx',
           revpos: 1,
           digest: 'md5-U1Pa2RTwjMrNDStS3FlmJg==',
           length: 181378,
-          stub: true
-        }
-      }
-    }
+          stub: true,
+        },
+      },
+    },
   },
   {
     id: 'aaa5f97c7cde94741de2938b1065b031',
@@ -820,7 +820,7 @@ const data: IQueryResult[] = [
       mw: 166.131151,
       ocl: {
         value: 'dcLB@@Q]R[e]nEh@I`@@',
-        coordinates: '!Bg~H_[]}g~w@k]}mwvw@k]}g~w@`'
+        coordinates: '!Bg~H_[]}g~w@k]}mwvw@k]}g~w@`',
       },
       hasNmr: 1,
       has1d: true,
@@ -832,7 +832,7 @@ const data: IQueryResult[] = [
       modificationDate: 1479736110168,
       b64ShortId: 'qqX5fHze',
       names: [],
-      reference: '100-21-0 '
+      reference: '100-21-0 ',
     },
     doc: {
       _id: 'aaa5f97c7cde94741de2938b1065b031',
@@ -867,9 +867,9 @@ const data: IQueryResult[] = [
               -1610612736,
               4096,
               0,
-              98316
-            ]
-          }
+              98316,
+            ],
+          },
         },
         identifier: { cas: [{ value: '100-21-0' }] },
         physical: {},
@@ -900,9 +900,9 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 8.045950007953618
-                    }
-                  ]
+                      delta: 8.045950007953618,
+                    },
+                  ],
                 },
                 {
                   from: 2.488430553436121,
@@ -916,18 +916,18 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [
-                        { coupling: 1.8610630346659036, multiplicity: 'quint' }
+                        { coupling: 1.8610630346659036, multiplicity: 'quint' },
                       ],
-                      delta: 2.5077886180490228
-                    }
-                  ]
-                }
+                      delta: 2.5077886180490228,
+                    },
+                  ],
+                },
               ],
-              jcamp: { filename: 'spectra/nmr/1973.jdx' }
-            }
-          ]
+              jcamp: { filename: 'spectra/nmr/1973.jdx' },
+            },
+          ],
         },
-        misc: { externalID: 7716 }
+        misc: { externalID: 7716 },
       },
       $lastModification: 'sample@cheminfo.org',
       $modificationDate: 1479736110168,
@@ -938,10 +938,10 @@ const data: IQueryResult[] = [
           revpos: 1,
           digest: 'md5-DBqUhw3pu0Olc61BIcU4vw==',
           length: 186917,
-          stub: true
-        }
-      }
-    }
+          stub: true,
+        },
+      },
+    },
   },
   {
     id: 'aaa5f97c7cde94741de2938b10593835',
@@ -960,7 +960,7 @@ const data: IQueryResult[] = [
       modificationDate: 1479735855170,
       b64ShortId: 'qqX5fHze',
       names: [],
-      reference: '100-39-0 '
+      reference: '100-39-0 ',
     },
     doc: {
       _id: 'aaa5f97c7cde94741de2938b10593835',
@@ -995,9 +995,9 @@ const data: IQueryResult[] = [
               0,
               0,
               0,
-              1024
-            ]
-          }
+              1024,
+            ],
+          },
         },
         identifier: { cas: [{ value: '100-39-0' }] },
         physical: {},
@@ -1027,9 +1027,9 @@ const data: IQueryResult[] = [
                       multiplicity: 'm',
                       kind: '',
                       remark: '',
-                      delta: 7.385123192614351
-                    }
-                  ]
+                      delta: 7.385123192614351,
+                    },
+                  ],
                 },
                 {
                   from: 4.508017156767125,
@@ -1042,12 +1042,12 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 4.520175912084288
-                    }
-                  ]
-                }
+                      delta: 4.520175912084288,
+                    },
+                  ],
+                },
               ],
-              jcamp: { filename: 'spectra/nmr/33.jdx' }
+              jcamp: { filename: 'spectra/nmr/33.jdx' },
             },
             {
               dimension: 1,
@@ -1074,9 +1074,9 @@ const data: IQueryResult[] = [
                       multiplicity: 'm',
                       kind: '',
                       remark: '',
-                      delta: 7.384404634862011
-                    }
-                  ]
+                      delta: 7.384404634862011,
+                    },
+                  ],
                 },
                 {
                   from: 4.491782727359135,
@@ -1089,9 +1089,9 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 4.518824953106939
-                    }
-                  ]
+                      delta: 4.518824953106939,
+                    },
+                  ],
                 },
                 {
                   from: 0.06801496179693399,
@@ -1104,16 +1104,16 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 0.09546507144522455
-                    }
-                  ]
-                }
+                      delta: 0.09546507144522455,
+                    },
+                  ],
+                },
               ],
-              jcamp: { filename: 'spectra/nmr/283.jdx' }
-            }
-          ]
+              jcamp: { filename: 'spectra/nmr/283.jdx' },
+            },
+          ],
         },
-        misc: { externalID: 149 }
+        misc: { externalID: 149 },
       },
       $lastModification: 'sample@cheminfo.org',
       $modificationDate: 1479735855170,
@@ -1124,17 +1124,17 @@ const data: IQueryResult[] = [
           revpos: 1,
           digest: 'md5-Gt4J6u+qHfy7IXLWHUIulQ==',
           length: 195719,
-          stub: true
+          stub: true,
         },
         'spectra/nmr/283.jdx': {
           content_type: 'chemical/x-jcamp-dx',
           revpos: 1,
           digest: 'md5-Xroc9FHX+ADLj4DR7ETMrQ==',
           length: 193800,
-          stub: true
-        }
-      }
-    }
+          stub: true,
+        },
+      },
+    },
   },
   {
     id: 'aaa5f97c7cde94741de2938b10590612',
@@ -1153,7 +1153,7 @@ const data: IQueryResult[] = [
       modificationDate: 1479735851920,
       b64ShortId: 'qqX5fHze',
       names: [],
-      reference: '100-41-4 '
+      reference: '100-41-4 ',
     },
     doc: {
       _id: 'aaa5f97c7cde94741de2938b10590612',
@@ -1188,9 +1188,9 @@ const data: IQueryResult[] = [
               0,
               0,
               0,
-              0
-            ]
-          }
+              0,
+            ],
+          },
         },
         identifier: { cas: [{ value: '100-41-4' }] },
         physical: {},
@@ -1221,9 +1221,9 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 7.416299846142465, multiplicity: 'd' }],
-                      delta: 7.336551494108438
-                    }
-                  ]
+                      delta: 7.336551494108438,
+                    },
+                  ],
                 },
                 {
                   from: 7.199530388255718,
@@ -1236,9 +1236,9 @@ const data: IQueryResult[] = [
                       multiplicity: 'm',
                       kind: '',
                       remark: '',
-                      delta: 7.261466222825223
-                    }
-                  ]
+                      delta: 7.261466222825223,
+                    },
+                  ],
                 },
                 {
                   from: 2.677181125012322,
@@ -1252,9 +1252,9 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 7.617642812717804, multiplicity: 'q' }],
-                      delta: 2.7180726469786856
-                    }
-                  ]
+                      delta: 2.7180726469786856,
+                    },
+                  ],
                 },
                 {
                   from: 1.2817858408850147,
@@ -1268,16 +1268,16 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 7.601584960314199, multiplicity: 't' }],
-                      delta: 1.3089100491121
-                    }
-                  ]
-                }
+                      delta: 1.3089100491121,
+                    },
+                  ],
+                },
               ],
-              jcamp: { filename: 'spectra/nmr/28.jdx' }
-            }
-          ]
+              jcamp: { filename: 'spectra/nmr/28.jdx' },
+            },
+          ],
         },
-        misc: { externalID: 144 }
+        misc: { externalID: 144 },
       },
       $lastModification: 'sample@cheminfo.org',
       $modificationDate: 1479735851920,
@@ -1288,10 +1288,10 @@ const data: IQueryResult[] = [
           revpos: 1,
           digest: 'md5-nz+gJ34/9iBjISIXQ2WyhQ==',
           length: 187655,
-          stub: true
-        }
-      }
-    }
+          stub: true,
+        },
+      },
+    },
   },
   {
     id: 'aaa5f97c7cde94741de2938b1059d5bc',
@@ -1307,7 +1307,7 @@ const data: IQueryResult[] = [
       modificationDate: 1479735870307,
       b64ShortId: 'qqX5fHze',
       names: [],
-      reference: '100-42-5 '
+      reference: '100-42-5 ',
     },
     doc: {
       _id: 'aaa5f97c7cde94741de2938b1059d5bc',
@@ -1342,20 +1342,20 @@ const data: IQueryResult[] = [
               0,
               0,
               0,
-              0
-            ]
-          }
+              0,
+            ],
+          },
         },
         identifier: { cas: [{ value: '100-42-5' }] },
         physical: {},
         spectra: {},
-        misc: { externalID: 264 }
+        misc: { externalID: 264 },
       },
       $lastModification: 'sample@cheminfo.org',
       $modificationDate: 1479735870307,
       $creationDate: 1479735870295,
-      _attachments: {}
-    }
+      _attachments: {},
+    },
   },
   {
     id: 'aaa5f97c7cde94741de2938b105e5682',
@@ -1374,7 +1374,7 @@ const data: IQueryResult[] = [
       modificationDate: 1479735965108,
       b64ShortId: 'qqX5fHze',
       names: [],
-      reference: '100-46-9 '
+      reference: '100-46-9 ',
     },
     doc: {
       _id: 'aaa5f97c7cde94741de2938b105e5682',
@@ -1409,9 +1409,9 @@ const data: IQueryResult[] = [
               0,
               0,
               0,
-              1048704
-            ]
-          }
+              1048704,
+            ],
+          },
         },
         identifier: { cas: [{ value: '100-46-9' }] },
         physical: {},
@@ -1442,9 +1442,9 @@ const data: IQueryResult[] = [
                       multiplicity: 'm',
                       kind: '',
                       remark: '',
-                      delta: 7.332282453577131
-                    }
-                  ]
+                      delta: 7.332282453577131,
+                    },
+                  ],
                 },
                 {
                   from: 3.835711482966662,
@@ -1457,9 +1457,9 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 3.851978013805023
-                    }
-                  ]
+                      delta: 3.851978013805023,
+                    },
+                  ],
                 },
                 {
                   from: 1.3724408812384348,
@@ -1472,16 +1472,16 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 1.422594135561436
-                    }
-                  ]
-                }
+                      delta: 1.422594135561436,
+                    },
+                  ],
+                },
               ],
-              jcamp: { filename: 'spectra/nmr/1497.jdx' }
-            }
-          ]
+              jcamp: { filename: 'spectra/nmr/1497.jdx' },
+            },
+          ],
         },
-        misc: { externalID: 7234 }
+        misc: { externalID: 7234 },
       },
       $lastModification: 'sample@cheminfo.org',
       $modificationDate: 1479735965108,
@@ -1492,10 +1492,10 @@ const data: IQueryResult[] = [
           revpos: 1,
           digest: 'md5-HrF9KwlW2a7yujR7swGqVQ==',
           length: 178814,
-          stub: true
-        }
-      }
-    }
+          stub: true,
+        },
+      },
+    },
   },
   {
     id: 'aaa5f97c7cde94741de2938b105bebdc',
@@ -1517,7 +1517,7 @@ const data: IQueryResult[] = [
       modificationDate: 1510262471670,
       b64ShortId: 'qqX5fHze',
       names: [],
-      reference: '100-61-8 '
+      reference: '100-61-8 ',
     },
     doc: {
       _id: 'aaa5f97c7cde94741de2938b105bebdc',
@@ -1552,15 +1552,15 @@ const data: IQueryResult[] = [
               0,
               262144,
               0,
-              524352
-            ]
+              524352,
+            ],
           },
           description: '',
           title: '',
           name: [],
           keyword: [],
           sequence: '',
-          kind: ''
+          kind: '',
         },
         identifier: { cas: [{ value: '100-61-8' }] },
         physical: {},
@@ -1592,9 +1592,9 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 7.886768257294534, multiplicity: 't' }],
-                      delta: 7.271430572632783
-                    }
-                  ]
+                      delta: 7.271430572632783,
+                    },
+                  ],
                 },
                 {
                   from: 6.755698138979067,
@@ -1608,9 +1608,9 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 7.339686566027922, multiplicity: 't' }],
-                      delta: 6.793780576742266
-                    }
-                  ]
+                      delta: 6.793780576742266,
+                    },
+                  ],
                 },
                 {
                   from: 6.667640751911187,
@@ -1624,9 +1624,9 @@ const data: IQueryResult[] = [
                       kind: '',
                       remark: '',
                       j: [{ coupling: 8.100600767097603, multiplicity: 'd' }],
-                      delta: 6.6906047520484035
-                    }
-                  ]
+                      delta: 6.6906047520484035,
+                    },
+                  ],
                 },
                 {
                   from: 3.6607108067032232,
@@ -1639,9 +1639,9 @@ const data: IQueryResult[] = [
                       multiplicity: 'br s',
                       kind: '',
                       remark: '',
-                      delta: 3.7644666784456113
-                    }
-                  ]
+                      delta: 3.7644666784456113,
+                    },
+                  ],
                 },
                 {
                   from: 2.8775273640447687,
@@ -1654,13 +1654,13 @@ const data: IQueryResult[] = [
                       multiplicity: 's',
                       kind: '',
                       remark: '',
-                      delta: 2.892058753454451
-                    }
-                  ]
-                }
+                      delta: 2.892058753454451,
+                    },
+                  ],
+                },
               ],
-              jcamp: { filename: 'spectra/nmr/258.jdx' }
-            }
+              jcamp: { filename: 'spectra/nmr/258.jdx' },
+            },
           ],
           chromatogram: [],
           differentialScanningCalorimetry: [],
@@ -1668,10 +1668,10 @@ const data: IQueryResult[] = [
           mass: [],
           raman: [],
           thermogravimetricAnalysis: [],
-          xray: []
+          xray: [],
         },
         misc: { externalID: 596 },
-        image: []
+        image: [],
       },
       $lastModification: 'admin@cheminfo.org',
       $modificationDate: 1510262471670,
@@ -1682,18 +1682,18 @@ const data: IQueryResult[] = [
           revpos: 1,
           digest: 'md5-DxD4TzulqKPkrCmhfFCF3Q==',
           length: 182046,
-          stub: true
+          stub: true,
         },
         'spectra/ir/ir.jdx': {
           content_type: 'chemical/x-jcamp-dx',
           revpos: 4,
           digest: 'md5-b01XCJdRAJr4qDMvsuWv9Q==',
           length: 8399,
-          stub: true
-        }
-      }
-    }
-  }
+          stub: true,
+        },
+      },
+    },
+  },
 ];
 
 export default data;

@@ -4,16 +4,16 @@ import { BaseRocReduceQuery } from '../base';
 import {
   IReduceQueryOptions,
   IRocReduceQueryParams,
-  PromisedReduceQueryResult
+  PromisedReduceQueryResult,
 } from '../types';
 
 export default class ReduceQuery<A, B> extends BaseRocReduceQuery {
   private request: AxiosInstance;
   private baseOptions: IReduceQueryOptions;
-  constructor(
+  public constructor(
     viewName: string,
     options: IReduceQueryOptions,
-    request: AxiosInstance
+    request: AxiosInstance,
   ) {
     super(viewName);
     this.request = request;
@@ -21,16 +21,16 @@ export default class ReduceQuery<A, B> extends BaseRocReduceQuery {
   }
 
   public async fetch(
-    options: IReduceQueryOptions = {}
+    options: IReduceQueryOptions = {},
   ): PromisedReduceQueryResult<A, B> {
     const requestOptions: IRocReduceQueryParams = {
       ...this.baseOptions,
       ...options,
-      reduce: true
+      reduce: true,
     };
     const response = await this.request({
       url: '',
-      params: requestOptions
+      params: requestOptions,
     });
     return response.data;
   }

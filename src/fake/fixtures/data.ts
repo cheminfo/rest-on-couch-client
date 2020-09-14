@@ -23,19 +23,19 @@ export function getTestData(): IFakeRocData {
               content_type: 'text/plain',
               revpos: 1,
               length: 4,
-              stub: true
-            }
-          }
-        }
-      ]
+              stub: true,
+            },
+          },
+        },
+      ],
     },
     attachments: {
       uuid1: {
-        attachment1: 'dGVzdA=='
-      }
+        attachment1: 'dGVzdA==',
+      },
     },
     query: {
-      documentByOwner: sampleToc
-    }
+      documentByOwner: sampleToc,
+    },
   };
 }

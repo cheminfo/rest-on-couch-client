@@ -10,20 +10,20 @@ describe('fake document', () => {
       $kind: 'kind',
       $id: 'newDocument',
       $content: {
-        test: 42
+        test: 42,
       },
-      $owners: ['group1', 'group2', 'group1']
+      $owners: ['group1', 'group2', 'group1'],
     };
     const document = await roc.create(newDoc);
-    expect(document.getValue().$content).toEqual({ test: 42 });
-    expect(document.getValue().$owners).toEqual([
+    expect(document.getValue().$content).toStrictEqual({ test: 42 });
+    expect(document.getValue().$owners).toStrictEqual([
       'test@test.com',
       'group1',
-      'group2'
+      'group2',
     ]);
-    expect(document.getValue().$kind).toEqual('kind');
+    expect(document.getValue().$kind).toStrictEqual('kind');
     expect(document.getValue()._id).toHaveLength(32);
-    expect(document.getValue()._rev.substr(0, 1)).toEqual('1');
+    expect(document.getValue()._rev.substr(0, 1)).toStrictEqual('1');
   });
 
   it('get document', async () => {
@@ -31,10 +31,10 @@ describe('fake document', () => {
     const roc = new FakeRoc(data);
     const document = roc.getDocument('uuid1');
     const doc = await document.fetch(); // Fetch latest revision if it's out of sync
-    expect(doc).toEqual(data.documents.uuid1[0]);
+    expect(doc).toStrictEqual(data.documents.uuid1[0]);
     //   await document.forceFetch(); // Fetch latest revision even if revision is up to date
     const val = document.getValue(); // document json
-    expect(val).toEqual(data.documents.uuid1[0]);
+    expect(val).toStrictEqual(data.documents.uuid1[0]);
   });
 
   it('document update content', async () => {
@@ -42,9 +42,9 @@ describe('fake document', () => {
     const roc = new FakeRoc(data);
     const document = roc.getDocument('uuid1');
     const newDocument = await document.update({
-      test: 43
+      test: 43,
     });
-    expect(newDocument._rev.substr(0, 1)).toEqual('2');
+    expect(newDocument._rev.substr(0, 1)).toStrictEqual('2');
   });
 
   it('document toJSON', async () => {
@@ -52,6 +52,6 @@ describe('fake document', () => {
     const roc = new FakeRoc(data);
     const doc = roc.getDocument('uuid1');
     const val = JSON.parse(JSON.stringify(await doc.fetch()));
-    expect(val).toEqual(data.documents.uuid1[0]);
+    expect(val).toStrictEqual(data.documents.uuid1[0]);
   });
 });

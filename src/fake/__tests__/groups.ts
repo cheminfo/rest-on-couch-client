@@ -7,8 +7,8 @@ describe('fake groups', () => {
     const roc = new FakeRoc(data);
     const doc = roc.getDocument('uuid1');
     const groups = await doc.addGroups('group1');
-    expect(groups).toEqual(['test@test.com', 'group1']);
-    expect(doc.getValue().$owners).toEqual(['test@test.com', 'group1']);
+    expect(groups).toStrictEqual(['test@test.com', 'group1']);
+    expect(doc.getValue().$owners).toStrictEqual(['test@test.com', 'group1']);
   });
 
   it('add groups', async () => {
@@ -16,11 +16,11 @@ describe('fake groups', () => {
     const roc = new FakeRoc(data);
     const doc = roc.getDocument('uuid1');
     const groups = await doc.addGroups(['group1', 'group2', 'group1']);
-    expect(groups).toEqual(['test@test.com', 'group1', 'group2']);
-    expect(doc.getValue().$owners).toEqual([
+    expect(groups).toStrictEqual(['test@test.com', 'group1', 'group2']);
+    expect(doc.getValue().$owners).toStrictEqual([
       'test@test.com',
       'group1',
-      'group2'
+      'group2',
     ]);
   });
 });

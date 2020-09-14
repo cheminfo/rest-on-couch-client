@@ -1,6 +1,6 @@
 export class RocHTTPError extends Error {
   public code: number;
-  constructor(code: number, message: string) {
+  public constructor(code: number, message: string) {
     if (typeof code !== 'number') {
       throw new Error('ROCHTTPError code must be a number');
     }
@@ -13,7 +13,7 @@ export class RocHTTPError extends Error {
 }
 
 export class RocClientError extends Error {
-  constructor(message: string) {
+  public constructor(message: string) {
     if (typeof message !== 'string') {
       throw new Error('ROCClientError message must be a string');
     }

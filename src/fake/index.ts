@@ -1,10 +1,10 @@
 import { randomBytes } from 'crypto';
 
+import { RocClientError, RocHTTPError } from '../Error';
 import { BaseRocReduceQuery } from '../base';
 import BaseRoc from '../base/BaseRoc';
 import BaseRocDocument from '../base/BaseRocDocument';
 import BaseRocQuery from '../base/BaseRocQuery';
-import { RocClientError, RocHTTPError } from '../Error';
 import {
   ICouchAttachments,
   IDocument,
@@ -14,8 +14,7 @@ import {
   INewRevisionMeta,
   IQueryOptions,
   IQueryResult,
-  IReduceQueryOptions,
-  IReduceQueryResult
+  IReduceQueryResult,
 } from '../types';
 
 export interface IFakeRocData {
@@ -39,14 +38,18 @@ export interface IFakeRocData {
 
 export class FakeQuery<A, B> extends BaseRocQuery {
   protected roc: FakeRoc;
-  constructor(roc: FakeRoc, viewName: string, baseOptions: IQueryOptions) {
+  public constructor(
+    roc: FakeRoc,
+    viewName: string,
+    baseOptions: IQueryOptions,
+  ) {
     super(viewName, baseOptions);
     this.roc = roc;
   }
 
-  public async fetch(
-    option: IQueryOptions = {}
-  ): Promise<Array<IQueryResult<A, B>>> {
+  public async fetch(/* option: IQueryOptions = {}, */): Promise<
+    Array<IQueryResult<A, B>>
+  > {
     if (!this.roc.data.query[this.viewName]) {
       throw new RocHTTPError(401, `${this.viewName} is not a view with owner`);
     }
@@ -56,21 +59,21 @@ export class FakeQuery<A, B> extends BaseRocQuery {
 
 export class FakeReduceQuery<A, B> extends BaseRocReduceQuery {
   protected roc: FakeRoc;
-  constructor(roc: FakeRoc, viewName: string) {
+  public constructor(roc: FakeRoc, viewName: string) {
     super(viewName);
     this.roc = roc;
   }
 
-  public async fetch(
-    option: IReduceQueryOptions = {}
-  ): Promise<Array<IReduceQueryResult<A, B>>> {
+  public async fetch(/* option: IReduceQueryOptions = {}, */): Promise<
+    Array<IReduceQueryResult<A, B>>
+  > {
     throw new Error('not implemented');
   }
 }
 
 export class FakeDocument extends BaseRocDocument {
   protected roc: FakeRoc;
-  constructor(roc: FakeRoc, data: string | IDocument) {
+  public constructor(roc: FakeRoc, data: string | IDocument) {
     if (typeof data === 'string') {
       super(data);
     } else {
@@ -83,8 +86,8 @@ export class FakeDocument extends BaseRocDocument {
   public async fetchAttachment(
     name: string,
     options: IFetchAttachmentOptions = {
-      type: 'text'
-    }
+      type: 'text',
+    },
   ) {
     const attachments = this.roc.data.attachments[this.uuid];
     if (attachments) {
@@ -119,9 +122,9 @@ export class FakeDocument extends BaseRocDocument {
   }
 
   public async update(
-    content: object,
+    content: Record<string, any>,
     newAttachments?: INewAttachment[],
-    deleteAttachments?: string[]
+    deleteAttachments?: string[],
   ) {
     if (this.value === undefined) {
       await this.fetch();
@@ -129,7 +132,7 @@ export class FakeDocument extends BaseRocDocument {
 
     this.checkConflict();
     // value must be defined after fetch
-    const doc = this.value!;
+    const doc = this.value;
 
     if (deleteAttachments) {
       for (const attachment of deleteAttachments) {
@@ -147,14 +150,14 @@ export class FakeDocument extends BaseRocDocument {
     const attachments = doc._attachments || {};
     const updatedAttachments: ICouchAttachments = Object.assign(
       {},
-      attachments
+      attachments,
     );
     if (newAttachments) {
       for (const attachment of newAttachments) {
         const prevAttachment = attachments[attachment.name];
         let revpos = 1;
         if (prevAttachment) {
-          revpos = prevAttachment.revpos! + 1;
+          revpos = prevAttachment.revpos + 1;
         }
         this.saveAttachment(this.uuid, attachment.name, attachment.data);
         if (
@@ -165,10 +168,8 @@ export class FakeDocument extends BaseRocDocument {
             content_type: attachment.content_type,
             length: attachment.data.length,
             revpos,
-            digest: Math.random()
-              .toString(36)
-              .substr(2),
-            stub: true
+            digest: Math.random().toString(36).substr(2),
+            stub: true,
           };
         }
       }
@@ -178,7 +179,7 @@ export class FakeDocument extends BaseRocDocument {
       ...doc,
       $content: content,
       ...newMeta,
-      _attachments: updatedAttachments
+      _attachments: updatedAttachments,
     };
 
     this.roc.data.documents[this.uuid].push(newDocument);
@@ -193,7 +194,7 @@ export class FakeDocument extends BaseRocDocument {
     }
 
     this.checkConflict();
-    const doc = this.value!;
+    const doc = this.value;
     const owners = new Set(doc.$owners);
     if (typeof groups === 'string') {
       owners.add(groups);
@@ -234,7 +235,7 @@ function getNewRevisionMeta(oldRev: string): INewRevisionMeta {
   const rev = randomBytes(16).toString('hex');
   return {
     _rev: `${newInc}-${rev}`,
-    $modificationDate: Date.now()
+    $modificationDate: Date.now(),
   };
 }
 
@@ -243,7 +244,7 @@ export class FakeRoc extends BaseRoc {
   public fakeDatabase: string;
   public fakeHost: string;
 
-  constructor(rocData: IFakeRocData) {
+  public constructor(rocData: IFakeRocData) {
     super();
     this.data = rocData;
     this.fakeDatabase = 'eln';
@@ -256,7 +257,7 @@ export class FakeRoc extends BaseRoc {
 
   public getQuery<KeyType = any, ValueType = any>(
     viewName: string,
-    options: IQueryOptions = {}
+    options: IQueryOptions = {},
   ) {
     return new FakeQuery<KeyType, ValueType>(this, viewName, options);
   }
@@ -277,7 +278,7 @@ export class FakeRoc extends BaseRoc {
       $modificationDate: Date.now(),
       $creationDate: Date.now(),
       $owners: ['test@test.com', ...new Set(newDocument.$owners)],
-      _attachments: {}
+      _attachments: {},
     };
     if (!this.data.documents[uuid]) {
       this.data.documents[uuid] = [];
@@ -291,7 +292,7 @@ export class FakeRoc extends BaseRoc {
       username: 'test@test.com',
       provider: 'test',
       authenticated: true,
-      admin: false
+      admin: false,
     };
   }
 }

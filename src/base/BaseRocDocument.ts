@@ -3,7 +3,7 @@ import {
   IAttachment,
   IDocument,
   IFetchAttachmentOptions,
-  INewAttachment
+  INewAttachment,
 } from '../types';
 
 export default abstract class BaseRocDocument {
@@ -11,19 +11,19 @@ export default abstract class BaseRocDocument {
   public rev?: string;
 
   protected value?: IDocument;
-  constructor(uuid: string) {
+  public constructor(uuid: string) {
     this.uuid = uuid;
   }
 
   public getAttachmentList(): IAttachment[] {
     if (this.value === undefined) {
       throw new RocClientError(
-        'You must fetch the document in order to get the attachment list'
+        'You must fetch the document in order to get the attachment list',
       );
     }
 
     // value must be defined after fetch
-    const doc = this.value!;
+    const doc = this.value;
     const attachments = doc._attachments || {};
     const list = [];
     for (const key in attachments) {
@@ -35,10 +35,10 @@ export default abstract class BaseRocDocument {
   public getAttachment(name: string): IAttachment {
     if (this.value === undefined) {
       throw new RocClientError(
-        'You must fetch the document in order to get an attachment'
+        'You must fetch the document in order to get an attachment',
       );
     }
-    const doc = this.value!;
+    const doc = this.value;
     const attachments = doc._attachments || {};
     if (!attachments[name]) {
       throw new RocClientError(`attachment ${name} does not exist`);
@@ -46,19 +46,19 @@ export default abstract class BaseRocDocument {
     return {
       ...attachments[name],
       name,
-      url: `${this.getBaseUrl()}${doc._id}/${name}`
+      url: `${this.getBaseUrl()}${doc._id}/${name}`,
     };
   }
 
   public abstract fetchAttachment(
     name: string,
-    options?: IFetchAttachmentOptions
+    options?: IFetchAttachmentOptions,
   ): Promise<Buffer | string>;
   public abstract fetch(rev?: string): Promise<IDocument>;
   public abstract update(
-    content: object,
+    content: Record<string, any>,
     newAttachments?: INewAttachment[],
-    deleteAttachments?: string[]
+    deleteAttachments?: string[],
   ): Promise<IDocument>;
   public abstract addGroups(groups: string | string[]): Promise<string[]>;
 

@@ -1,0 +1,7 @@
+extends: cheminfo-typescript
+env:
+  browser: true
+parserOptions:
+  project: tsconfig.base.json
+rules:
+  camelcase: off

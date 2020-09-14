@@ -11,8 +11,10 @@
   ],
   "scripts": {
     "clean": "rimraf lib lib-es6",
+    "eslint": "eslint src --ext ts",
+    "eslint-fix": "npm run eslint -- --fix",
     "prepare": "npm run tsc",
-    "test": "npm run test-only",
+    "test": "npm run test-only && npm run eslint",
     "test-only": "jest",
     "test-coverage": "jest --coverage",
     "tsc": "npm run clean && npm run tsc-es5 && npm run tsc-es6",
@@ -36,7 +38,10 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.13",
+    "eslint": "^7.9.0",
+    "eslint-config-cheminfo-typescript": "^7.0.0",
     "jest": "^26.4.2",
+    "prettier": "^2.1.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.3.0",
     "typescript": "^4.0.2"
@@ -45,5 +50,12 @@
     "@types/node": "^14.6.4",
     "axios": "^0.20.0",
     "immer": "^7.0.8"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "all"
   }
 }

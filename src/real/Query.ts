@@ -1,13 +1,14 @@
 import { AxiosInstance } from 'axios';
+
 import BaseRocQuery from '../base/BaseRocQuery';
 import { IQueryOptions, PromisedQueryResult } from '../types';
 
 export default class Query<A, B> extends BaseRocQuery {
   private request: AxiosInstance;
-  constructor(
+  public constructor(
     viewName: string,
     options: IQueryOptions,
-    request: AxiosInstance
+    request: AxiosInstance,
   ) {
     super(viewName, options);
     this.request = request;
@@ -18,7 +19,7 @@ export default class Query<A, B> extends BaseRocQuery {
 
     const response = await this.request({
       url: '',
-      params
+      params,
     });
     return response.data;
   }
