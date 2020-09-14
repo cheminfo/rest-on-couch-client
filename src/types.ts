@@ -146,6 +146,6 @@ export type PromisedReduceQueryResult<KeyType, ValueType> = Promise<
 export interface ICouchUser {
   username: string;
   admin: boolean;
-  provider: string;
+  provider: string | null;
   authenticated: boolean;
 }
