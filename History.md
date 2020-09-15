@@ -1,3 +1,13 @@
+## [2.2.4](https://github.com/cheminfo/rest-on-couch-client/compare/v2.2.1...v2.2.4) (2020-09-15)
+
+
+### Bug Fixes
+
+* add trailing / to dbUrl ([d924901](https://github.com/cheminfo/rest-on-couch-client/commit/d924901dc23152cfc924eed2d4b7a52cd8db02fe))
+* ICouchUser.provider can be null ([260096c](https://github.com/cheminfo/rest-on-couch-client/commit/260096cdff6c0ea1f3da87c3384865cbc548913a))
+
+
+
 # [2.0.0](https://github.com/cheminfo/rest-on-couch-client/compare/v1.0.0...v2.0.0) (2019-03-29)
 
 
