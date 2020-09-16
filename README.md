@@ -1,3 +1,18 @@
 # rest-on-couch-client
 
-Rest-on-couch client for Node.js
+[![NPM version][npm-image]][npm-url]
+[![build status][ci-image]][ci-url]
+[![npm download][download-image]][download-url]
+
+Rest-on-couch client for Node.js and browsers.
+
+## License
+
+[MIT](./LICENSE)
+
+[npm-image]: https://img.shields.io/npm/v/rest-on-couch-client.svg
+[npm-url]: https://npmjs.org/package/rest-on-couch-client
+[ci-image]: https://github.com/cheminfo/rest-on-couch-client/workflows/Node.js%20CI/badge.svg?branch=master
+[ci-url]: https://github.com/cheminfo/rest-on-couch-client/actions?query=workflow%3A%22Node.js+CI%22
+[download-image]: https://img.shields.io/npm/dm/rest-on-couch-client.svg
+[download-url]: https://npmjs.org/package/rest-on-couch-client
