@@ -206,7 +206,7 @@ export class FakeDocument extends BaseRocDocument {
   }
 
   protected getBaseUrl() {
-    return `https://${this.roc.fakeHost}/db/${this.roc.fakeDatabase}/entry/`;
+    return `https://${this.roc.fakeHost}/db/${this.roc.fakeDatabase}/entry/${this.uuid}/`;
   }
 
   private saveAttachment(uuid: string, name: string, data: Buffer | string) {

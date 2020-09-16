@@ -46,7 +46,7 @@ export default abstract class BaseRocDocument {
     return {
       ...attachments[name],
       name,
-      url: `${this.getBaseUrl()}${doc._id}/${name}`,
+      url: `${this.getBaseUrl()}${name}`,
     };
   }
 
