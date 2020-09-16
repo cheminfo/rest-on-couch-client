@@ -61,6 +61,7 @@ export default abstract class BaseRocDocument {
     deleteAttachments?: string[],
   ): Promise<IDocument>;
   public abstract addGroups(groups: string | string[]): Promise<string[]>;
+  public abstract hasRight(right: string): Promise<boolean>;
 
   public getValue() {
     return this.value;

@@ -19,7 +19,12 @@ import {
 
 export interface IFakeRocData {
   documents: {
-    [key: string]: IDocument[];
+    [key: string]: {
+      revisions: IDocument[];
+      rights: {
+        [key: string]: boolean;
+      };
+    };
   };
   attachments: {
     // document uuid
@@ -106,7 +111,7 @@ export class FakeDocument extends BaseRocDocument {
     throw new RocClientError('attachment does not exist');
   }
   public async fetch(rev?: string) {
-    const revs = this.roc.data.documents[this.uuid];
+    const revs = this.roc.data.documents[this.uuid].revisions;
     if (!revs) {
       throw new RocHTTPError(404, 'document not found');
     }
@@ -136,7 +141,8 @@ export class FakeDocument extends BaseRocDocument {
 
     if (deleteAttachments) {
       for (const attachment of deleteAttachments) {
-        const att = this.roc.data.documents[this.uuid][0]._attachments;
+        const att = this.roc.data.documents[this.uuid].revisions[0]
+          ._attachments;
         if (!att || !att[attachment]) {
           throw new RocClientError('attachment to delete does not exist');
         }
@@ -182,7 +188,7 @@ export class FakeDocument extends BaseRocDocument {
       _attachments: updatedAttachments,
     };
 
-    this.roc.data.documents[this.uuid].push(newDocument);
+    this.roc.data.documents[this.uuid].revisions.push(newDocument);
 
     this.value = newDocument;
     return newDocument;
@@ -203,6 +209,14 @@ export class FakeDocument extends BaseRocDocument {
     }
     doc.$owners = Array.from(owners);
     return doc.$owners.slice();
+  }
+
+  public async hasRight(right: string) {
+    if (this.value === undefined) {
+      await this.fetch();
+    }
+
+    return Boolean(this.roc.data.documents[this.uuid].rights[right]);
   }
 
   protected getBaseUrl() {
@@ -281,9 +295,12 @@ export class FakeRoc extends BaseRoc {
       _attachments: {},
     };
     if (!this.data.documents[uuid]) {
-      this.data.documents[uuid] = [];
+      this.data.documents[uuid] = {
+        revisions: [],
+        rights: {},
+      };
     }
-    this.data.documents[uuid].push(document);
+    this.data.documents[uuid].revisions.push(document);
     return new FakeDocument(this, document);
   }
 

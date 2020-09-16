@@ -76,6 +76,11 @@ export default class RocDocument extends BaseRocDocument {
     throw new Error('UNIMPLEMENTED addGroups');
   }
 
+  public async hasRight(right: string) {
+    const response = await this.request.get(`_rights/${right}`);
+    return response.data;
+  }
+
   protected getBaseUrl() {
     return this.request.defaults.baseURL || '';
   }
