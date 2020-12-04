@@ -10,7 +10,9 @@ import {
 
 import { addInlineUploads, deleteInlineUploads } from './utils';
 
-export default class RocDocument extends BaseRocDocument {
+export default class RocDocument<
+  ContentType = Record<string, any>
+> extends BaseRocDocument<ContentType> {
   private request: AxiosInstance;
 
   public constructor(uuid: string, request: AxiosInstance) {
@@ -33,7 +35,7 @@ export default class RocDocument extends BaseRocDocument {
     return response.data;
   }
 
-  public async fetch(rev?: string): Promise<IDocument> {
+  public async fetch(rev?: string): Promise<IDocument<ContentType>> {
     if (rev) {
       throw new Error('UNIMPLEMENTED fetch with rev');
     }
@@ -43,12 +45,12 @@ export default class RocDocument extends BaseRocDocument {
   }
 
   public async update(
-    content: Record<string, any>,
+    content: ContentType,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[],
-  ): Promise<IDocument> {
+  ): Promise<IDocument<ContentType>> {
     await this._fetchIfUnfetched();
-    let newDoc: IDocumentDraft = {
+    let newDoc: IDocumentDraft<ContentType> = {
       ...this.value,
       $content: content,
     };

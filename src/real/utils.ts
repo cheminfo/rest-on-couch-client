@@ -6,8 +6,8 @@ import {
   INewAttachment,
 } from '../types';
 
-export async function addInlineUploads(
-  entry: IDocumentDraft,
+export async function addInlineUploads<ContentType>(
+  entry: IDocumentDraft<ContentType>,
   attachments: INewAttachment[],
 ) {
   const attachmentsBase64 = await Promise.all(
@@ -34,8 +34,8 @@ export async function addInlineUploads(
   return newEntry;
 }
 
-export function deleteInlineUploads(
-  entry: IDocumentDraft,
+export function deleteInlineUploads<ContentType>(
+  entry: IDocumentDraft<ContentType>,
   attachmentNames: string[],
 ) {
   return produce(entry, (draft) => {

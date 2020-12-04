@@ -10,11 +10,12 @@
     "lib-es6"
   ],
   "scripts": {
+    "check-types": "tsc --noEmit",
     "clean": "rimraf lib lib-es6",
     "eslint": "eslint src --ext ts",
     "eslint-fix": "npm run eslint -- --fix",
     "prepare": "npm run tsc",
-    "test": "npm run test-coverage && npm run eslint",
+    "test": "npm run test-coverage && npm run eslint && npm run check-types",
     "test-only": "jest",
     "test-coverage": "jest --coverage",
     "tsc": "npm run clean && npm run tsc-es5 && npm run tsc-es6",

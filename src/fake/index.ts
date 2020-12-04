@@ -34,14 +34,14 @@ export interface IFakeRocData {
     };
   };
   query: {
-    [key: string]: IQueryResult[];
+    [key: string]: IQueryResult<any, any, Record<string, any>>[];
   };
   reducer?: {
     [key: string]: IReduceQueryResult[];
   };
 }
 
-export class FakeQuery<A, B> extends BaseRocQuery {
+export class FakeQuery<A, B> extends BaseRocQuery<A, B, Record<string, any>> {
   protected roc: FakeRoc;
   public constructor(
     roc: FakeRoc,
@@ -53,7 +53,7 @@ export class FakeQuery<A, B> extends BaseRocQuery {
   }
 
   public async fetch(/* option: IQueryOptions = {}, */): Promise<
-    Array<IQueryResult<A, B>>
+    Array<IQueryResult<A, B, Record<string, any>>>
   > {
     if (!this.roc.data.query[this.viewName]) {
       throw new RocHTTPError(401, `${this.viewName} is not a view with owner`);
@@ -265,10 +265,12 @@ export class FakeRoc extends BaseRoc {
     this.fakeHost = 'mydb.cheminfo.org';
   }
 
+  // @ts-ignore
   public getDocument(uuid: string) {
     return new FakeDocument(this, uuid);
   }
 
+  // @ts-ignore
   public getQuery<KeyType = any, ValueType = any>(
     viewName: string,
     options: IQueryOptions = {},
@@ -280,6 +282,7 @@ export class FakeRoc extends BaseRoc {
     return new FakeReduceQuery<KeyType, ValueType>(this, viewName);
   }
 
+  // @ts-ignore
   public async create(newDocument: INewDocument) {
     const uuid = randomBytes(16).toString('hex');
     const rev = `1-${randomBytes(16).toString('hex')}`;

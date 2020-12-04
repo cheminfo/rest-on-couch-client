@@ -18,9 +18,9 @@ export interface IRocDocumentOptions {
   pollInterval?: number;
 }
 
-export interface INewDocument {
+export interface INewDocument<ContentType = Record<string, any>> {
   $id: any;
-  $content: Record<string, any>;
+  $content: ContentType;
   $kind: string;
   $owners: string[];
 }
@@ -30,20 +30,24 @@ export interface INewRevisionMeta {
   _rev: string;
 }
 
-export interface IBaseDocument extends INewDocument, INewRevisionMeta {
+export interface IBaseDocument<ContentType = Record<string, any>>
+  extends INewDocument<ContentType>,
+    INewRevisionMeta {
   _id: string;
   $type: 'entry' | 'group';
   $creationDate: number;
   $lastModification: string;
 }
 
-export interface IDocument extends IBaseDocument {
+export interface IDocument<ContentType = Record<string, any>>
+  extends IBaseDocument<ContentType> {
   _attachments: {
     [key: string]: ICouchAttachmentStub;
   };
 }
 
-export interface IDocumentDraft extends IBaseDocument {
+export interface IDocumentDraft<ContentType = Record<string, any>>
+  extends IBaseDocument<ContentType> {
   _attachments: {
     [key: string]: ICouchAttachment | ICouchInlineAttachment;
   };
@@ -123,10 +127,14 @@ export interface IRocReduceQueryParams extends IReduceQueryOptions {
   reduce: true;
 }
 
-export interface IQueryResult<KeyType = any, ValueType = any> {
+export interface IQueryResult<
+  KeyType = any,
+  ValueType = any,
+  ContentType = Record<string, any>
+> {
   id: string;
   key: KeyType;
-  doc?: IDocument;
+  doc?: IDocument<ContentType>;
   value: ValueType;
 }
 
@@ -135,8 +143,8 @@ export interface IReduceQueryResult<KeyType = any, ValueType = any> {
   value: ValueType;
 }
 
-export type PromisedQueryResult<KeyType, ValueType> = Promise<
-  Array<IQueryResult<KeyType, ValueType>>
+export type PromisedQueryResult<KeyType, ValueType, ContentType> = Promise<
+  Array<IQueryResult<KeyType, ValueType, ContentType>>
 >;
 
 export type PromisedReduceQueryResult<KeyType, ValueType> = Promise<

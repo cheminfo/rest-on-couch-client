@@ -6,7 +6,7 @@ describe('fake document', () => {
   it('create document', async () => {
     const data = getTestData();
     const roc = new FakeRoc(data);
-    const newDoc: INewDocument = {
+    const newDoc: INewDocument<{ test: number }> = {
       $kind: 'kind',
       $id: 'newDocument',
       $content: {

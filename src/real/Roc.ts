@@ -60,21 +60,29 @@ export default class Roc extends BaseRoc {
     this.dbRequest = createAxios(this.dbUrl);
   }
 
-  public async create(newDocument: INewDocument): Promise<BaseRocDocument> {
+  public async create<ContentType>(
+    newDocument: INewDocument<ContentType>,
+  ): Promise<BaseRocDocument<ContentType>> {
     const response = await this.dbRequest.post('entry', newDocument);
     return this.getDocument(response.data.id);
   }
 
-  public getDocument(uuid: string): RocDocument {
+  public getDocument<ContentType = Record<string, any>>(
+    uuid: string,
+  ): RocDocument<ContentType> {
     const url = new URL(`entry/${uuid}/`, this.dbUrl).href;
     return new RocDocument(uuid, createAxios(url));
   }
 
-  public getQuery<KeyType = any, ValueType = any>(
+  public getQuery<
+    KeyType = any,
+    ValueType = any,
+    ContentType = Record<string, any>
+  >(
     viewName: string,
     options: IQueryOptions = {},
-  ): BaseRocQuery<KeyType, ValueType> {
-    return new Query<KeyType, ValueType>(
+  ): BaseRocQuery<KeyType, ValueType, ContentType> {
+    return new Query<KeyType, ValueType, ContentType>(
       viewName,
       options,
       createAxios(new URL(`_query/${viewName}`, this.dbUrl).href),

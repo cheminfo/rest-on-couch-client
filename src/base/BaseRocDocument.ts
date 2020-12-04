@@ -6,11 +6,13 @@ import {
   INewAttachment,
 } from '../types';
 
-export default abstract class BaseRocDocument {
+export default abstract class BaseRocDocument<
+  ContentType = Record<string, any>
+> {
   public uuid: string;
   public rev?: string;
 
-  protected value?: IDocument;
+  protected value?: IDocument<ContentType>;
   public constructor(uuid: string) {
     this.uuid = uuid;
   }
@@ -54,12 +56,12 @@ export default abstract class BaseRocDocument {
     name: string,
     options?: IFetchAttachmentOptions,
   ): Promise<Buffer | string>;
-  public abstract fetch(rev?: string): Promise<IDocument>;
+  public abstract fetch(rev?: string): Promise<IDocument<ContentType>>;
   public abstract update(
-    content: Record<string, any>,
+    content: ContentType,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[],
-  ): Promise<IDocument>;
+  ): Promise<IDocument<ContentType>>;
   public abstract addGroups(groups: string | string[]): Promise<string[]>;
   public abstract hasRight(right: string): Promise<boolean>;
 

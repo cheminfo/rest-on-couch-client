@@ -1,6 +1,10 @@
 import { IQueryOptions, IQueryResult, PromisedQueryResult } from '../types';
 
-export default abstract class BaseRocQuery<KeyType = any, ValueType = any> {
+export default abstract class BaseRocQuery<
+  KeyType = any,
+  ValueType = any,
+  ContentType = Record<string, any>
+> {
   public readonly viewName: string;
   protected baseOptions: IQueryOptions;
   public constructor(viewName: string, options: IQueryOptions) {
@@ -9,12 +13,14 @@ export default abstract class BaseRocQuery<KeyType = any, ValueType = any> {
   }
 
   public then(
-    resolve: (value: Array<IQueryResult<KeyType, ValueType>>) => void,
+    resolve: (
+      value: Array<IQueryResult<KeyType, ValueType, ContentType>>,
+    ) => void,
     reject: (error: Error) => void,
   ) {
     this.fetch().then(resolve, reject);
   }
   public abstract fetch(
     options?: IQueryOptions,
-  ): PromisedQueryResult<KeyType, ValueType>;
+  ): PromisedQueryResult<KeyType, ValueType, ContentType>;
 }
