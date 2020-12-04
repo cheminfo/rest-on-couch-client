@@ -1,3 +1,16 @@
+## [2.3.0](https://github.com/cheminfo/rest-on-couch-client/compare/v2.2.4...v2.3.0) (2020-12-04)
+
+
+### Features
+
+* add hasRight method on document ([c6ee61a](https://github.com/cheminfo/rest-on-couch-client/commit/c6ee61a14aff664bab8302654c510d38cd3efaf4))
+* make RocDocument a generic type ([bf59c56](https://github.com/cheminfo/rest-on-couch-client/commit/bf59c5682fbeeaa39962fdee77b2ce813c854592))
+
+
+### Bug Fixes
+
+* correct computation of attachment url ([4cf5f94](https://github.com/cheminfo/rest-on-couch-client/commit/4cf5f941cf01035dc88e43c8d7445f5c24d25617))
+
 ## [2.2.4](https://github.com/cheminfo/rest-on-couch-client/compare/v2.2.1...v2.2.4) (2020-09-15)
 
 
