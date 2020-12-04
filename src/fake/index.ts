@@ -238,7 +238,7 @@ export class FakeDocument extends BaseRocDocument {
 }
 
 function getNewRevisionMeta(oldRev: string): INewRevisionMeta {
-  const revMatch = oldRev.match(/^(\d+)/);
+  const revMatch = /^(\d+)/.exec(oldRev);
   let oldInc: string;
   if (!revMatch) {
     oldInc = '0';

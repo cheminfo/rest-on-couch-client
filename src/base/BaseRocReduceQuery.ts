@@ -20,7 +20,7 @@ export default abstract class BaseRocReduceQuery<
     this.fetch().then(resolve, reject);
   }
 
-  public abstract async fetch(
+  public abstract fetch(
     options?: IReduceQueryOptions,
   ): PromisedReduceQueryResult<KeyType, ValueType>;
 }

@@ -5,3 +5,4 @@ parserOptions:
   project: tsconfig.base.json
 rules:
   camelcase: off
+  '@typescript-eslint/no-dynamic-delete': off
