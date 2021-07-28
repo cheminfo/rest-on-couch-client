@@ -22,7 +22,7 @@ describe('fake document', () => {
       'group2',
     ]);
     expect(document.getValue().$kind).toStrictEqual('kind');
-    expect(document.getValue()._id).toHaveLength(32);
+    expect(document.getValue()._id).toBeDefined();
     expect(document.getValue()._rev.substr(0, 1)).toStrictEqual('1');
   });
 
