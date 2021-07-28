@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.0.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v2.3.0...v3.0.0) (2021-07-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove support for nodejs 10
+
+### Bug Fixes
+
+* remove crypto dependency ([9b3a304](https://www.github.com/cheminfo/rest-on-couch-client/commit/9b3a304391bef449bf2efd3b56bdc7cda597a855))
+
+
+### Miscellaneous Chores
+
+* remove support for nodejs 10 ([af1979f](https://www.github.com/cheminfo/rest-on-couch-client/commit/af1979fb20c0bd0fa1da1d5d3bf73b656ff6e1a2))
+
 ## [2.3.0](https://github.com/cheminfo/rest-on-couch-client/compare/v2.2.4...v2.3.0) (2020-12-04)
 
 
@@ -59,6 +75,3 @@
 
 <a name="0.0.1"></a>
 ## 0.0.1 (2016-12-19)
-
-
-
