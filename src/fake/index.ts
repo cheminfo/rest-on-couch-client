@@ -1,5 +1,3 @@
-import { randomBytes } from 'crypto';
-
 import { RocClientError, RocHTTPError } from '../Error';
 import { BaseRocReduceQuery } from '../base';
 import BaseRoc from '../base/BaseRoc';
@@ -141,8 +139,8 @@ export class FakeDocument extends BaseRocDocument {
 
     if (deleteAttachments) {
       for (const attachment of deleteAttachments) {
-        const att = this.roc.data.documents[this.uuid].revisions[0]
-          ._attachments;
+        const att =
+          this.roc.data.documents[this.uuid].revisions[0]._attachments;
         if (!att || !att[attachment]) {
           throw new RocClientError('attachment to delete does not exist');
         }
@@ -246,7 +244,7 @@ function getNewRevisionMeta(oldRev: string): INewRevisionMeta {
     oldInc = revMatch[0];
   }
   const newInc = +oldInc + 1;
-  const rev = randomBytes(16).toString('hex');
+  const rev = randomBytes();
   return {
     _rev: `${newInc}-${rev}`,
     $modificationDate: Date.now(),
@@ -284,8 +282,8 @@ export class FakeRoc extends BaseRoc {
 
   // @ts-ignore
   public async create(newDocument: INewDocument) {
-    const uuid = randomBytes(16).toString('hex');
-    const rev = `1-${randomBytes(16).toString('hex')}`;
+    const uuid = randomBytes();
+    const rev = `1-${randomBytes()}`;
     const document: IDocument = {
       ...newDocument,
       _id: uuid,
@@ -315,4 +313,8 @@ export class FakeRoc extends BaseRoc {
       admin: false,
     };
   }
+}
+
+function randomBytes() {
+  return Math.random().toString(16).slice(2);
 }
