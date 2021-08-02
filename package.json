@@ -1,6 +1,6 @@
 {
   "name": "rest-on-couch-client",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A nodejs / browser client for rest-on-couch backend",
   "main": "./lib/index.js",
   "module": "./lib-es6/index.js",
