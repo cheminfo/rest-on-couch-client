@@ -114,7 +114,7 @@ export interface ICouchViewBase {
 // Queries
 export interface IQueryOptions extends ICouchViewBase {
   mine?: boolean;
-  includeDocs?: boolean;
+  include_docs?: boolean;
 }
 
 // Views
