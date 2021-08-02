@@ -1,5 +1,12 @@
 # Changelog
 
+### [3.0.1](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.0.0...v3.0.1) (2021-08-02)
+
+
+### Bug Fixes
+
+* **types:** make include_docs lowercase as in roc API ([d9b9a84](https://www.github.com/cheminfo/rest-on-couch-client/commit/d9b9a84e1100f942ed6bd9b248ffdece9ca3e45c))
+
 ## [3.0.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v2.3.0...v3.0.0) (2021-07-28)
 
 
