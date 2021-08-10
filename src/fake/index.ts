@@ -139,8 +139,8 @@ export class FakeDocument extends BaseRocDocument {
 
     if (deleteAttachments) {
       for (const attachment of deleteAttachments) {
-        const att =
-          this.roc.data.documents[this.uuid].revisions[0]._attachments;
+        const att = this.roc.data.documents[this.uuid].revisions[0]
+          ._attachments;
         if (!att || !att[attachment]) {
           throw new RocClientError('attachment to delete does not exist');
         }
@@ -312,6 +312,19 @@ export class FakeRoc extends BaseRoc {
       authenticated: true,
       admin: false,
     };
+  }
+
+  public async getUserGroups() {
+    return [
+      {
+        name: 'anonymousRead',
+        rights: ['read'],
+      },
+      {
+        name: 'testGroup',
+        rights: ['write', 'create'],
+      },
+    ];
   }
 }
 

@@ -1,5 +1,6 @@
 import {
   ICouchUser,
+  ICouchUserGroup,
   INewDocument,
   IQueryOptions,
   IReduceQueryOptions,
@@ -12,6 +13,7 @@ import { BaseRocReduceQuery } from '.';
 
 export default abstract class BaseRoc {
   public abstract getUser(): Promise<ICouchUser>;
+  public abstract getUserGroups(): Promise<ICouchUserGroup[]>;
   public abstract getDocument<ContentType = Record<string, any>>(
     uuid: string,
   ): BaseRocDocument<ContentType>;

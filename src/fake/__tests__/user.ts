@@ -12,3 +12,26 @@ test('fake roc get user', async () => {
     admin: false,
   });
 });
+
+test('fake roc get user groups', async () => {
+  const data = getTestData();
+  const roc = new FakeRoc(data);
+  const groups = await roc.getUserGroups();
+  expect(groups).toMatchInlineSnapshot(`
+    Array [
+      Object {
+        "name": "anonymousRead",
+        "rights": Array [
+          "read",
+        ],
+      },
+      Object {
+        "name": "testGroup",
+        "rights": Array [
+          "write",
+          "create",
+        ],
+      },
+    ]
+  `);
+});
