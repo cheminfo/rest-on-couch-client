@@ -157,3 +157,8 @@ export interface ICouchUser {
   provider: string | null;
   authenticated: boolean;
 }
+
+export interface ICouchUserGroup {
+  name: string;
+  rights: string[];
+}

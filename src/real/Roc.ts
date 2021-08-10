@@ -6,6 +6,7 @@ import BaseRocDocument from '../base/BaseRocDocument';
 import BaseRocQuery from '../base/BaseRocQuery';
 import {
   ICouchUser,
+  ICouchUserGroup,
   INewDocument,
   IQueryOptions,
   IReduceQueryOptions,
@@ -102,6 +103,11 @@ export default class Roc extends BaseRoc {
 
   public async getUser(): Promise<ICouchUser> {
     const response = await this.request.get('auth/session');
+    return response.data;
+  }
+
+  public async getUserGroups(): Promise<ICouchUserGroup[]> {
+    const response = await this.dbRequest.get('user/_me/groups');
     return response.data;
   }
 }
