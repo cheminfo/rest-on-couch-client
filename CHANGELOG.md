@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.1.0...v3.2.0) (2021-08-25)
+
+
+### Features
+
+* add accessToken option ([0531a04](https://www.github.com/cheminfo/rest-on-couch-client/commit/0531a041e51a7350c79c925e691f54792610780b))
+
 ## [3.1.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.0.1...v3.1.0) (2021-08-10)
 
 
