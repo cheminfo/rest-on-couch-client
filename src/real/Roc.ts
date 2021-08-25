@@ -19,9 +19,10 @@ import RocDocument from './RocDocument';
 export interface IRocConfig {
   url: string;
   database: string;
+  accessToken?: string;
 }
 
-function createAxios(url: string) {
+function createAxios(url: string, accessToken?: string) {
   return axios.create({
     baseURL: url,
     withCredentials: true,
@@ -36,6 +37,9 @@ function createAxios(url: string) {
           searchParams.append(key, params[key]);
         }
       }
+      if (accessToken) {
+        searchParams.append('token', accessToken);
+      }
       return searchParams.toString();
     },
   });
@@ -46,6 +50,7 @@ export default class Roc extends BaseRoc {
   private dbUrl: string;
   private request: AxiosInstance;
   private dbRequest: AxiosInstance;
+  private accessToken?: string;
 
   public constructor(config: IRocConfig) {
     super();
@@ -56,9 +61,10 @@ export default class Roc extends BaseRoc {
     if (this.url.startsWith('/') && typeof window === 'object') {
       this.url = `${window.location.origin}${this.url}`;
     }
-    this.request = createAxios(this.url);
+    this.accessToken = config.accessToken;
+    this.request = createAxios(this.url, config.accessToken);
     this.dbUrl = new URL(`db/${config.database}/`, this.url).href;
-    this.dbRequest = createAxios(this.dbUrl);
+    this.dbRequest = createAxios(this.dbUrl, config.accessToken);
   }
 
   public async create<ContentType>(
@@ -72,13 +78,13 @@ export default class Roc extends BaseRoc {
     uuid: string,
   ): RocDocument<ContentType> {
     const url = new URL(`entry/${uuid}/`, this.dbUrl).href;
-    return new RocDocument(uuid, createAxios(url));
+    return new RocDocument(uuid, createAxios(url, this.accessToken));
   }
 
   public getQuery<
     KeyType = any,
     ValueType = any,
-    ContentType = Record<string, any>
+    ContentType = Record<string, any>,
   >(
     viewName: string,
     options: IQueryOptions = {},
@@ -86,7 +92,10 @@ export default class Roc extends BaseRoc {
     return new Query<KeyType, ValueType, ContentType>(
       viewName,
       options,
-      createAxios(new URL(`_query/${viewName}`, this.dbUrl).href),
+      createAxios(
+        new URL(`_query/${viewName}`, this.dbUrl).href,
+        this.accessToken,
+      ),
     );
   }
 
@@ -97,7 +106,10 @@ export default class Roc extends BaseRoc {
     return new ReduceQuery<KeyType, ValueType>(
       viewName,
       options,
-      createAxios(new URL(`_view/${viewName}`, this.dbUrl).href),
+      createAxios(
+        new URL(`_view/${viewName}`, this.dbUrl).href,
+        this.accessToken,
+      ),
     );
   }
 
