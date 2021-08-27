@@ -10,11 +10,13 @@ import {
   INewDocument,
   IQueryOptions,
   IReduceQueryOptions,
+  IViewOptions,
 } from '../types';
 
 import Query from './Query';
 import ReduceQuery from './ReduceQuery';
 import RocDocument from './RocDocument';
+import View from './View';
 
 export interface IRocConfig {
   url: string;
@@ -104,6 +106,20 @@ export default class Roc extends BaseRoc {
     options: IReduceQueryOptions = {},
   ): BaseRocReduceQuery<KeyType, ValueType> {
     return new ReduceQuery<KeyType, ValueType>(
+      viewName,
+      options,
+      createAxios(
+        new URL(`_view/${viewName}`, this.dbUrl).href,
+        this.accessToken,
+      ),
+    );
+  }
+
+  public getView<KeyType = any, ContentType = any>(
+    viewName: string,
+    options: IViewOptions<KeyType> = {},
+  ) {
+    return new View<ContentType>(
       viewName,
       options,
       createAxios(

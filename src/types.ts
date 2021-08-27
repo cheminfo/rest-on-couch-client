@@ -105,20 +105,21 @@ export interface IFetchAttachmentOptions {
 // ============================
 // View and Query
 // ============================
-export interface ICouchViewBase {
-  startKey?: any;
-  endKey?: any;
-  key?: any;
+export interface ICouchViewBase<KeyType> {
+  startKey?: KeyType;
+  endKey?: KeyType;
+  key?: KeyType;
 }
 
 // Queries
-export interface IQueryOptions extends ICouchViewBase {
+export interface IQueryOptions<KeyType = any> extends ICouchViewBase<KeyType> {
   mine?: boolean;
   include_docs?: boolean;
 }
 
 // Views
-export interface IReduceQueryOptions extends ICouchViewBase {
+export interface IReduceQueryOptions<KeyType = any>
+  extends ICouchViewBase<KeyType> {
   group?: boolean;
   groupLevel?: number;
 }
@@ -130,7 +131,7 @@ export interface IRocReduceQueryParams extends IReduceQueryOptions {
 export interface IQueryResult<
   KeyType = any,
   ValueType = any,
-  ContentType = Record<string, any>
+  ContentType = Record<string, any>,
 > {
   id: string;
   key: KeyType;
@@ -138,6 +139,18 @@ export interface IQueryResult<
   value: ValueType;
 }
 
+export type IViewResult<ContentType = Record<string, any>> = Array<
+  IDocument<ContentType>
+>;
+
+export interface IViewOptions<KeyType = any> {
+  limit?: number;
+  descending?: boolean;
+  attachments?: boolean;
+  key?: KeyType;
+  startKey?: KeyType;
+  endKey?: KeyType;
+}
 export interface IReduceQueryResult<KeyType = any, ValueType = any> {
   key: KeyType;
   value: ValueType;

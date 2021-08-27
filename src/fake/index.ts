@@ -13,6 +13,8 @@ import {
   IQueryOptions,
   IQueryResult,
   IReduceQueryResult,
+  IViewOptions,
+  IViewResult,
 } from '../types';
 
 export interface IFakeRocData {
@@ -70,6 +72,21 @@ export class FakeReduceQuery<A, B> extends BaseRocReduceQuery {
   public async fetch(/* option: IReduceQueryOptions = {}, */): Promise<
     Array<IReduceQueryResult<A, B>>
   > {
+    throw new Error('not implemented');
+  }
+}
+
+export class FakeView<ContentType = any> {
+  protected roc: FakeRoc;
+  protected options: IViewOptions;
+  public readonly viewName: string;
+  public constructor(roc: FakeRoc, viewName: string, options: IViewOptions) {
+    this.viewName = viewName;
+    this.options = options;
+    this.roc = roc;
+  }
+
+  public async fetch(): Promise<IViewResult<ContentType>> {
     throw new Error('not implemented');
   }
 }
@@ -139,8 +156,8 @@ export class FakeDocument extends BaseRocDocument {
 
     if (deleteAttachments) {
       for (const attachment of deleteAttachments) {
-        const att = this.roc.data.documents[this.uuid].revisions[0]
-          ._attachments;
+        const att =
+          this.roc.data.documents[this.uuid].revisions[0]._attachments;
         if (!att || !att[attachment]) {
           throw new RocClientError('attachment to delete does not exist');
         }
@@ -274,6 +291,13 @@ export class FakeRoc extends BaseRoc {
     options: IQueryOptions = {},
   ) {
     return new FakeQuery<KeyType, ValueType>(this, viewName, options);
+  }
+
+  public getView<ContentType = any>(
+    viewName: string,
+    options: IViewOptions = {},
+  ) {
+    return new FakeView<ContentType>(this, viewName, options);
   }
 
   public getReduceQuery<KeyType = any, ValueType = any>(viewName: string) {
