@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.2.0...v3.3.0) (2021-08-30)
+
+
+### Features
+
+* add getView to Roc ([43b560f](https://www.github.com/cheminfo/rest-on-couch-client/commit/43b560f00301415b30b1fc12e095a6b6f5ac18bf)), closes [#14](https://www.github.com/cheminfo/rest-on-couch-client/issues/14)
+
 ## [3.2.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.1.0...v3.2.0) (2021-08-25)
 
 
