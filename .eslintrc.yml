@@ -4,6 +4,6 @@ env:
 parserOptions:
   project: tsconfig.base.json
 rules:
-  camelcase: 0
-  '@typescript-eslint/no-dynamic-delete': 0
-  '@typescript-eslint/no-explicit-any': 0
+  camelcase: 'off'
+  '@typescript-eslint/no-dynamic-delete': 'off'
+  '@typescript-eslint/no-explicit-any': 'off'
