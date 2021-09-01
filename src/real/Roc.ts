@@ -28,6 +28,7 @@ function createAxios(url: string, accessToken?: string) {
   return axios.create({
     baseURL: url,
     withCredentials: true,
+    params: accessToken ? { token: accessToken } : {},
     paramsSerializer(params) {
       const keysToProcess = ['key', 'startkey', 'endkey'];
       const searchParams = new URLSearchParams();
@@ -38,9 +39,6 @@ function createAxios(url: string, accessToken?: string) {
         } else {
           searchParams.append(key, params[key]);
         }
-      }
-      if (accessToken) {
-        searchParams.append('token', accessToken);
       }
       return searchParams.toString();
     },
