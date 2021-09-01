@@ -1,5 +1,12 @@
 # Changelog
 
+### [3.3.1](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.3.0...v3.3.1) (2021-09-01)
+
+
+### Bug Fixes
+
+* make sure param token is always used ([23f0cc0](https://www.github.com/cheminfo/rest-on-couch-client/commit/23f0cc02de1cad8decc94cc0bee9f898f292172e))
+
 ## [3.3.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.2.0...v3.3.0) (2021-08-30)
 
 
