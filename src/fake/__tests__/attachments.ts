@@ -18,7 +18,7 @@ describe('fake attachments', () => {
     expect(doc.getValue()._attachments.attachment2).toBeDefined();
 
     const attachmentContent = await doc.fetchAttachment('attachment2');
-    expect(attachmentContent).toStrictEqual('test');
+    expect(attachmentContent).toBe('test');
   });
 
   it('delete attachment', async () => {

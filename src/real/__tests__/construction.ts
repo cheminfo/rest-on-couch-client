@@ -13,9 +13,9 @@ test('construct urls', () => {
     database: 'exampledb',
   });
   // @ts-expect-error
-  expect(roc.url).toStrictEqual('https://example.com/roc/');
+  expect(roc.url).toBe('https://example.com/roc/');
   // @ts-expect-error
-  expect(roc.dbUrl).toStrictEqual('https://example.com/roc/db/exampledb/');
+  expect(roc.dbUrl).toBe('https://example.com/roc/db/exampledb/');
 });
 
 test('construct urls when no domain is provided', () => {
@@ -24,9 +24,7 @@ test('construct urls when no domain is provided', () => {
     database: 'exampledb',
   });
   // @ts-expect-error
-  expect(roc.url).toStrictEqual('https://www.rocserver.com/roc/');
+  expect(roc.url).toBe('https://www.rocserver.com/roc/');
   // @ts-expect-error
-  expect(roc.dbUrl).toStrictEqual(
-    'https://www.rocserver.com/roc/db/exampledb/',
-  );
+  expect(roc.dbUrl).toBe('https://www.rocserver.com/roc/db/exampledb/');
 });

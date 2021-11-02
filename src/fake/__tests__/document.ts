@@ -21,9 +21,9 @@ describe('fake document', () => {
       'group1',
       'group2',
     ]);
-    expect(document.getValue().$kind).toStrictEqual('kind');
+    expect(document.getValue().$kind).toBe('kind');
     expect(document.getValue()._id).toBeDefined();
-    expect(document.getValue()._rev.substr(0, 1)).toStrictEqual('1');
+    expect(document.getValue()._rev.substr(0, 1)).toBe('1');
   });
 
   it('get document', async () => {
@@ -44,7 +44,7 @@ describe('fake document', () => {
     const newDocument = await document.update({
       test: 43,
     });
-    expect(newDocument._rev.substr(0, 1)).toStrictEqual('2');
+    expect(newDocument._rev.substr(0, 1)).toBe('2');
   });
 
   it('document toJSON', async () => {
