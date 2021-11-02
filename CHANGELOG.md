@@ -1,5 +1,13 @@
 # Changelog
 
+### [3.3.2](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.3.1...v3.3.2) (2021-11-02)
+
+
+### Bug Fixes
+
+* add $kind to Document interface base ([85c73eb](https://www.github.com/cheminfo/rest-on-couch-client/commit/85c73ebf91fec3e73795eec9b819072b53dd38f9))
+* upgrade deps ([0432ca4](https://www.github.com/cheminfo/rest-on-couch-client/commit/0432ca40da14fecafb6d7177a9a6d1053b5efe3d))
+
 ### [3.3.1](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.3.0...v3.3.1) (2021-09-01)
 
 
