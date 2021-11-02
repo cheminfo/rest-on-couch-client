@@ -35,6 +35,7 @@ export interface IBaseDocument<ContentType = Record<string, any>>
     INewRevisionMeta {
   _id: string;
   $type: 'entry' | 'group';
+  $kind: string;
   $creationDate: number;
   $lastModification: string;
 }

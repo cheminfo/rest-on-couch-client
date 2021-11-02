@@ -11,7 +11,7 @@ import {
 import { addInlineUploads, deleteInlineUploads } from './utils';
 
 export default class RocDocument<
-  ContentType = Record<string, any>
+  ContentType = Record<string, any>,
 > extends BaseRocDocument<ContentType> {
   private request: AxiosInstance;
 
