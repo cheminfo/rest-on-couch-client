@@ -1,5 +1,12 @@
 # Changelog
 
+### [3.3.3](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.3.2...v3.3.3) (2021-11-15)
+
+
+### Bug Fixes
+
+* startKey and endKey should actually be startkey and endkey ([ba1c9bb](https://www.github.com/cheminfo/rest-on-couch-client/commit/ba1c9bb02f398189b854e0e4f247e9300d764e3a))
+
 ### [3.3.2](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.3.1...v3.3.2) (2021-11-02)
 
 
