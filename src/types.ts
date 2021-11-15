@@ -107,8 +107,8 @@ export interface IFetchAttachmentOptions {
 // View and Query
 // ============================
 export interface ICouchViewBase<KeyType> {
-  startKey?: KeyType;
-  endKey?: KeyType;
+  startkey?: KeyType;
+  endkey?: KeyType;
   key?: KeyType;
 }
 
@@ -149,8 +149,8 @@ export interface IViewOptions<KeyType = any> {
   descending?: boolean;
   attachments?: boolean;
   key?: KeyType;
-  startKey?: KeyType;
-  endKey?: KeyType;
+  startkey?: KeyType;
+  endkey?: KeyType;
 }
 export interface IReduceQueryResult<KeyType = any, ValueType = any> {
   key: KeyType;
