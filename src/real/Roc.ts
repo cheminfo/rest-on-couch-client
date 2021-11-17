@@ -32,7 +32,9 @@ function createAxios(url: string, accessToken?: string) {
     paramsSerializer(params) {
       const keysToProcess = ['key', 'startkey', 'endkey'];
       const searchParams = new URLSearchParams();
-      const keys = Object.keys(params);
+      const keys = Object.keys(params).filter(
+        (key) => params[key] !== undefined,
+      );
       for (const key of keys) {
         if (keysToProcess.includes(key)) {
           searchParams.append(key, JSON.stringify(params[key]));
