@@ -1,5 +1,12 @@
 # Changelog
 
+### [3.3.4](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.3.3...v3.3.4) (2021-11-17)
+
+
+### Bug Fixes
+
+* do not send params to rest-on-couch when they are set to undefined ([4d411e2](https://www.github.com/cheminfo/rest-on-couch-client/commit/4d411e2b62a98dcb5d91f8e9b3a74ead5ea3c8a3))
+
 ### [3.3.3](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.3.2...v3.3.3) (2021-11-15)
 
 
