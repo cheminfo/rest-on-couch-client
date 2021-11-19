@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.3.4...v3.4.0) (2021-11-19)
+
+
+### Features
+
+* add getGroupsInfo method ([2faa78a](https://www.github.com/cheminfo/rest-on-couch-client/commit/2faa78ae77f5a73db65fd04b2b51b3883b5494df))
+
 ### [3.3.4](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.3.3...v3.3.4) (2021-11-17)
 
 
