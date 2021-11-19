@@ -350,6 +350,21 @@ export class FakeRoc extends BaseRoc {
       },
     ];
   }
+
+  public async getGroupsInfo() {
+    return [
+      {
+        name: 'anonymousRead',
+        rights: ['read'],
+        users: ['test@test.com'],
+      },
+      {
+        name: 'testGroup',
+        rights: ['write', 'create'],
+        users: ['test@test.com'],
+      },
+    ];
+  }
 }
 
 function randomBytes() {

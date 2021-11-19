@@ -176,3 +176,10 @@ export interface ICouchUserGroup {
   name: string;
   rights: string[];
 }
+
+export interface ICouchGroupInfo {
+  name: string;
+  description?: string;
+  users?: string[];
+  rights?: string[];
+}

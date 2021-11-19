@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 
+import { ICouchGroupInfo } from '..';
 import { BaseRocReduceQuery } from '../base';
 import BaseRoc from '../base/BaseRoc';
 import BaseRocDocument from '../base/BaseRocDocument';
@@ -136,6 +137,11 @@ export default class Roc extends BaseRoc {
 
   public async getUserGroups(): Promise<ICouchUserGroup[]> {
     const response = await this.dbRequest.get('user/_me/groups');
+    return response.data;
+  }
+
+  public async getGroupsInfo(): Promise<ICouchGroupInfo[]> {
+    const response = await this.dbRequest.get('groups/info');
     return response.data;
   }
 }
