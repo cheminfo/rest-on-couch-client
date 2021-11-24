@@ -51,9 +51,10 @@ function createAxios(url: string, accessToken?: string) {
 export default class Roc extends BaseRoc {
   private url: string;
   private dbUrl: string;
-  private request: AxiosInstance;
-  private dbRequest: AxiosInstance;
   private accessToken?: string;
+
+  public readonly request: AxiosInstance;
+  public readonly dbRequest: AxiosInstance;
 
   public constructor(config: IRocConfig) {
     super();
