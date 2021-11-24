@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.4.0...v3.5.0) (2021-11-24)
+
+
+### Features
+
+* expose `request` and `dbRequest` Axios instances ([b51a68c](https://www.github.com/cheminfo/rest-on-couch-client/commit/b51a68ce43ced8d2772f24c01f23e8c4a5cd203a))
+
 ## [3.4.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.3.4...v3.4.0) (2021-11-19)
 
 
