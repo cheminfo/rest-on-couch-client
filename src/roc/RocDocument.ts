@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
+import { IAttachment } from '..';
+import { RocClientError } from '../Error';
 
-import BaseRocDocument from '../base/BaseRocDocument';
 import {
   IDocument,
   IDocumentDraft,
@@ -10,14 +11,15 @@ import {
 
 import { addInlineUploads, deleteInlineUploads } from './utils';
 
-export default class RocDocument<
-  ContentType = Record<string, any>,
-> extends BaseRocDocument<ContentType> {
+export default class RocDocument<ContentType = Record<string, unknown>> {
   private request: AxiosInstance;
+  public uuid: string;
+  public rev?: string;
+  protected value?: IDocument<ContentType>;
 
   public constructor(uuid: string, request: AxiosInstance) {
-    super(uuid);
     this.request = request;
+    this.uuid = uuid;
   }
 
   public async fetchAttachment(
@@ -27,7 +29,6 @@ export default class RocDocument<
     },
   ): Promise<Buffer | string> {
     const url = new URL(name, this.getBaseUrl()).href;
-    // @ts-ignore
     const response = await this.request({
       url,
       responseType: options.type,
@@ -72,6 +73,49 @@ export default class RocDocument<
 
     await this.fetch();
     return this.value;
+  }
+
+  public getAttachmentList(): IAttachment[] {
+    if (this.value === undefined) {
+      throw new RocClientError(
+        'You must fetch the document in order to get the attachment list',
+      );
+    }
+
+    // value must be defined after fetch
+    const doc = this.value;
+    const attachments = doc._attachments || {};
+    const list = [];
+    for (const key in attachments) {
+      list.push(this.getAttachment(key));
+    }
+    return list;
+  }
+
+  public getAttachment(name: string): IAttachment {
+    if (this.value === undefined) {
+      throw new RocClientError(
+        'You must fetch the document in order to get an attachment',
+      );
+    }
+    const doc = this.value;
+    const attachments = doc._attachments || {};
+    if (!attachments[name]) {
+      throw new RocClientError(`attachment ${name} does not exist`);
+    }
+    return {
+      ...attachments[name],
+      name,
+      url: `${this.getBaseUrl()}${name}`,
+    };
+  }
+
+  public getValue() {
+    return this.value;
+  }
+
+  public toJSON() {
+    return this.getValue();
   }
 
   public addGroups(/* groups: string | string[] */): Promise<string[]> {

@@ -1,10 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 
 import { ICouchGroupInfo } from '..';
-import { BaseRocReduceQuery } from '../base';
-import BaseRoc from '../base/BaseRoc';
-import BaseRocDocument from '../base/BaseRocDocument';
-import BaseRocQuery from '../base/BaseRocQuery';
 import {
   ICouchUser,
   ICouchUserGroup,
@@ -48,7 +44,7 @@ function createAxios(url: string, accessToken?: string) {
   });
 }
 
-export default class Roc extends BaseRoc {
+export default class Roc {
   private url: string;
   private dbUrl: string;
   private accessToken?: string;
@@ -57,7 +53,6 @@ export default class Roc extends BaseRoc {
   public readonly dbRequest: AxiosInstance;
 
   public constructor(config: IRocConfig) {
-    super();
     this.url = config.url;
     if (!this.url.endsWith('/')) {
       this.url += '/';
@@ -71,14 +66,12 @@ export default class Roc extends BaseRoc {
     this.dbRequest = createAxios(this.dbUrl, config.accessToken);
   }
 
-  public async create<ContentType>(
-    newDocument: INewDocument<ContentType>,
-  ): Promise<BaseRocDocument<ContentType>> {
+  public async create<ContentType>(newDocument: INewDocument<ContentType>) {
     const response = await this.dbRequest.post('entry', newDocument);
     return this.getDocument(response.data.id);
   }
 
-  public getDocument<ContentType = Record<string, any>>(
+  public getDocument<ContentType = Record<string, unknown>>(
     uuid: string,
   ): RocDocument<ContentType> {
     const url = new URL(`entry/${uuid}/`, this.dbUrl).href;
@@ -86,13 +79,10 @@ export default class Roc extends BaseRoc {
   }
 
   public getQuery<
-    KeyType = any,
-    ValueType = any,
-    ContentType = Record<string, any>,
-  >(
-    viewName: string,
-    options: IQueryOptions = {},
-  ): BaseRocQuery<KeyType, ValueType, ContentType> {
+    KeyType = unknown,
+    ValueType = unknown,
+    ContentType = Record<string, unknown>,
+  >(viewName: string, options: IQueryOptions = {}) {
     return new Query<KeyType, ValueType, ContentType>(
       viewName,
       options,
@@ -103,10 +93,10 @@ export default class Roc extends BaseRoc {
     );
   }
 
-  public getReduceQuery<KeyType = any, ValueType = any>(
+  public getReduceQuery<KeyType = unknown, ValueType = unknown>(
     viewName: string,
     options: IReduceQueryOptions = {},
-  ): BaseRocReduceQuery<KeyType, ValueType> {
+  ) {
     return new ReduceQuery<KeyType, ValueType>(
       viewName,
       options,
@@ -117,7 +107,7 @@ export default class Roc extends BaseRoc {
     );
   }
 
-  public getView<KeyType = any, ContentType = any>(
+  public getView<KeyType = unknown, ContentType = unknown>(
     viewName: string,
     options: IViewOptions<KeyType> = {},
   ) {
