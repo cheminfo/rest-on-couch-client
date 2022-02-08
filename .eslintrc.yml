@@ -1,4 +1,4 @@
-extends: cheminfo-typescript
+extends: '@zakodium/eslint-config/typescript'
 env:
   browser: true
 parserOptions:
@@ -6,7 +6,6 @@ parserOptions:
 rules:
   camelcase: 'off'
   '@typescript-eslint/no-dynamic-delete': 'off'
-  '@typescript-eslint/no-explicit-any': 'off'
   '@typescript-eslint/naming-convention':
     [
       'error',

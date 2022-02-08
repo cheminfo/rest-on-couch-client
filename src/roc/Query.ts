@@ -1,26 +1,34 @@
 import { AxiosInstance } from 'axios';
+import { IQueryResult } from '..';
 
-import BaseRocQuery from '../base/BaseRocQuery';
 import { IQueryOptions, PromisedQueryResult } from '../types';
 
-export default class Query<A, B, ContentType> extends BaseRocQuery<
-  A,
-  B,
-  ContentType
-> {
+export default class Query<KeyType, ValueType, ContentType> {
+  public readonly viewName: string;
+  protected baseOptions: IQueryOptions;
   private request: AxiosInstance;
   public constructor(
     viewName: string,
     options: IQueryOptions,
     request: AxiosInstance,
   ) {
-    super(viewName, options);
     this.request = request;
+    this.viewName = viewName;
+    this.baseOptions = options;
+  }
+
+  public then(
+    resolve: (
+      value: Array<IQueryResult<KeyType, ValueType, ContentType>>,
+    ) => void,
+    reject: (error: Error) => void,
+  ) {
+    this.fetch().then(resolve, reject);
   }
 
   public async fetch(
     options: IQueryOptions = {},
-  ): PromisedQueryResult<A, B, ContentType> {
+  ): PromisedQueryResult<KeyType, ValueType, ContentType> {
     const params = Object.assign({}, this.baseOptions, options);
 
     const response = await this.request({

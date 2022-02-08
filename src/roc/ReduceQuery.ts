@@ -1,13 +1,14 @@
 import { AxiosInstance } from 'axios';
 
-import { BaseRocReduceQuery } from '../base';
+import { IReduceQueryResult } from '..';
 import {
   IReduceQueryOptions,
   IRocReduceQueryParams,
   PromisedReduceQueryResult,
 } from '../types';
 
-export default class ReduceQuery<A, B> extends BaseRocReduceQuery {
+export default class ReduceQuery<KeyType = unknown, ValueType = unknown> {
+  public readonly viewName: string;
   private request: AxiosInstance;
   private baseOptions: IReduceQueryOptions;
   public constructor(
@@ -15,14 +16,21 @@ export default class ReduceQuery<A, B> extends BaseRocReduceQuery {
     options: IReduceQueryOptions,
     request: AxiosInstance,
   ) {
-    super(viewName);
+    this.viewName = viewName;
     this.request = request;
     this.baseOptions = options;
   }
 
+  public then(
+    resolve: (value: Array<IReduceQueryResult<KeyType, ValueType>>) => void,
+    reject: (error: Error) => void,
+  ) {
+    this.fetch().then(resolve, reject);
+  }
+
   public async fetch(
     options: IReduceQueryOptions = {},
-  ): PromisedReduceQueryResult<A, B> {
+  ): PromisedReduceQueryResult<KeyType, ValueType> {
     const requestOptions: IRocReduceQueryParams = {
       ...this.baseOptions,
       ...options,

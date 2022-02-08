@@ -18,8 +18,8 @@ export interface IRocDocumentOptions {
   pollInterval?: number;
 }
 
-export interface INewDocument<ContentType = Record<string, any>> {
-  $id: any;
+export interface INewDocument<ContentType = Record<string, unknown>> {
+  $id: unknown;
   $content: ContentType;
   $kind: string;
   $owners: string[];
@@ -30,7 +30,7 @@ export interface INewRevisionMeta {
   _rev: string;
 }
 
-export interface IBaseDocument<ContentType = Record<string, any>>
+export interface IBaseDocument<ContentType = Record<string, unknown>>
   extends INewDocument<ContentType>,
     INewRevisionMeta {
   _id: string;
@@ -40,14 +40,14 @@ export interface IBaseDocument<ContentType = Record<string, any>>
   $lastModification: string;
 }
 
-export interface IDocument<ContentType = Record<string, any>>
+export interface IDocument<ContentType = Record<string, unknown>>
   extends IBaseDocument<ContentType> {
   _attachments: {
     [key: string]: ICouchAttachmentStub;
   };
 }
 
-export interface IDocumentDraft<ContentType = Record<string, any>>
+export interface IDocumentDraft<ContentType = Record<string, unknown>>
   extends IBaseDocument<ContentType> {
   _attachments: {
     [key: string]: ICouchAttachment | ICouchInlineAttachment;
@@ -100,7 +100,7 @@ export interface ICouchAttachments {
 }
 
 export interface IFetchAttachmentOptions {
-  type: ResponseType | 'buffer';
+  type: ResponseType;
 }
 
 // ============================
@@ -113,13 +113,14 @@ export interface ICouchViewBase<KeyType> {
 }
 
 // Queries
-export interface IQueryOptions<KeyType = any> extends ICouchViewBase<KeyType> {
+export interface IQueryOptions<KeyType = unknown>
+  extends ICouchViewBase<KeyType> {
   mine?: boolean;
   include_docs?: boolean;
 }
 
 // Views
-export interface IReduceQueryOptions<KeyType = any>
+export interface IReduceQueryOptions<KeyType = unknown>
   extends ICouchViewBase<KeyType> {
   group?: boolean;
   groupLevel?: number;
@@ -130,9 +131,9 @@ export interface IRocReduceQueryParams extends IReduceQueryOptions {
 }
 
 export interface IQueryResult<
-  KeyType = any,
-  ValueType = any,
-  ContentType = Record<string, any>,
+  KeyType = unknown,
+  ValueType = unknown,
+  ContentType = Record<string, unknown>,
 > {
   id: string;
   key: KeyType;
@@ -140,11 +141,11 @@ export interface IQueryResult<
   value: ValueType;
 }
 
-export type IViewResult<ContentType = Record<string, any>> = Array<
+export type IViewResult<ContentType = Record<string, unknown>> = Array<
   IDocument<ContentType>
 >;
 
-export interface IViewOptions<KeyType = any> {
+export interface IViewOptions<KeyType = unknown> {
   limit?: number;
   descending?: boolean;
   attachments?: boolean;
@@ -152,7 +153,7 @@ export interface IViewOptions<KeyType = any> {
   startkey?: KeyType;
   endkey?: KeyType;
 }
-export interface IReduceQueryResult<KeyType = any, ValueType = any> {
+export interface IReduceQueryResult<KeyType = unknown, ValueType = unknown> {
   key: KeyType;
   value: ValueType;
 }

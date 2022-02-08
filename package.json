@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "@types/node": "^17.0.16",
+    "@zakodium/eslint-config": "^5.1.0",
     "axios": "^0.25.0",
     "immer": "^9.0.12"
   },
