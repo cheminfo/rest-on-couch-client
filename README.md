@@ -16,3 +16,22 @@ Rest-on-couch client for Node.js and browsers.
 [ci-url]: https://github.com/cheminfo/rest-on-couch-client/actions?query=workflow%3A%22Node.js+CI%22
 [download-image]: https://img.shields.io/npm/dm/rest-on-couch-client.svg
 [download-url]: https://npmjs.org/package/rest-on-couch-client
+
+## Run tests
+
+### Locally
+
+```bash
+docker-compose up -d --build
+npm t
+```
+
+### In github actions
+
+To update the image github actions is using
+
+```bash
+docker login ghcr.io # use your username and a token with packages write access
+docker build rest-on-couch -t ghcr.io/cheminfo/rest-on-couch-client:latest
+docker push ghcr.io/cheminfo/rest-on-couch-client:latest
+```
