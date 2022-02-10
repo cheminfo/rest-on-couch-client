@@ -16,8 +16,8 @@
     "eslint-fix": "npm run eslint -- --fix",
     "prepare": "npm run tsc",
     "test": "npm run test-coverage && npm run eslint && npm run check-types",
-    "test-only": "jest",
-    "test-coverage": "jest --coverage",
+    "test-only": "jest --runInBand",
+    "test-coverage": "jest --coverage --runInBand",
     "tsc": "npm run clean && npm run tsc-es5 && npm run tsc-es6",
     "tsc-es5": "tsc",
     "tsc-es6": "tsc --project tsconfig.es6.json"
