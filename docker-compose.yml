@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  couchdb:
+    image: docker.io/couchdb:3.2
+    environment:
+      COUCHDB_USER: admin
+      COUCHDB_PASSWORD: admin
+    ports:
+      - 5984:5984
+  rest-on-couch:
+    build: ./rest-on-couch
+    ports:
+      - 3000:3000
+    env_file:
+      - .env.test
