@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.5.0...v4.0.0) (2022-02-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove fake roc api
+
+### Miscellaneous Chores
+
+* update eslint config and remove fake Roc ([d220610](https://www.github.com/cheminfo/rest-on-couch-client/commit/d22061054130d2709f7c69966edf0413aa6668a2))
+
 ## [3.5.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.4.0...v3.5.0) (2021-11-24)
 
 
