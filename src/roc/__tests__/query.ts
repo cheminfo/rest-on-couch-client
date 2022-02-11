@@ -1,5 +1,3 @@
-import { AxiosError } from 'axios';
-
 import {
   getNewDocument,
   getNewEntry,
@@ -11,7 +9,7 @@ beforeAll(async () => {
   await resetTestDatabase();
 });
 
-test('query documents', async () => {
+test('getQuery', async () => {
   await testRoc.create(getNewEntry('id1'));
   await testRoc.create(getNewEntry('id2'));
   await testRoc.create(getNewDocument('otherKind', 'id3'));
@@ -21,6 +19,13 @@ test('query documents', async () => {
   });
 
   const data = await query.fetch();
+  expect(data).toHaveLength(2);
+});
+
+test('getQuery thenable', async () => {
+  const data = await testRoc.getQuery('entryByOwnersAndKind', {
+    key: 'entry',
+  });
   expect(data).toHaveLength(2);
 });
 
