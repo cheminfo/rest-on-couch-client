@@ -7,7 +7,7 @@ beforeAll(async () => {
 test('should create and fetch a document', async () => {
   const doc = await testRoc.create({
     $id: 'newDoc',
-    $kind: 'kind',
+    $kind: 'entry',
     $content: { hello: 'world' },
     $owners: [],
   });
@@ -20,7 +20,7 @@ test('should create and fetch a document', async () => {
   expect(data._id).toBeDefined();
   expect(data._rev).toMatch(/^1-/);
   expect(data.$id).toBe('newDoc');
-  expect(data.$kind).toBe('kind');
+  expect(data.$kind).toBe('entry');
   expect(data.$content).toMatchObject({
     hello: 'world',
   });
@@ -32,7 +32,7 @@ test('should create and fetch a document', async () => {
 test('should create then delete a document with roc.deleteDocument', async () => {
   const doc = await testRoc.create({
     $id: 'docToDelete',
-    $kind: 'kind',
+    $kind: 'entry',
     $content: { hello: 'world' },
     $owners: [],
   });
@@ -47,7 +47,7 @@ test('should create then delete a document with roc.deleteDocument', async () =>
 test('should create then delete a document with doc.delete', async () => {
   const doc = await testRoc.create({
     $id: 'docToDelete',
-    $kind: 'kind',
+    $kind: 'entry',
     $content: { hello: 'world' },
     $owners: [],
   });
@@ -61,7 +61,7 @@ describe('attachments', () => {
   it('should add an attachment to the document using Buffer', async () => {
     const doc = await testRoc.create({
       $id: 'docWithAttachment',
-      $kind: 'kind',
+      $kind: 'entry',
       $content: { hello: 'world' },
       $owners: [],
     });
@@ -101,5 +101,21 @@ describe('attachments', () => {
       'arraybuffer',
     );
     expect(attachmentAsBuffer).toStrictEqual(attachmentData);
+  });
+
+  it('should delete attachment from document', async () => {
+    const query = testRoc.getView('entryById', {
+      key: 'docWithAttachment',
+    });
+    const data = await query.fetch();
+
+    expect(data).toHaveLength(1);
+
+    const doc = testRoc.initializeDocument(data[0]);
+
+    expect(doc.getAttachmentList()).toHaveLength(1);
+    await doc.update(doc.getValue().$content, undefined, ['test.txt']);
+
+    expect(doc.getAttachmentList()).toHaveLength(0);
   });
 });

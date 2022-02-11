@@ -13,10 +13,19 @@ export default class RocDocument<ContentType = Record<string, unknown>> {
   protected value?: IDocument<ContentType>;
   public deleted: boolean;
 
-  public constructor(uuid: string, request: AxiosInstance) {
+  public constructor(
+    data: string | IDocument<ContentType>,
+    request: AxiosInstance,
+  ) {
+    if (typeof data === 'string') {
+      this.uuid = data;
+    } else {
+      this.uuid = data._id;
+      this.rev = data._rev;
+      this.value = data;
+    }
     this.request = request;
     this.deleted = false;
-    this.uuid = uuid;
   }
 
   public async fetchAttachment(

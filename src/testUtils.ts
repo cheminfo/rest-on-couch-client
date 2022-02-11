@@ -34,7 +34,7 @@ export async function resetTestDatabase() {
     $id: userToken,
     $owner: 'admin@cheminfo.org',
     $creationDate: 1634817005933,
-    rights: ['read', 'write', 'create', 'delete'],
+    rights: ['read', 'write', 'create', 'delete', 'addAttachment'],
   });
 }
 

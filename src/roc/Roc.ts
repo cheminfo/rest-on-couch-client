@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 
-import { ICouchGroupInfo } from '..';
+import { ICouchGroupInfo, IDocument } from '..';
 import {
   ICouchUser,
   ICouchUserGroup,
@@ -69,6 +69,13 @@ export default class Roc {
   public async create<ContentType>(newDocument: INewDocument<ContentType>) {
     const response = await this.dbRequest.post('entry', newDocument);
     return this.getDocument(response.data.id);
+  }
+
+  public initializeDocument<ContentType = Record<string, unknown>>(
+    data: IDocument<ContentType>,
+  ) {
+    const url = new URL(`entry/${data._id}/`, this.dbUrl).href;
+    return new RocDocument(data, createAxios(url, this.accessToken));
   }
 
   public getDocument<ContentType = Record<string, unknown>>(
