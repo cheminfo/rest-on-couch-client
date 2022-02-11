@@ -108,7 +108,7 @@ describe('attachments', () => {
     expect(attachmentAsBuffer).toStrictEqual(attachmentData);
   });
 
-  it('should re-upload the same attachment', async () => {
+  it('should overwrite the same attachment', async () => {
     const [docContent] = await testRoc.getView('entryById', {
       key: 'docWithAttachment',
     });
@@ -131,6 +131,30 @@ describe('attachments', () => {
       'arraybuffer',
     );
     expect(attachmentAsBuffer).toStrictEqual(Buffer.from(contents2));
+  });
+
+  it('should not overwrite the same attachment if configured to be forbidden', async () => {
+    const [docContent] = await testRoc.getView('entryById', {
+      key: 'docWithAttachment',
+    });
+
+    const doc = testRoc.initializeDocument(docContent, {
+      allowAttachmentOverwrite: false,
+    });
+    expect(doc.getAttachmentList()).toHaveLength(1);
+
+    const contents2 = 'buffer contents rev 2';
+    await expect(
+      doc.update(doc.getValue().$content, [
+        {
+          name: 'test.txt',
+          content_type: 'text/plain',
+          data: Buffer.from(contents2),
+        },
+      ]),
+    ).rejects.toThrow(
+      'overwriting test.txt, overwriting attachments is forbidden',
+    );
   });
 
   it('should delete attachment from document', async () => {
