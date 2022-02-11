@@ -15,17 +15,19 @@ test('should create and fetch a document', async () => {
   expect(doc.getValue()).toBeUndefined();
   const data = await doc.fetch();
   expect(data).toBeDefined();
-  expect(data.$modificationDate).toBeDefined();
-  expect(data.$creationDate).toBeDefined();
-  expect(data._id).toBeDefined();
+  expect(typeof data.$modificationDate).toBe('number');
+  expect(typeof data.$creationDate).toBe('number');
+  expect(typeof data._id).toBe('string');
   expect(data._rev).toMatch(/^1-/);
-  expect(data.$id).toBe('newDoc');
-  expect(data.$kind).toBe('entry');
-  expect(data.$content).toMatchObject({
-    hello: 'world',
+  expect(data).toMatchObject({
+    $content: {
+      hello: 'world',
+    },
+    $owners: ['admin@cheminfo.org'],
+    $kind: 'entry',
+    $id: 'newDoc',
   });
-  expect(data.$owners).toHaveLength(1);
-  expect(data.$owners[0]).toBe('admin@cheminfo.org');
+
   expect(data._attachments).toBeUndefined();
 });
 
