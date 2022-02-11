@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios';
+
 import {
   getNewDocument,
   getNewEntry,
