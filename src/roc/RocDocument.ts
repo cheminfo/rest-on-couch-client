@@ -6,16 +6,25 @@ import { IDocument, IDocumentDraft, INewAttachment } from '../types';
 
 import { addInlineUploads, deleteInlineUploads } from './utils';
 
+export interface RocDocumentOptions {
+  allowAttachmentOverwrite: boolean;
+}
+
+const defaultRocOptions: RocDocumentOptions = {
+  allowAttachmentOverwrite: true,
+};
 export default class RocDocument<ContentType = Record<string, unknown>> {
   private request: AxiosInstance;
   public uuid: string;
   public rev?: string;
   protected value?: IDocument<ContentType>;
   public deleted: boolean;
+  private options: RocDocumentOptions;
 
   public constructor(
     data: string | IDocument<ContentType>,
     request: AxiosInstance,
+    options: RocDocumentOptions = defaultRocOptions,
   ) {
     if (typeof data === 'string') {
       this.uuid = data;
@@ -26,6 +35,7 @@ export default class RocDocument<ContentType = Record<string, unknown>> {
     }
     this.request = request;
     this.deleted = false;
+    this.options = options;
   }
 
   public async fetchAttachment(
@@ -65,6 +75,16 @@ export default class RocDocument<ContentType = Record<string, unknown>> {
     }
 
     if (newAttachments !== undefined) {
+      if (!this.options.allowAttachmentOverwrite) {
+        for (let attachment of newAttachments) {
+          if (newDoc._attachments?.[attachment.name]) {
+            throw new RocClientError(
+              `overwriting ${attachment.name}, overwriting attachments is forbidden`,
+            );
+          }
+        }
+      }
+
       newDoc = await addInlineUploads(newDoc, newAttachments);
     }
 

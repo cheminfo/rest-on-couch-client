@@ -12,7 +12,7 @@ import {
 
 import Query from './Query';
 import ReduceQuery from './ReduceQuery';
-import RocDocument from './RocDocument';
+import RocDocument, { RocDocumentOptions } from './RocDocument';
 import View from './View';
 
 export interface IRocConfig {
@@ -73,16 +73,18 @@ export default class Roc {
 
   public initializeDocument<ContentType = Record<string, unknown>>(
     data: IDocument<ContentType>,
+    options?: RocDocumentOptions,
   ) {
     const url = new URL(`entry/${data._id}/`, this.dbUrl).href;
-    return new RocDocument(data, createAxios(url, this.accessToken));
+    return new RocDocument(data, createAxios(url, this.accessToken), options);
   }
 
   public getDocument<ContentType = Record<string, unknown>>(
     uuid: string,
+    options?: RocDocumentOptions,
   ): RocDocument<ContentType> {
     const url = new URL(`entry/${uuid}/`, this.dbUrl).href;
-    return new RocDocument(uuid, createAxios(url, this.accessToken));
+    return new RocDocument(uuid, createAxios(url, this.accessToken), options);
   }
 
   public async deleteDocument(uuid: string) {
