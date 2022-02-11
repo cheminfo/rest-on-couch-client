@@ -92,6 +92,9 @@ describe('attachments', () => {
     });
     expect(afterAttachments[0].digest).toMatch(/md5-/);
 
+    const oneAttachment = doc.getAttachment('test.txt');
+    expect(oneAttachment).toStrictEqual(afterAttachments[0]);
+
     const attachmentAsText = await doc.fetchAttachment('test.txt', 'text');
     if (typeof attachmentAsText !== 'string') {
       throw new Error('expected contents to be a string');
@@ -119,5 +122,47 @@ describe('attachments', () => {
     await doc.update(doc.getValue().$content, undefined, ['test.txt']);
 
     expect(doc.getAttachmentList()).toHaveLength(0);
+  });
+
+  it('should fail if attachments are requested but document is not fetched', async () => {
+    const query = testRoc.getView('entryById', {
+      key: 'docWithAttachment',
+    });
+    const data = await query.fetch();
+
+    expect(data).toHaveLength(1);
+
+    const doc = testRoc.getDocument(data[0]._id);
+    expect(() => doc.getAttachmentList()).toThrow(
+      'You must fetch the document in order to get the attachment list',
+    );
+  });
+
+  it('should fail if one attchment is requested but document is not fetched', async () => {
+    const query = testRoc.getView('entryById', {
+      key: 'docWithAttachment',
+    });
+    const data = await query.fetch();
+
+    expect(data).toHaveLength(1);
+
+    const doc = testRoc.getDocument(data[0]._id);
+    expect(() => doc.getAttachment('test.txt')).toThrow(
+      'You must fetch the document in order to get an attachment',
+    );
+  });
+
+  it('should fail if trying to get an attachment that does not exist', async () => {
+    const query = testRoc.getView('entryById', {
+      key: 'docWithAttachment',
+    });
+    const data = await query.fetch();
+
+    expect(data).toHaveLength(1);
+
+    const doc = testRoc.initializeDocument(data[0]);
+    expect(() => doc.getAttachment('test.txt')).toThrow(
+      'attachment test.txt does not exist',
+    );
   });
 });
