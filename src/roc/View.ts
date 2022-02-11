@@ -30,7 +30,7 @@ export default class View<ContentType> {
     const params = Object.assign({}, this.options, options);
 
     const response = await this.request({
-      url: '',
+      url: '/',
       params,
     });
     return response.data;

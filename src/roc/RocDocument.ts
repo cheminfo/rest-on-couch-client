@@ -1,13 +1,8 @@
 import { AxiosInstance } from 'axios';
 
-import { IAttachment } from '..';
+import { FetchAttachmentType, IAttachment } from '..';
 import { RocClientError } from '../Error';
-import {
-  IDocument,
-  IDocumentDraft,
-  IFetchAttachmentOptions,
-  INewAttachment,
-} from '../types';
+import { IDocument, IDocumentDraft, INewAttachment } from '../types';
 
 import { addInlineUploads, deleteInlineUploads } from './utils';
 
@@ -26,14 +21,12 @@ export default class RocDocument<ContentType = Record<string, unknown>> {
 
   public async fetchAttachment(
     name: string,
-    options: IFetchAttachmentOptions = {
-      type: 'text',
-    },
+    responseType: FetchAttachmentType<'text' | 'arraybuffer' | 'blob'>,
   ): Promise<Buffer | string> {
     const url = new URL(name, this.getBaseUrl()).href;
     const response = await this.request({
       url,
-      responseType: options.type,
+      responseType: responseType,
     });
     return response.data;
   }
@@ -67,7 +60,7 @@ export default class RocDocument<ContentType = Record<string, unknown>> {
     }
 
     // Send the new doc
-    await this.request.put('', newDoc);
+    await this.request.put('/', newDoc);
 
     // Get the new document
     // With updated properties ($lastModifification...)

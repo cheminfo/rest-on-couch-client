@@ -37,7 +37,7 @@ export default class ReduceQuery<KeyType = unknown, ValueType = unknown> {
       reduce: true,
     };
     const response = await this.request({
-      url: '',
+      url: '/',
       params: requestOptions,
     });
     return response.data;
