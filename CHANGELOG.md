@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.1.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.0.0...v4.1.0) (2022-02-11)
+
+
+### Features
+
+* add getRocClientError ([e0fac77](https://www.github.com/cheminfo/rest-on-couch-client/commit/e0fac772c539ce9bf847daccfe544ddb44407aa5))
+* add initializeDocument api ([59b30a5](https://www.github.com/cheminfo/rest-on-couch-client/commit/59b30a52e95ae7914397bd831eb4f098d6ba8597))
+* add roc.deleteDocument and doc.delete to api ([c0490d5](https://www.github.com/cheminfo/rest-on-couch-client/commit/c0490d5a3f93f8268c1a0e24b0b124baea532c1c))
+* add support for blob when adding attachments and add tests ([e46a5c4](https://www.github.com/cheminfo/rest-on-couch-client/commit/e46a5c479d80e2c5c3a4eba8359d0a5474f5556c))
+
 ## [4.0.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v3.5.0...v4.0.0) (2022-02-10)
 
 
