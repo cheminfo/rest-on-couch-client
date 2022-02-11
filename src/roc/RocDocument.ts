@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
+
 import { IAttachment } from '..';
 import { RocClientError } from '../Error';
-
 import {
   IDocument,
   IDocumentDraft,
@@ -16,9 +16,11 @@ export default class RocDocument<ContentType = Record<string, unknown>> {
   public uuid: string;
   public rev?: string;
   protected value?: IDocument<ContentType>;
+  public deleted: boolean;
 
   public constructor(uuid: string, request: AxiosInstance) {
     this.request = request;
+    this.deleted = false;
     this.uuid = uuid;
   }
 
@@ -40,7 +42,7 @@ export default class RocDocument<ContentType = Record<string, unknown>> {
     if (rev) {
       throw new Error('UNIMPLEMENTED fetch with rev');
     }
-    const response = await this.request.get('');
+    const response = await this.request.get('/');
     this.value = response.data;
     return response.data;
   }
@@ -92,6 +94,15 @@ export default class RocDocument<ContentType = Record<string, unknown>> {
     return list;
   }
 
+  public async delete() {
+    const response = await this.request.delete('/');
+    if (response.data.ok) {
+      this.value = undefined;
+      this.deleted = true;
+    } else {
+      throw new Error('document was not deleted');
+    }
+  }
   public getAttachment(name: string): IAttachment {
     if (this.value === undefined) {
       throw new RocClientError(
