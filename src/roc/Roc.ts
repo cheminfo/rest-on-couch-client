@@ -78,6 +78,13 @@ export default class Roc {
     return new RocDocument(uuid, createAxios(url, this.accessToken));
   }
 
+  public async deleteDocument(uuid: string) {
+    const url = new URL(`entry/${uuid}/`, this.dbUrl).href;
+    const request = createAxios(url, this.accessToken);
+    const response = await request.delete('/');
+    return response.data;
+  }
+
   public getQuery<
     KeyType = unknown,
     ValueType = unknown,

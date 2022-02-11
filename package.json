@@ -18,6 +18,7 @@
     "test": "npm run test-coverage && npm run eslint && npm run check-types",
     "test-only": "jest --runInBand",
     "test-coverage": "jest --coverage --runInBand",
+    "test-watch": "jest --runInBand --watch",
     "tsc": "npm run clean && npm run tsc-es5 && npm run tsc-es6",
     "tsc-es5": "tsc",
     "tsc-es6": "tsc --project tsconfig.es6.json"
