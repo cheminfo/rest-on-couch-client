@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { Roc } from '.';
+import { INewDocument, Roc } from '.';
 
 const userToken = 'DanRufB1VWQPmUFa3FGpdxXwL0IQafk2';
 
@@ -43,3 +43,21 @@ export const testRoc = new Roc({
   database: 'test',
   url: 'http://localhost:3000',
 });
+
+export function getNewEntry(id: string) {
+  return {
+    $id: id,
+    $kind: 'entry',
+    $content: { hello: 'world' },
+    $owners: [],
+  } as INewDocument;
+}
+
+export function getNewDocument(kind: string, id: string) {
+  return {
+    $id: id,
+    $kind: kind,
+    $content: { hello: 'world' },
+    $owners: [],
+  } as INewDocument;
+}
