@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.1.0...v4.2.0) (2022-02-11)
+
+
+### Features
+
+* add option to prevent overriding attachments ([dc1be9d](https://www.github.com/cheminfo/rest-on-couch-client/commit/dc1be9d02a42c94d962c753ebc810b6f293c5226))
+
 ## [4.1.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.0.0...v4.1.0) (2022-02-11)
 
 
