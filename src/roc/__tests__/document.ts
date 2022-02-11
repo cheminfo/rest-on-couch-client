@@ -108,6 +108,31 @@ describe('attachments', () => {
     expect(attachmentAsBuffer).toStrictEqual(attachmentData);
   });
 
+  it('should re-upload the same attachment', async () => {
+    const [docContent] = await testRoc.getView('entryById', {
+      key: 'docWithAttachment',
+    });
+
+    const doc = testRoc.initializeDocument(docContent);
+    expect(doc.getAttachmentList()).toHaveLength(1);
+
+    const contents2 = 'buffer contents rev 2';
+    await doc.update(doc.getValue().$content, [
+      {
+        name: 'test.txt',
+        content_type: 'text/plain',
+        data: Buffer.from(contents2),
+      },
+    ]);
+
+    expect(doc.getAttachmentList()).toHaveLength(1);
+    const attachmentAsBuffer = await doc.fetchAttachment(
+      'test.txt',
+      'arraybuffer',
+    );
+    expect(attachmentAsBuffer).toStrictEqual(Buffer.from(contents2));
+  });
+
   it('should delete attachment from document', async () => {
     const query = testRoc.getView('entryById', {
       key: 'docWithAttachment',
