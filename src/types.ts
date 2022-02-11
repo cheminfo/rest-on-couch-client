@@ -49,7 +49,7 @@ export interface IDocument<ContentType = Record<string, unknown>>
 
 export interface IDocumentDraft<ContentType = Record<string, unknown>>
   extends IBaseDocument<ContentType> {
-  _attachments: {
+  _attachments?: {
     [key: string]: ICouchAttachment | ICouchInlineAttachment;
   };
 }
@@ -73,8 +73,7 @@ export interface INewAttachment extends ICouchAttachmentBase {
   /* The name of the resource */
   name: string;
   /* Buffer or base64 encoded url containing attachment data */
-  /* TODO: add Blob support for the browser */
-  data: Buffer | string;
+  data: Buffer | string | ArrayBuffer;
 }
 
 export interface ICouchInlineAttachment extends ICouchAttachmentBase {
@@ -99,9 +98,7 @@ export interface ICouchAttachments {
   [key: string]: ICouchAttachmentStub;
 }
 
-export interface IFetchAttachmentOptions {
-  type: ResponseType;
-}
+export type FetchAttachmentType<T extends ResponseType> = T;
 
 // ============================
 // View and Query

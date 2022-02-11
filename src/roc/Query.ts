@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { IQueryResult } from '..';
 
+import { IQueryResult } from '..';
 import { IQueryOptions, PromisedQueryResult } from '../types';
 
 export default class Query<KeyType, ValueType, ContentType> {
@@ -32,7 +32,7 @@ export default class Query<KeyType, ValueType, ContentType> {
     const params = Object.assign({}, this.baseOptions, options);
 
     const response = await this.request({
-      url: '',
+      url: '/',
       params,
     });
     return response.data;
