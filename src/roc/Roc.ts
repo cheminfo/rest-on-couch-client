@@ -66,23 +66,25 @@ export default class Roc {
     this.dbRequest = createAxios(this.dbUrl, config.accessToken);
   }
 
-  public async create<ContentType>(newDocument: INewDocument<ContentType>) {
+  public async create<ContentType, IdType>(
+    newDocument: INewDocument<ContentType, IdType>,
+  ) {
     const response = await this.dbRequest.post('entry', newDocument);
     return this.getDocument(response.data.id);
   }
 
-  public initializeDocument<ContentType = Record<string, unknown>>(
-    data: IDocument<ContentType>,
+  public initializeDocument<ContentType, IdType>(
+    data: IDocument<ContentType, IdType>,
     options?: RocDocumentOptions,
   ) {
     const url = new URL(`entry/${data._id}/`, this.dbUrl).href;
     return new RocDocument(data, createAxios(url, this.accessToken), options);
   }
 
-  public getDocument<ContentType = Record<string, unknown>>(
+  public getDocument<ContentType, IdType>(
     uuid: string,
     options?: RocDocumentOptions,
-  ): RocDocument<ContentType> {
+  ): RocDocument<ContentType, IdType> {
     const url = new URL(`entry/${uuid}/`, this.dbUrl).href;
     return new RocDocument(uuid, createAxios(url, this.accessToken), options);
   }
@@ -123,11 +125,12 @@ export default class Roc {
     );
   }
 
-  public getView<KeyType = unknown, ContentType = unknown>(
-    viewName: string,
-    options: IViewOptions<KeyType> = {},
-  ) {
-    return new View<ContentType>(
+  public getView<
+    KeyType = unknown,
+    ContentType = Record<string, unknown>,
+    IdType = unknown,
+  >(viewName: string, options: IViewOptions<KeyType> = {}) {
+    return new View<ContentType, IdType>(
       viewName,
       options,
       createAxios(

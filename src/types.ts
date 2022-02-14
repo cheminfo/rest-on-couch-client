@@ -18,8 +18,8 @@ export interface IRocDocumentOptions {
   pollInterval?: number;
 }
 
-export interface INewDocument<ContentType = Record<string, unknown>> {
-  $id: unknown;
+export interface INewDocument<ContentType, IdType> {
+  $id: IdType;
   $content: ContentType;
   $kind: string;
   $owners: string[];
@@ -30,8 +30,8 @@ export interface INewRevisionMeta {
   _rev: string;
 }
 
-export interface IBaseDocument<ContentType = Record<string, unknown>>
-  extends INewDocument<ContentType>,
+export interface IBaseDocument<ContentType, IdType>
+  extends INewDocument<ContentType, IdType>,
     INewRevisionMeta {
   _id: string;
   $type: 'entry' | 'group';
@@ -40,15 +40,15 @@ export interface IBaseDocument<ContentType = Record<string, unknown>>
   $lastModification: string;
 }
 
-export interface IDocument<ContentType = Record<string, unknown>>
-  extends IBaseDocument<ContentType> {
+export interface IDocument<ContentType, IdType>
+  extends IBaseDocument<ContentType, IdType> {
   _attachments: {
     [key: string]: ICouchAttachmentStub;
   };
 }
 
-export interface IDocumentDraft<ContentType = Record<string, unknown>>
-  extends IBaseDocument<ContentType> {
+export interface IDocumentDraft<ContentType, IdType>
+  extends IBaseDocument<ContentType, IdType> {
   _attachments?: {
     [key: string]: ICouchAttachment | ICouchInlineAttachment;
   };
@@ -131,15 +131,16 @@ export interface IQueryResult<
   KeyType = unknown,
   ValueType = unknown,
   ContentType = Record<string, unknown>,
+  IdType = unknown,
 > {
   id: string;
   key: KeyType;
-  doc?: IDocument<ContentType>;
+  doc?: IDocument<ContentType, IdType>;
   value: ValueType;
 }
 
-export type IViewResult<ContentType = Record<string, unknown>> = Array<
-  IDocument<ContentType>
+export type IViewResult<ContentType, IdType> = Array<
+  IDocument<ContentType, IdType>
 >;
 
 export interface IViewOptions<KeyType = unknown> {

@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 
 import { IViewOptions, IViewResult } from '../types';
 
-export default class View<ContentType> {
+export default class View<ContentType, IdType> {
   private request: AxiosInstance;
   private options: IViewOptions;
   public readonly viewName: string;
@@ -18,7 +18,7 @@ export default class View<ContentType> {
   }
 
   public then(
-    resolve: (value: IViewResult<ContentType>) => void,
+    resolve: (value: IViewResult<ContentType, IdType>) => void,
     reject: (error: Error) => void,
   ) {
     this.fetch().then(resolve, reject);
@@ -26,7 +26,7 @@ export default class View<ContentType> {
 
   public async fetch(
     options: IViewOptions = {},
-  ): Promise<IViewResult<ContentType>> {
+  ): Promise<IViewResult<ContentType, IdType>> {
     const params = Object.assign({}, this.options, options);
 
     const response = await this.request({
