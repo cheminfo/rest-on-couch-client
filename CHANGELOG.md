@@ -1,5 +1,12 @@
 # Changelog
 
+### [4.2.1](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.2.0...v4.2.1) (2022-02-14)
+
+
+### Bug Fixes
+
+* include type of $id in document generic ([9eb7632](https://www.github.com/cheminfo/rest-on-couch-client/commit/9eb76323d6f1f68c97616e421cd4718e4f7de290))
+
 ## [4.2.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.1.0...v4.2.0) (2022-02-11)
 
 
