@@ -44,13 +44,15 @@ export const testRoc = new Roc({
   url: 'http://localhost:3000',
 });
 
+type TestNewDoc = INewDocument<{ hello: 'world' }, string>;
+
 export function getNewEntry(id: string) {
   return {
     $id: id,
     $kind: 'entry',
     $content: { hello: 'world' },
     $owners: [],
-  } as INewDocument;
+  } as TestNewDoc;
 }
 
 export function getNewDocument(kind: string, id: string) {
@@ -59,5 +61,5 @@ export function getNewDocument(kind: string, id: string) {
     $kind: kind,
     $content: { hello: 'world' },
     $owners: [],
-  } as INewDocument;
+  } as TestNewDoc;
 }

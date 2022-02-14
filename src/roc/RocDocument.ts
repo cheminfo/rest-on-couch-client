@@ -13,16 +13,19 @@ export interface RocDocumentOptions {
 const defaultRocOptions: RocDocumentOptions = {
   allowAttachmentOverwrite: true,
 };
-export default class RocDocument<ContentType = Record<string, unknown>> {
+export default class RocDocument<
+  ContentType = Record<string, unknown>,
+  IdType = string,
+> {
   private request: AxiosInstance;
   public uuid: string;
   public rev?: string;
-  protected value?: IDocument<ContentType>;
+  protected value?: IDocument<ContentType, IdType>;
   public deleted: boolean;
   private options: RocDocumentOptions;
 
   public constructor(
-    data: string | IDocument<ContentType>,
+    data: string | IDocument<ContentType, IdType>,
     request: AxiosInstance,
     options: RocDocumentOptions = defaultRocOptions,
   ) {
@@ -50,7 +53,7 @@ export default class RocDocument<ContentType = Record<string, unknown>> {
     return response.data;
   }
 
-  public async fetch(rev?: string): Promise<IDocument<ContentType>> {
+  public async fetch(rev?: string): Promise<IDocument<ContentType, IdType>> {
     if (rev) {
       throw new Error('UNIMPLEMENTED fetch with rev');
     }
@@ -63,9 +66,9 @@ export default class RocDocument<ContentType = Record<string, unknown>> {
     content: ContentType,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[],
-  ): Promise<IDocument<ContentType>> {
+  ): Promise<IDocument<ContentType, IdType>> {
     await this._fetchIfUnfetched();
-    let newDoc: IDocumentDraft<ContentType> = {
+    let newDoc: IDocumentDraft<ContentType, IdType> = {
       ...this.value,
       $content: content,
     };

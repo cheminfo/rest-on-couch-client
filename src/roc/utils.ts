@@ -6,8 +6,8 @@ import {
   INewAttachment,
 } from '../types';
 
-export async function addInlineUploads<ContentType>(
-  entry: IDocumentDraft<ContentType>,
+export async function addInlineUploads<ContentType, IdType>(
+  entry: IDocumentDraft<ContentType, IdType>,
   attachments: INewAttachment[],
 ) {
   const attachmentsBase64 = await Promise.all(
@@ -39,7 +39,7 @@ export async function addInlineUploads<ContentType>(
     }),
   );
 
-  const newEntry = produce(entry, (draft: IDocumentDraft) => {
+  const newEntry = produce(entry, (draft: IDocumentDraft<unknown, unknown>) => {
     for (let i = 0; i < attachments.length; i++) {
       const newAttachment: ICouchInlineAttachment = {
         content_type: attachments[i].content_type,
@@ -55,8 +55,8 @@ export async function addInlineUploads<ContentType>(
   return newEntry;
 }
 
-export function deleteInlineUploads<ContentType>(
-  entry: IDocumentDraft<ContentType>,
+export function deleteInlineUploads<ContentType, IdType>(
+  entry: IDocumentDraft<ContentType, IdType>,
   attachmentNames: string[],
 ) {
   return produce(entry, (draft) => {
