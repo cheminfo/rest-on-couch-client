@@ -21,7 +21,6 @@ export async function addInlineUploads<ContentType, IdType>(
       } else {
         // in browser, expect Blob
         return new Promise<string>((resolve, reject) => {
-          // @ts-expect-error Blob not understood by nodejs
           const data = attachment.data as Blob;
           const reader = new FileReader();
           reader.addEventListener('load', function load() {

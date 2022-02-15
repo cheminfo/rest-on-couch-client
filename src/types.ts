@@ -73,7 +73,7 @@ export interface INewAttachment extends ICouchAttachmentBase {
   /* The name of the resource */
   name: string;
   /* Buffer or base64 encoded url containing attachment data */
-  data: Buffer | string | ArrayBuffer;
+  data: Buffer | string | Blob;
 }
 
 export interface ICouchInlineAttachment extends ICouchAttachmentBase {
