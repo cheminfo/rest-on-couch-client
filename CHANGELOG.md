@@ -1,5 +1,12 @@
 # Changelog
 
+### [4.2.2](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.2.1...v4.2.2) (2022-02-15)
+
+
+### Bug Fixes
+
+* allow Blob in browser instead of ArrayBuffer ([47a31b3](https://www.github.com/cheminfo/rest-on-couch-client/commit/47a31b36bff9e49b2cf4ed09613e70e3d5c09eb3))
+
 ### [4.2.1](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.2.0...v4.2.1) (2022-02-14)
 
 
