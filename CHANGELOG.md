@@ -1,5 +1,12 @@
 # Changelog
 
+### [4.2.3](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.2.2...v4.2.3) (2022-02-28)
+
+
+### Bug Fixes
+
+* return type RocDocument when creating new document ([47c9e5b](https://www.github.com/cheminfo/rest-on-couch-client/commit/47c9e5b295ea1b919204d88a3aef7a5ab3fec31f))
+
 ### [4.2.2](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.2.1...v4.2.2) (2022-02-15)
 
 
