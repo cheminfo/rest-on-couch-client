@@ -68,7 +68,7 @@ export default class Roc {
 
   public async create<ContentType, IdType>(
     newDocument: INewDocument<ContentType, IdType>,
-  ) {
+  ): Promise<RocDocument<ContentType, IdType>> {
     const response = await this.dbRequest.post('entry', newDocument);
     return this.getDocument(response.data.id);
   }
