@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.2.3...v4.3.0) (2022-02-28)
+
+
+### Features
+
+* throw if update is called with an object which contains an _id property ([08ef68b](https://www.github.com/cheminfo/rest-on-couch-client/commit/08ef68b41abab52f353f44b9dcde905701b63491))
+
 ### [4.2.3](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.2.2...v4.2.3) (2022-02-28)
 
 
