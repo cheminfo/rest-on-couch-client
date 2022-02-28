@@ -41,7 +41,7 @@ export async function resetTestDatabase() {
 export const testRoc = new Roc({
   accessToken: userToken,
   database: 'test',
-  url: 'http://localhost:3000',
+  url: 'http://localhost:4000',
 });
 
 type TestNewDoc = INewDocument<{ hello: 'world' }, string>;
