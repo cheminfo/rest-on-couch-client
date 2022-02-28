@@ -1,62 +1,78 @@
+import { RocDocument } from '..';
 import { resetTestDatabase, testRoc } from '../../testUtils';
 
 beforeAll(async () => {
   await resetTestDatabase();
 });
 
-test('should create and fetch a document', async () => {
-  const doc = await testRoc.create({
-    $id: 'newDoc',
-    $kind: 'entry',
-    $content: { hello: 'world' },
-    $owners: [],
-  });
-  expect(doc).toBeDefined();
-  expect(doc.getValue()).toBeUndefined();
-  const data = await doc.fetch();
-  expect(data).toBeDefined();
-  expect(typeof data.$modificationDate).toBe('number');
-  expect(typeof data.$creationDate).toBe('number');
-  expect(typeof data._id).toBe('string');
-  expect(data._rev).toMatch(/^1-/);
-  expect(data).toMatchObject({
-    $content: {
-      hello: 'world',
-    },
-    $owners: ['admin@cheminfo.org'],
-    $kind: 'entry',
-    $id: 'newDoc',
-  });
+describe('documents', () => {
+  it('should create and fetch a document', async () => {
+    const doc = await testRoc.create({
+      $id: 'newDoc',
+      $kind: 'entry',
+      $content: { hello: 'world' },
+      $owners: [],
+    });
+    expect(doc).toBeDefined();
+    expect(doc.getValue()).toBeUndefined();
+    const data = await doc.fetch();
+    expect(data).toBeDefined();
+    expect(typeof data.$modificationDate).toBe('number');
+    expect(typeof data.$creationDate).toBe('number');
+    expect(typeof data._id).toBe('string');
+    expect(data._rev).toMatch(/^1-/);
+    expect(data).toMatchObject({
+      $content: {
+        hello: 'world',
+      },
+      $owners: ['admin@cheminfo.org'],
+      $kind: 'entry',
+      $id: 'newDoc',
+    });
 
-  expect(data._attachments).toBeUndefined();
-});
-
-test('should create then delete a document with roc.deleteDocument', async () => {
-  const doc = await testRoc.create({
-    $id: 'docToDelete',
-    $kind: 'entry',
-    $content: { hello: 'world' },
-    $owners: [],
+    expect(data._attachments).toBeUndefined();
   });
 
-  const data = await testRoc.deleteDocument(doc.uuid);
-  await expect(doc.fetch()).rejects.toThrow(/404/);
-  expect(data).toMatchObject({
-    ok: true,
-  });
-});
+  it('should create then delete a document with roc.deleteDocument', async () => {
+    const doc = await testRoc.create({
+      $id: 'docToDelete',
+      $kind: 'entry',
+      $content: { hello: 'world' },
+      $owners: [],
+    });
 
-test('should create then delete a document with doc.delete', async () => {
-  const doc = await testRoc.create({
-    $id: 'docToDelete',
-    $kind: 'entry',
-    $content: { hello: 'world' },
-    $owners: [],
+    const data = await testRoc.deleteDocument(doc.uuid);
+    await expect(doc.fetch()).rejects.toThrow(/404/);
+    expect(data).toMatchObject({
+      ok: true,
+    });
   });
 
-  await doc.delete();
-  await expect(doc.fetch()).rejects.toThrow(/404/);
-  expect(doc.deleted).toBe(true);
+  it('should create then delete a document with doc.delete', async () => {
+    const doc = await testRoc.create({
+      $id: 'docToDelete',
+      $kind: 'entry',
+      $content: { hello: 'world' },
+      $owners: [],
+    });
+
+    await doc.delete();
+    await expect(doc.fetch()).rejects.toThrow(/404/);
+    expect(doc.deleted).toBe(true);
+  });
+
+  it('should fail if trying to update a document but the content contains the _id property', async () => {
+    const doc: RocDocument<any, any> = await testRoc.create({
+      $id: 'docToUpdate',
+      $kind: 'entry',
+      $content: { hello: 'world' },
+      $owners: [],
+    });
+    await doc.fetch();
+    await expect(() => doc.update(doc.getValue())).rejects.toThrow(
+      /Your content contains an _id proprerty/,
+    );
+  });
 });
 
 describe('attachments', () => {
