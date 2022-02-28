@@ -67,6 +67,12 @@ export default class RocDocument<
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[],
   ): Promise<IDocument<ContentType, IdType>> {
+    if ('_id' in content) {
+      throw new Error(
+        'Your content contains an _id proprerty. This is probably an error since you should not pass the entire document, only $content',
+      );
+    }
+
     await this._fetchIfUnfetched();
     let newDoc: IDocumentDraft<ContentType, IdType> = {
       ...this.value,
