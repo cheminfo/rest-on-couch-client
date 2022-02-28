@@ -46,7 +46,7 @@ jobs:
           REST_ON_COUCH_ORIGINS: http://localhost
           REST_ON_COUCH_APP_KEYS: 1fonlj0c194bdeb6e9482a948cfd26b9
         ports:
-          - 3000:3000
+          - 4000:4000
     runs-on: ubuntu-latest
     strategy:
       matrix:

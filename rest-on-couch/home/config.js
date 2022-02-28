@@ -28,7 +28,7 @@ module.exports = {
   allowedOrigins, // ['https://server1.example.com', 'https://server2.example.com', ...]
   keys: appKeys, // ['key1', 'key2', ...]
   administrators, // ['admin1@example.com', 'admin2@example.com', ...]
-  port: 3000,
+  port: 4000,
   url: 'http://couchdb:5984',
   username: 'rest-on-couch',
   superAdministrators: ['admin@goodyear.com'],
