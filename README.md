@@ -32,6 +32,6 @@ To update the image github actions is using
 
 ```bash
 docker login ghcr.io # use your username and a token with packages write access
-docker build rest-on-couch -t ghcr.io/cheminfo/rest-on-couch-client:latest
+docker build --pull rest-on-couch -t ghcr.io/cheminfo/rest-on-couch-client:latest
 docker push ghcr.io/cheminfo/rest-on-couch-client:latest
 ```
