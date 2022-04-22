@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.0.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.3.0...v5.0.0) (2022-04-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* renamed types and made split entry document and group document in separate types
+
+### Features
+
+* add group methods ([4a5765d](https://www.github.com/cheminfo/rest-on-couch-client/commit/4a5765d7e8aeb1add46e962a2dcb4edf6f2f3295))
+
 ## [4.3.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.2.3...v4.3.0) (2022-02-28)
 
 
