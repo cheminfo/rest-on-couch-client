@@ -54,7 +54,7 @@ export interface IEntryDocumentDraft<ContentType, IdType>
   };
 }
 
-const OGroupRight = {
+const groupRights = {
   delete: 'delete',
   read: 'read',
   write: 'write',
@@ -62,7 +62,7 @@ const OGroupRight = {
   addAttachment: 'addAttachment',
 } as const;
 
-type GroupRight = keyof typeof OGroupRight;
+type GroupRight = keyof typeof groupRights;
 export interface IGroupDocument extends INewRevisionMeta {
   _id: string;
   name: string;
