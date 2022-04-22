@@ -18,7 +18,7 @@ export interface IRocDocumentOptions {
   pollInterval?: number;
 }
 
-export interface INewDocument<ContentType, IdType> {
+export interface INewEntryDocument<ContentType, IdType> {
   $id: IdType;
   $content: ContentType;
   $kind: string;
@@ -30,28 +30,49 @@ export interface INewRevisionMeta {
   _rev: string;
 }
 
-export interface IBaseDocument<ContentType, IdType>
-  extends INewDocument<ContentType, IdType>,
+export interface IBaseEntryDocument<ContentType, IdType>
+  extends INewEntryDocument<ContentType, IdType>,
     INewRevisionMeta {
   _id: string;
-  $type: 'entry' | 'group';
+  $type: 'entry';
   $kind: string;
   $creationDate: number;
   $lastModification: string;
 }
 
-export interface IDocument<ContentType, IdType>
-  extends IBaseDocument<ContentType, IdType> {
+export interface IEntryDocument<ContentType, IdType>
+  extends IBaseEntryDocument<ContentType, IdType> {
   _attachments: {
     [key: string]: ICouchAttachmentStub;
   };
 }
 
-export interface IDocumentDraft<ContentType, IdType>
-  extends IBaseDocument<ContentType, IdType> {
+export interface IEntryDocumentDraft<ContentType, IdType>
+  extends IBaseEntryDocument<ContentType, IdType> {
   _attachments?: {
     [key: string]: ICouchAttachment | ICouchInlineAttachment;
   };
+}
+
+const OGroupRight = {
+  delete: 'delete',
+  read: 'read',
+  write: 'write',
+  owner: 'owner',
+  addAttachment: 'addAttachment',
+} as const;
+
+type GroupRight = keyof typeof OGroupRight;
+export interface IGroupDocument extends INewRevisionMeta {
+  _id: string;
+  name: string;
+  $type: 'group';
+  $creationDate: number;
+  $lastModification: string;
+  $owners: string[];
+  customUsers: [];
+  users: string[];
+  rights: GroupRight[];
 }
 
 // ============================
@@ -135,12 +156,12 @@ export interface IQueryResult<
 > {
   id: string;
   key: KeyType;
-  doc?: IDocument<ContentType, IdType>;
+  doc?: IEntryDocument<ContentType, IdType>;
   value: ValueType;
 }
 
 export type IViewResult<ContentType, IdType> = Array<
-  IDocument<ContentType, IdType>
+  IEntryDocument<ContentType, IdType>
 >;
 
 export interface IViewOptions<KeyType = unknown> {
@@ -176,9 +197,14 @@ export interface ICouchUserGroup {
   rights: string[];
 }
 
-export interface ICouchGroupInfo {
+export interface ICouchGroupInfo<PublicUserInfo> {
   name: string;
   description?: string;
   users?: string[];
   rights?: string[];
+  ldapInfo?: PublicUserInfo[];
+}
+
+export interface Ok {
+  ok: true;
 }

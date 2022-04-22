@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { INewDocument, Roc } from '.';
+import { INewEntryDocument, Roc } from '.';
 
 const userToken = 'DanRufB1VWQPmUFa3FGpdxXwL0IQafk2';
 
@@ -34,7 +34,16 @@ export async function resetTestDatabase() {
     $id: userToken,
     $owner: 'admin@cheminfo.org',
     $creationDate: 1634817005933,
-    rights: ['read', 'write', 'create', 'delete', 'addAttachment'],
+    rights: [
+      'read',
+      'write',
+      'owner',
+      'create',
+      'delete',
+      'addAttachment',
+      'createGroup',
+      'readGroup',
+    ],
   });
 }
 
@@ -44,7 +53,7 @@ export const testRoc = new Roc({
   url: 'http://localhost:4000',
 });
 
-type TestNewDoc = INewDocument<{ hello: 'world' }, string>;
+type TestNewDoc = INewEntryDocument<{ hello: 'world' }, string>;
 
 export function getNewEntry(id: string) {
   return {
