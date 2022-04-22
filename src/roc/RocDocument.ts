@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 
 import { FetchAttachmentType, IAttachment } from '..';
 import { RocClientError } from '../Error';
-import { IDocument, IDocumentDraft, INewAttachment } from '../types';
+import { IEntryDocument, IEntryDocumentDraft, INewAttachment } from '../types';
 
 import { addInlineUploads, deleteInlineUploads } from './utils';
 
@@ -20,12 +20,12 @@ export default class RocDocument<
   private request: AxiosInstance;
   public uuid: string;
   public rev?: string;
-  protected value?: IDocument<ContentType, IdType>;
+  protected value?: IEntryDocument<ContentType, IdType>;
   public deleted: boolean;
   private options: RocDocumentOptions;
 
   public constructor(
-    data: string | IDocument<ContentType, IdType>,
+    data: string | IEntryDocument<ContentType, IdType>,
     request: AxiosInstance,
     options: RocDocumentOptions = defaultRocOptions,
   ) {
@@ -53,7 +53,9 @@ export default class RocDocument<
     return response.data;
   }
 
-  public async fetch(rev?: string): Promise<IDocument<ContentType, IdType>> {
+  public async fetch(
+    rev?: string,
+  ): Promise<IEntryDocument<ContentType, IdType>> {
     if (rev) {
       throw new Error('UNIMPLEMENTED fetch with rev');
     }
@@ -66,7 +68,7 @@ export default class RocDocument<
     content: ContentType,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[],
-  ): Promise<IDocument<ContentType, IdType>> {
+  ): Promise<IEntryDocument<ContentType, IdType>> {
     if ('_id' in content) {
       throw new Error(
         'Your content contains an _id proprerty. This is probably an error since you should not pass the entire document, only $content',
@@ -74,7 +76,7 @@ export default class RocDocument<
     }
 
     await this._fetchIfUnfetched();
-    let newDoc: IDocumentDraft<ContentType, IdType> = {
+    let newDoc: IEntryDocumentDraft<ContentType, IdType> = {
       ...this.value,
       $content: content,
     };

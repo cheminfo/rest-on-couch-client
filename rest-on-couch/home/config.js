@@ -51,5 +51,6 @@ module.exports = {
     read: [],
     write: [],
     create: ['anyuser'],
+    createGroup: ['anyuser'],
   },
 };

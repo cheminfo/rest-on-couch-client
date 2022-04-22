@@ -1,13 +1,15 @@
 import axios, { AxiosInstance } from 'axios';
 
-import { ICouchGroupInfo, IDocument } from '..';
+import { ICouchGroupInfo, IEntryDocument } from '..';
 import {
   ICouchUser,
   ICouchUserGroup,
-  INewDocument,
+  IGroupDocument,
+  INewEntryDocument,
   IQueryOptions,
   IReduceQueryOptions,
   IViewOptions,
+  Ok,
 } from '../types';
 
 import Query from './Query';
@@ -44,7 +46,7 @@ function createAxios(url: string, accessToken?: string) {
   });
 }
 
-export default class Roc {
+export default class Roc<PublicUserInfo = unknown> {
   private url: string;
   private dbUrl: string;
   private accessToken?: string;
@@ -67,14 +69,14 @@ export default class Roc {
   }
 
   public async create<ContentType, IdType>(
-    newDocument: INewDocument<ContentType, IdType>,
+    newDocument: INewEntryDocument<ContentType, IdType>,
   ) {
     const response = await this.dbRequest.post('entry', newDocument);
     return this.getDocument<ContentType, IdType>(response.data.id);
   }
 
   public initializeDocument<ContentType, IdType>(
-    data: IDocument<ContentType, IdType>,
+    data: IEntryDocument<ContentType, IdType>,
     options?: RocDocumentOptions,
   ) {
     const url = new URL(`entry/${data._id}/`, this.dbUrl).href;
@@ -150,8 +152,34 @@ export default class Roc {
     return response.data;
   }
 
-  public async getGroupsInfo(): Promise<ICouchGroupInfo[]> {
-    const response = await this.dbRequest.get('groups/info');
+  public async createGroup(name: string): Promise<Ok> {
+    const response = await this.dbRequest.put(`group/${name}`);
+    return response.data;
+  }
+
+  public async getGroup(name: string): Promise<IGroupDocument> {
+    const response = await this.dbRequest.get(`group/${name}`);
+    return response.data;
+  }
+
+  public async getGroupsInfo(options?: {
+    ldapInfo?: boolean;
+  }): Promise<ICouchGroupInfo<PublicUserInfo>[]> {
+    const response = await this.dbRequest.get('groups/info', {
+      params: options,
+    });
+    return response.data;
+  }
+
+  public async getGroupInfo(
+    name: string,
+    options?: {
+      ldapInfo?: boolean;
+    },
+  ): Promise<ICouchGroupInfo<PublicUserInfo>> {
+    const response = await this.dbRequest.get(`group/${name}/info`, {
+      params: options,
+    });
     return response.data;
   }
 }

@@ -2,12 +2,12 @@ import { produce } from 'immer';
 
 import {
   ICouchInlineAttachment,
-  IDocumentDraft,
+  IEntryDocumentDraft,
   INewAttachment,
 } from '../types';
 
 export async function addInlineUploads<ContentType, IdType>(
-  entry: IDocumentDraft<ContentType, IdType>,
+  entry: IEntryDocumentDraft<ContentType, IdType>,
   attachments: INewAttachment[],
 ) {
   const attachmentsBase64 = await Promise.all(
@@ -38,24 +38,27 @@ export async function addInlineUploads<ContentType, IdType>(
     }),
   );
 
-  const newEntry = produce(entry, (draft: IDocumentDraft<unknown, unknown>) => {
-    for (let i = 0; i < attachments.length; i++) {
-      const newAttachment: ICouchInlineAttachment = {
-        content_type: attachments[i].content_type,
-        data: attachmentsBase64[i],
-      };
-      if (!draft._attachments) {
-        draft._attachments = {};
+  const newEntry = produce(
+    entry,
+    (draft: IEntryDocumentDraft<unknown, unknown>) => {
+      for (let i = 0; i < attachments.length; i++) {
+        const newAttachment: ICouchInlineAttachment = {
+          content_type: attachments[i].content_type,
+          data: attachmentsBase64[i],
+        };
+        if (!draft._attachments) {
+          draft._attachments = {};
+        }
+        draft._attachments[attachments[i].name] = newAttachment;
       }
-      draft._attachments[attachments[i].name] = newAttachment;
-    }
-  });
+    },
+  );
 
   return newEntry;
 }
 
 export function deleteInlineUploads<ContentType, IdType>(
-  entry: IDocumentDraft<ContentType, IdType>,
+  entry: IEntryDocumentDraft<ContentType, IdType>,
   attachmentNames: string[],
 ) {
   return produce(entry, (draft) => {
