@@ -1,5 +1,12 @@
 # Changelog
 
+### [5.0.1](https://www.github.com/cheminfo/rest-on-couch-client/compare/v5.0.0...v5.0.1) (2022-04-26)
+
+
+### Bug Fixes
+
+* add missing ldap properties to IGroupDocument interface ([7aeedaa](https://www.github.com/cheminfo/rest-on-couch-client/commit/7aeedaa8063d98efdc3636aa12f8e665bf6e1025))
+
 ## [5.0.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v4.3.0...v5.0.0) (2022-04-22)
 
 
