@@ -70,8 +70,17 @@ export interface IGroupDocument extends INewRevisionMeta {
   $creationDate: number;
   $lastModification: string;
   $owners: string[];
-  customUsers: [];
+  customUsers: string[];
   users: string[];
+  /**
+   * Ldap domain
+   */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  DN?: string;
+  /**
+   * ldap filter
+   */
+  filter?: string;
   rights: GroupRight[];
 }
 
