@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v5.0.1...v5.1.0) (2022-04-27)
+
+
+### Features
+
+* add getUserInfo ([bfc94b5](https://www.github.com/cheminfo/rest-on-couch-client/commit/bfc94b52921a9a94502bcdabeb52600409bef66d))
+
 ### [5.0.1](https://www.github.com/cheminfo/rest-on-couch-client/compare/v5.0.0...v5.0.1) (2022-04-26)
 
 
