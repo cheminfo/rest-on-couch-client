@@ -46,7 +46,7 @@ function createAxios(url: string, accessToken?: string) {
   });
 }
 
-export default class Roc<PublicUserInfo = unknown> {
+export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
   private url: string;
   private dbUrl: string;
   private accessToken?: string;
@@ -144,6 +144,11 @@ export default class Roc<PublicUserInfo = unknown> {
 
   public async getUser(): Promise<ICouchUser> {
     const response = await this.request.get('auth/session');
+    return response.data;
+  }
+
+  public async getUserInfo(): Promise<PrivateUserInfo> {
+    const response = await this.dbRequest.get('userInfo/_me');
     return response.data;
   }
 
