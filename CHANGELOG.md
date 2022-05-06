@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v5.1.0...v5.2.0) (2022-05-06)
+
+
+### Features
+
+* add axios options to all methods ([#46](https://www.github.com/cheminfo/rest-on-couch-client/issues/46)) ([d9fa6a0](https://www.github.com/cheminfo/rest-on-couch-client/commit/d9fa6a0b793cf538f86292c54d9ee43227e37b8a))
+
 ## [5.1.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v5.0.1...v5.1.0) (2022-04-27)
 
 
