@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 
-import { IViewOptions, IViewResult } from '../types';
+import { IViewOptions, IViewResult, RocAxiosRequestOptions } from '../types';
 
 export default class View<ContentType, IdType> {
   private request: AxiosInstance;
@@ -26,12 +26,14 @@ export default class View<ContentType, IdType> {
 
   public async fetch(
     options: IViewOptions = {},
+    axiosOptions?: RocAxiosRequestOptions,
   ): Promise<IViewResult<ContentType, IdType>> {
     const params = Object.assign({}, this.options, options);
 
     const response = await this.request({
       url: '/',
       params,
+      ...axiosOptions,
     });
     return response.data;
   }

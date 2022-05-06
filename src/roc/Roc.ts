@@ -10,6 +10,7 @@ import {
   IReduceQueryOptions,
   IViewOptions,
   Ok,
+  RocAxiosRequestOptions,
 } from '../types';
 
 import Query from './Query';
@@ -70,8 +71,13 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
 
   public async create<ContentType, IdType>(
     newDocument: INewEntryDocument<ContentType, IdType>,
+    axiosOptions?: RocAxiosRequestOptions,
   ) {
-    const response = await this.dbRequest.post('entry', newDocument);
+    const response = await this.dbRequest.post(
+      'entry',
+      newDocument,
+      axiosOptions,
+    );
     return this.getDocument<ContentType, IdType>(response.data.id);
   }
 
@@ -142,36 +148,52 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
     );
   }
 
-  public async getUser(): Promise<ICouchUser> {
-    const response = await this.request.get('auth/session');
+  public async getUser(
+    axiosOptions?: RocAxiosRequestOptions,
+  ): Promise<ICouchUser> {
+    const response = await this.request.get('auth/session', axiosOptions);
     return response.data;
   }
 
-  public async getUserInfo(): Promise<PrivateUserInfo> {
-    const response = await this.dbRequest.get('userInfo/_me');
+  public async getUserInfo(
+    axiosOptions?: RocAxiosRequestOptions,
+  ): Promise<PrivateUserInfo> {
+    const response = await this.dbRequest.get('userInfo/_me', axiosOptions);
     return response.data;
   }
 
-  public async getUserGroups(): Promise<ICouchUserGroup[]> {
-    const response = await this.dbRequest.get('user/_me/groups');
+  public async getUserGroups(
+    axiosOptions?: RocAxiosRequestOptions,
+  ): Promise<ICouchUserGroup[]> {
+    const response = await this.dbRequest.get('user/_me/groups', axiosOptions);
     return response.data;
   }
 
-  public async createGroup(name: string): Promise<Ok> {
-    const response = await this.dbRequest.put(`group/${name}`);
+  public async createGroup(
+    name: string,
+    axiosOptions?: RocAxiosRequestOptions,
+  ): Promise<Ok> {
+    const response = await this.dbRequest.put(`group/${name}`, axiosOptions);
     return response.data;
   }
 
-  public async getGroup(name: string): Promise<IGroupDocument> {
-    const response = await this.dbRequest.get(`group/${name}`);
+  public async getGroup(
+    name: string,
+    axiosOptions?: RocAxiosRequestOptions,
+  ): Promise<IGroupDocument> {
+    const response = await this.dbRequest.get(`group/${name}`, axiosOptions);
     return response.data;
   }
 
-  public async getGroupsInfo(options?: {
-    ldapInfo?: boolean;
-  }): Promise<ICouchGroupInfo<PublicUserInfo>[]> {
+  public async getGroupsInfo(
+    options?: {
+      ldapInfo?: boolean;
+    },
+    axiosOptions?: RocAxiosRequestOptions,
+  ): Promise<ICouchGroupInfo<PublicUserInfo>[]> {
     const response = await this.dbRequest.get('groups/info', {
       params: options,
+      ...axiosOptions,
     });
     return response.data;
   }
@@ -181,9 +203,11 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
     options?: {
       ldapInfo?: boolean;
     },
+    axiosOptions?: RocAxiosRequestOptions,
   ): Promise<ICouchGroupInfo<PublicUserInfo>> {
     const response = await this.dbRequest.get(`group/${name}/info`, {
       params: options,
+      ...axiosOptions,
     });
     return response.data;
   }
