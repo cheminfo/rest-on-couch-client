@@ -10,7 +10,7 @@ import {
   IReduceQueryOptions,
   IViewOptions,
   Ok,
-  RocAxiosOptions,
+  RocAxiosRequestOptions,
 } from '../types';
 
 import Query from './Query';
@@ -71,7 +71,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
 
   public async create<ContentType, IdType>(
     newDocument: INewEntryDocument<ContentType, IdType>,
-    axiosOptions?: RocAxiosOptions,
+    axiosOptions?: RocAxiosRequestOptions,
   ) {
     const response = await this.dbRequest.post(
       'entry',
@@ -148,20 +148,22 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
     );
   }
 
-  public async getUser(axiosOptions?: RocAxiosOptions): Promise<ICouchUser> {
+  public async getUser(
+    axiosOptions?: RocAxiosRequestOptions,
+  ): Promise<ICouchUser> {
     const response = await this.request.get('auth/session', axiosOptions);
     return response.data;
   }
 
   public async getUserInfo(
-    axiosOptions?: RocAxiosOptions,
+    axiosOptions?: RocAxiosRequestOptions,
   ): Promise<PrivateUserInfo> {
     const response = await this.dbRequest.get('userInfo/_me', axiosOptions);
     return response.data;
   }
 
   public async getUserGroups(
-    axiosOptions?: RocAxiosOptions,
+    axiosOptions?: RocAxiosRequestOptions,
   ): Promise<ICouchUserGroup[]> {
     const response = await this.dbRequest.get('user/_me/groups', axiosOptions);
     return response.data;
@@ -169,7 +171,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
 
   public async createGroup(
     name: string,
-    axiosOptions?: RocAxiosOptions,
+    axiosOptions?: RocAxiosRequestOptions,
   ): Promise<Ok> {
     const response = await this.dbRequest.put(`group/${name}`, axiosOptions);
     return response.data;
@@ -177,7 +179,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
 
   public async getGroup(
     name: string,
-    axiosOptions?: RocAxiosOptions,
+    axiosOptions?: RocAxiosRequestOptions,
   ): Promise<IGroupDocument> {
     const response = await this.dbRequest.get(`group/${name}`, axiosOptions);
     return response.data;
@@ -187,7 +189,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
     options?: {
       ldapInfo?: boolean;
     },
-    axiosOptions?: RocAxiosOptions,
+    axiosOptions?: RocAxiosRequestOptions,
   ): Promise<ICouchGroupInfo<PublicUserInfo>[]> {
     const response = await this.dbRequest.get('groups/info', {
       params: options,
@@ -201,7 +203,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
     options?: {
       ldapInfo?: boolean;
     },
-    axiosOptions?: RocAxiosOptions,
+    axiosOptions?: RocAxiosRequestOptions,
   ): Promise<ICouchGroupInfo<PublicUserInfo>> {
     const response = await this.dbRequest.get(`group/${name}/info`, {
       params: options,

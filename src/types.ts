@@ -218,7 +218,7 @@ export interface Ok {
   ok: true;
 }
 
-export type RocAxiosOptions = Pick<
+export type RocAxiosRequestOptions = Pick<
   AxiosRequestConfig,
   'signal' | 'timeout' | 'timeoutErrorMessage'
 >;

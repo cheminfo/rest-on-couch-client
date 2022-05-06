@@ -1,7 +1,11 @@
 import { AxiosInstance } from 'axios';
 
 import { IQueryResult } from '..';
-import { IQueryOptions, PromisedQueryResult, RocAxiosOptions } from '../types';
+import {
+  IQueryOptions,
+  PromisedQueryResult,
+  RocAxiosRequestOptions,
+} from '../types';
 
 export default class Query<KeyType, ValueType, ContentType> {
   public readonly viewName: string;
@@ -28,7 +32,7 @@ export default class Query<KeyType, ValueType, ContentType> {
 
   public async fetch(
     options: IQueryOptions = {},
-    axiosOptions?: RocAxiosOptions,
+    axiosOptions?: RocAxiosRequestOptions,
   ): PromisedQueryResult<KeyType, ValueType, ContentType> {
     const params = Object.assign({}, this.baseOptions, options);
 
