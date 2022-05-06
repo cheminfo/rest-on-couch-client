@@ -1,4 +1,4 @@
-import { ResponseType } from 'axios';
+import { AxiosRequestConfig, ResponseType } from 'axios';
 
 // ============================
 // Roc
@@ -217,3 +217,5 @@ export interface ICouchGroupInfo<PublicUserInfo> {
 export interface Ok {
   ok: true;
 }
+
+export type RocAxiosOptions = Pick<AxiosRequestConfig, 'signal'>;

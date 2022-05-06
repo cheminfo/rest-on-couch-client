@@ -5,6 +5,7 @@ import {
   IReduceQueryOptions,
   IRocReduceQueryParams,
   PromisedReduceQueryResult,
+  RocAxiosOptions,
 } from '../types';
 
 export default class ReduceQuery<KeyType = unknown, ValueType = unknown> {
@@ -30,6 +31,7 @@ export default class ReduceQuery<KeyType = unknown, ValueType = unknown> {
 
   public async fetch(
     options: IReduceQueryOptions = {},
+    axiosOptions?: RocAxiosOptions,
   ): PromisedReduceQueryResult<KeyType, ValueType> {
     const requestOptions: IRocReduceQueryParams = {
       ...this.baseOptions,
@@ -39,6 +41,7 @@ export default class ReduceQuery<KeyType = unknown, ValueType = unknown> {
     const response = await this.request({
       url: '/',
       params: requestOptions,
+      ...axiosOptions,
     });
     return response.data;
   }

@@ -2,7 +2,12 @@ import { AxiosInstance } from 'axios';
 
 import { FetchAttachmentType, IAttachment } from '..';
 import { RocClientError } from '../Error';
-import { IEntryDocument, IEntryDocumentDraft, INewAttachment } from '../types';
+import {
+  IEntryDocument,
+  IEntryDocumentDraft,
+  INewAttachment,
+  RocAxiosOptions,
+} from '../types';
 
 import { addInlineUploads, deleteInlineUploads } from './utils';
 
@@ -44,22 +49,25 @@ export default class RocDocument<
   public async fetchAttachment(
     name: string,
     responseType: FetchAttachmentType<'text' | 'arraybuffer' | 'blob'>,
+    axiosOptions?: RocAxiosOptions,
   ): Promise<Buffer | string> {
     const url = new URL(name, this.getBaseUrl()).href;
     const response = await this.request({
       url,
       responseType: responseType,
+      ...axiosOptions,
     });
     return response.data;
   }
 
   public async fetch(
     rev?: string,
+    axiosOptions?: RocAxiosOptions,
   ): Promise<IEntryDocument<ContentType, IdType>> {
     if (rev) {
       throw new Error('UNIMPLEMENTED fetch with rev');
     }
-    const response = await this.request.get('/');
+    const response = await this.request.get('/', axiosOptions);
     this.value = response.data;
     return response.data;
   }
@@ -68,6 +76,7 @@ export default class RocDocument<
     content: ContentType,
     newAttachments?: INewAttachment[],
     deleteAttachments?: string[],
+    axiosOptions?: RocAxiosOptions,
   ): Promise<IEntryDocument<ContentType, IdType>> {
     if ('_id' in content) {
       throw new Error(
@@ -100,7 +109,7 @@ export default class RocDocument<
     }
 
     // Send the new doc
-    await this.request.put('/', newDoc);
+    await this.request.put('/', newDoc, axiosOptions);
 
     // Get the new document
     // With updated properties ($lastModifification...)
@@ -127,8 +136,8 @@ export default class RocDocument<
     return list;
   }
 
-  public async delete() {
-    const response = await this.request.delete('/');
+  public async delete(axiosOptions?: RocAxiosOptions) {
+    const response = await this.request.delete('/', axiosOptions);
     if (response.data.ok) {
       this.value = undefined;
       this.deleted = true;
@@ -166,8 +175,8 @@ export default class RocDocument<
     throw new Error('UNIMPLEMENTED addGroups');
   }
 
-  public async hasRight(right: string) {
-    const response = await this.request.get(`_rights/${right}`);
+  public async hasRight(right: string, axiosOptions?: RocAxiosOptions) {
+    const response = await this.request.get(`_rights/${right}`, axiosOptions);
     return response.data;
   }
 
