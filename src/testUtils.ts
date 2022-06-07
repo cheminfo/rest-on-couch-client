@@ -55,12 +55,12 @@ export const testRoc = new Roc({
 
 type TestNewDoc = INewEntryDocument<{ hello: 'world' }, string>;
 
-export function getNewEntry(id: string) {
+export function getNewEntry(id: string, groups?: string[]) {
   return {
     $id: id,
     $kind: 'entry',
     $content: { hello: 'world' },
-    $owners: [],
+    $owners: groups ?? [],
   } as TestNewDoc;
 }
 
