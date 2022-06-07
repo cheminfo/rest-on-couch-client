@@ -37,7 +37,7 @@ export default class Query<KeyType, ValueType, ContentType> {
     const params = Object.assign({}, this.baseOptions, options);
 
     const response = await this.request({
-      url: '/',
+      url: `_query/${this.viewName}`,
       params,
       ...axiosOptions,
     });

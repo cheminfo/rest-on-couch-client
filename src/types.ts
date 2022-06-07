@@ -194,6 +194,24 @@ export type PromisedReduceQueryResult<KeyType, ValueType> = Promise<
   Array<IReduceQueryResult<KeyType, ValueType>>
 >;
 
+export type PromisedFindQueryResult<ResultType> = Promise<
+  IFindQueryResult<ResultType>
+>;
+
+export interface IFindQueryResult<ResultType> {
+  docs: Array<ResultType>;
+  warning?: string;
+  execution_status?: IFindExecutionStatus;
+  bookmark?: string;
+}
+
+interface IFindExecutionStatus {
+  total_keys_examined: number;
+  total_docs_examined: number;
+  total_quorum_docs_examined: number;
+  results_returned: number;
+  execution_time_ms: number;
+}
 export interface ICouchUser {
   username: string;
   admin: boolean;
@@ -222,3 +240,22 @@ export type RocAxiosRequestOptions = Pick<
   AxiosRequestConfig,
   'signal' | 'timeout' | 'timeoutErrorMessage'
 >;
+
+export interface IFindOptions {
+  right?: GroupRight;
+  mine?: boolean;
+  group?: string;
+  query?: ICouchMangoQueryOptions;
+}
+
+export interface ICouchMangoQueryOptions {
+  selector?: object;
+  fields?: string[];
+  limit?: number;
+  bookmark?: string;
+  skip?: number;
+  sort?: Array<string> | Array<Record<string, 'asc' | 'desc'>>;
+  use_index?: string;
+  update?: boolean;
+  execution_stats?: boolean;
+}

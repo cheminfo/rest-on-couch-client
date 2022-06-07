@@ -4,6 +4,7 @@ import { ICouchGroupInfo, IEntryDocument } from '..';
 import {
   ICouchUser,
   ICouchUserGroup,
+  IFindOptions,
   IGroupDocument,
   INewEntryDocument,
   IQueryOptions,
@@ -13,6 +14,7 @@ import {
   RocAxiosRequestOptions,
 } from '../types';
 
+import Find from './Find';
 import Query from './Query';
 import ReduceQuery from './ReduceQuery';
 import RocDocument, { RocDocumentOptions } from './RocDocument';
@@ -112,11 +114,12 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
     return new Query<KeyType, ValueType, ContentType>(
       viewName,
       options,
-      createAxios(
-        new URL(`_query/${viewName}`, this.dbUrl).href,
-        this.accessToken,
-      ),
+      this.dbRequest,
     );
+  }
+
+  public getFind<ResultType = unknown>(options: IFindOptions) {
+    return new Find<ResultType>(options, this.dbRequest);
   }
 
   public getReduceQuery<KeyType = unknown, ValueType = unknown>(
