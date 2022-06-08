@@ -26,6 +26,13 @@ docker-compose up -d --build
 npm t
 ```
 
+### Compatibility between client and server
+
+| rest-on-couch version | roc client version | New supported features  |
+| --------------------- | ------------------ | -----------------------
+| v12                   | v5.2.0             | -                       |
+| v13                   | v5.3.0             | find API (mango queries)|
+
 ### In github actions
 
 To update the image github actions is using
