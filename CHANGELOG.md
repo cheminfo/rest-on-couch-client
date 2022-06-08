@@ -7,6 +7,13 @@
 
 * add roc.getFind to query with mango ([004f34d](https://www.github.com/cheminfo/rest-on-couch-client/commit/004f34d7376c52028133e19188cfb2a0d750d141))
 
+## [5.3.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v5.2.0...v5.3.0) (2022-06-08)
+
+
+### Features
+
+* add roc.getFind to query with mango ([004f34d](https://www.github.com/cheminfo/rest-on-couch-client/commit/004f34d7376c52028133e19188cfb2a0d750d141))
+
 ## [5.2.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v5.1.0...v5.2.0) (2022-05-06)
 
 
