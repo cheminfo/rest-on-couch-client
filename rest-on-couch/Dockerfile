@@ -1,4 +1,4 @@
-FROM ghcr.io/cheminfo/rest-on-couch:12
+FROM ghcr.io/cheminfo/rest-on-couch:13
 
 # Install system packages
 RUN apt-get update && apt-get install -y vim
