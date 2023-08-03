@@ -19,7 +19,7 @@ const defaultRocOptions: RocDocumentOptions = {
   allowAttachmentOverwrite: true,
 };
 export default class RocDocument<
-  ContentType = Record<string, unknown>,
+  ContentType extends Record<string, any> = Record<string, unknown>,
   IdType = string,
 > {
   private request: AxiosInstance;
