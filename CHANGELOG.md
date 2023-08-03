@@ -1,5 +1,13 @@
 # Changelog
 
+### [5.3.1](https://www.github.com/cheminfo/rest-on-couch-client/compare/v5.3.0...v5.3.1) (2023-08-03)
+
+
+### Bug Fixes
+
+* do not assume roc doc content is an object ([79c9025](https://www.github.com/cheminfo/rest-on-couch-client/commit/79c9025c5d1f27cb7aa50e488dd0e64272e13c12))
+* move eslint deps to dev deps ([4f568c7](https://www.github.com/cheminfo/rest-on-couch-client/commit/4f568c7f55baae6fe09a5898f184c58e6a441a17))
+
 ## [5.3.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v5.2.0...v5.3.0) (2022-06-08)
 
 
