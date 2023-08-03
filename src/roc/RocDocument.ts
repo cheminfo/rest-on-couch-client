@@ -19,7 +19,7 @@ const defaultRocOptions: RocDocumentOptions = {
   allowAttachmentOverwrite: true,
 };
 export default class RocDocument<
-  ContentType extends Record<string, any> = Record<string, unknown>,
+  ContentType = Record<string, unknown>,
   IdType = string,
 > {
   private request: AxiosInstance;
@@ -78,7 +78,7 @@ export default class RocDocument<
     deleteAttachments?: string[],
     axiosOptions?: RocAxiosRequestOptions,
   ): Promise<IEntryDocument<ContentType, IdType>> {
-    if ('_id' in content) {
+    if (typeof content === 'object' && '_id' in content) {
       throw new Error(
         'Your content contains an _id proprerty. This is probably an error since you should not pass the entire document, only $content',
       );
