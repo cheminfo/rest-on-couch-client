@@ -60,5 +60,8 @@
     "singleQuote": true,
     "tabWidth": 2,
     "trailingComma": "all"
+  },
+  "volta": {
+    "node": "18.17.1"
   }
 }
