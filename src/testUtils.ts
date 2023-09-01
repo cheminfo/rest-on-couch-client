@@ -9,7 +9,7 @@ const couchdbAxios = axios.create({
     username: 'rest-on-couch',
     password: 'admin',
   },
-  baseURL: 'http://localhost:5984/',
+  baseURL: 'http://127.0.0.1:5984/',
 });
 
 export async function resetTestDatabase() {
