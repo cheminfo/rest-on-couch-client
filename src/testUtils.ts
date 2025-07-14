@@ -14,12 +14,13 @@ const couchdbAxios = axios.create({
 
 export async function resetTestDatabase() {
   const allDocuments = await couchdbAxios.get('/test/_all_docs');
-  for (let doc of allDocuments.data.rows) {
+  for (const doc of allDocuments.data.rows) {
     if (
       !doc.id.startsWith('_design/') &&
       doc.id !== 'defaultGroups' &&
       doc.id !== 'rights'
     ) {
+      // eslint-disable-next-line no-await-in-loop
       await couchdbAxios.delete(`/test/${doc.id}`, {
         params: {
           rev: doc.value.rev,

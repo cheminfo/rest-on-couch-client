@@ -63,7 +63,7 @@ describe('documents', () => {
 
   it('should fail if trying to update a document but the content contains the _id property', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const doc: RocDocument<any, string> = await testRoc.create({
+    const doc: RocDocument<any> = await testRoc.create({
       $id: 'docToUpdate',
       $kind: 'entry',
       $content: { hello: 'world' },

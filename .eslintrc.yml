@@ -1,4 +1,4 @@
-extends: '@zakodium/eslint-config/typescript'
+extends: 'zakodium/ts'
 env:
   browser: true
 parserOptions:

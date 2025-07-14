@@ -28,7 +28,7 @@ export default class View<ContentType, IdType> {
     options: IViewOptions = {},
     axiosOptions?: RocAxiosRequestOptions,
   ): Promise<IViewResult<ContentType, IdType>> {
-    const params = Object.assign({}, this.options, options);
+    const params = { ...this.options, ...options };
 
     const response = await this.request({
       url: '/',

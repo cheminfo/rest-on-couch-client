@@ -46,16 +46,16 @@ test('get groups info', async () => {
   await testRoc.createGroup('group2');
   const groupsInfo = await testRoc.getGroupsInfo();
   expect(groupsInfo).toMatchInlineSnapshot(`
-    Array [
-      Object {
+    [
+      {
         "name": "group1",
-        "rights": Array [],
-        "users": Array [],
+        "rights": [],
+        "users": [],
       },
-      Object {
+      {
         "name": "group2",
-        "rights": Array [],
-        "users": Array [],
+        "rights": [],
+        "users": [],
       },
     ]
   `);
@@ -64,18 +64,18 @@ test('get groups info', async () => {
 test('get groups info with ldap info', async () => {
   const groupsInfo = await testRoc.getGroupsInfo({ ldapInfo: true });
   expect(groupsInfo).toMatchInlineSnapshot(`
-    Array [
-      Object {
-        "ldapInfo": Array [],
+    [
+      {
+        "ldapInfo": [],
         "name": "group1",
-        "rights": Array [],
-        "users": Array [],
+        "rights": [],
+        "users": [],
       },
-      Object {
-        "ldapInfo": Array [],
+      {
+        "ldapInfo": [],
         "name": "group2",
-        "rights": Array [],
-        "users": Array [],
+        "rights": [],
+        "users": [],
       },
     ]
   `);
