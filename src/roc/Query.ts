@@ -34,7 +34,7 @@ export default class Query<KeyType, ValueType, ContentType> {
     options: IQueryOptions = {},
     axiosOptions?: RocAxiosRequestOptions,
   ): PromisedQueryResult<KeyType, ValueType, ContentType> {
-    const params = Object.assign({}, this.baseOptions, options);
+    const params = { ...this.baseOptions, ...options };
 
     const response = await this.request({
       url: `_query/${this.viewName}`,

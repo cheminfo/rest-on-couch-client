@@ -42,16 +42,12 @@ export interface IBaseEntryDocument<ContentType, IdType>
 
 export interface IEntryDocument<ContentType, IdType>
   extends IBaseEntryDocument<ContentType, IdType> {
-  _attachments: {
-    [key: string]: ICouchAttachmentStub;
-  };
+  _attachments: Record<string, ICouchAttachmentStub>;
 }
 
 export interface IEntryDocumentDraft<ContentType, IdType>
   extends IBaseEntryDocument<ContentType, IdType> {
-  _attachments?: {
-    [key: string]: ICouchAttachment | ICouchInlineAttachment;
-  };
+  _attachments?: Record<string, ICouchAttachment | ICouchInlineAttachment>;
 }
 
 const groupRights = {
@@ -124,9 +120,7 @@ export interface ICouchAttachmentData extends ICouchAttachment {
   data: string;
 }
 
-export interface ICouchAttachments {
-  [key: string]: ICouchAttachmentStub;
-}
+export type ICouchAttachments = Record<string, ICouchAttachmentStub>;
 
 export type FetchAttachmentType<T extends ResponseType> = T;
 
@@ -199,7 +193,7 @@ export type PromisedFindQueryResult<ResultType> = Promise<
 >;
 
 export interface IFindQueryResult<ResultType> {
-  docs: Array<ResultType>;
+  docs: ResultType[];
   warning?: string;
   execution_status?: IFindExecutionStatus;
   bookmark?: string;
@@ -254,7 +248,7 @@ export interface ICouchMangoQueryOptions {
   limit?: number;
   bookmark?: string;
   skip?: number;
-  sort?: Array<string> | Array<Record<string, 'asc' | 'desc'>>;
+  sort?: string[] | Array<Record<string, 'asc' | 'desc'>>;
   use_index?: string;
   update?: boolean;
   execution_stats?: boolean;

@@ -193,7 +193,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
       ldapInfo?: boolean;
     },
     axiosOptions?: RocAxiosRequestOptions,
-  ): Promise<ICouchGroupInfo<PublicUserInfo>[]> {
+  ): Promise<Array<ICouchGroupInfo<PublicUserInfo>>> {
     const response = await this.dbRequest.get('groups/info', {
       params: options,
       ...axiosOptions,

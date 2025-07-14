@@ -1,8 +1,6 @@
-version: '2'
-
 services:
   couchdb:
-    image: docker.io/couchdb:3.2
+    image: docker.io/couchdb:3.5
     environment:
       COUCHDB_USER: admin
       COUCHDB_PASSWORD: admin

@@ -54,7 +54,7 @@ export default class RocDocument<
     const url = new URL(name, this.getBaseUrl()).href;
     const response = await this.request({
       url,
-      responseType: responseType,
+      responseType,
       ...axiosOptions,
     });
     return response.data;
@@ -96,7 +96,7 @@ export default class RocDocument<
 
     if (newAttachments !== undefined) {
       if (!this.options.allowAttachmentOverwrite) {
-        for (let attachment of newAttachments) {
+        for (const attachment of newAttachments) {
           if (newDoc._attachments?.[attachment.name]) {
             throw new RocClientError(
               `overwriting ${attachment.name}, overwriting attachments is forbidden`,
