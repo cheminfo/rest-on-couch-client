@@ -36,6 +36,9 @@ export default class Query<KeyType, ValueType, ContentType> {
   ): PromisedQueryResult<KeyType, ValueType, ContentType> {
     const params = { ...this.baseOptions, ...options };
 
+    if (!params.mine) delete params.mine;
+    if (!params.include_docs) delete params.include_docs;
+
     const response = await this.request({
       url: `_query/${this.viewName}`,
       params,
