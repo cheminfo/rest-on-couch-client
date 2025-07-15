@@ -1,5 +1,21 @@
 # Changelog
 
+## [6.0.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v5.3.1...v6.0.0) (2025-07-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js >=20 is now required
+
+### Features
+
+* update dependencies ([a37b0b3](https://www.github.com/cheminfo/rest-on-couch-client/commit/a37b0b3d60dbb4a60dd167a3ec306aa5130006e1))
+
+
+### Bug Fixes
+
+* don't send falsy query options ([28e160b](https://www.github.com/cheminfo/rest-on-couch-client/commit/28e160b1972f7813ea7d1e61ad32dc6f28ade2b2))
+
 ### [5.3.1](https://www.github.com/cheminfo/rest-on-couch-client/compare/v5.3.0...v5.3.1) (2023-08-03)
 
 
