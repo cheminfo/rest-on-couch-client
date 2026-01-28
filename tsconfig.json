@@ -4,7 +4,6 @@
   "compilerOptions": {
     "outDir": "./lib",
     "lib": ["DOM", "ES2023"],
-    "types": ["node"],
-    "noImplicitAny": true
+    "types": ["node"]
   }
 }
