@@ -12,14 +12,13 @@ describe('Axios errors', () => {
   });
 
   it('error data has been fetched', async () => {
-    await expect(testRoc.getQuery('entryById').fetch()).rejects.toSatisfy(
-      (error) => {
-        const errorData = getRocClientError(error);
-        return (
-          errorData?.code === 'unauthorized' &&
-          errorData?.error === 'entryById is not a view with owner'
-        );
-      },
-    );
+    await expect(testRoc.getQuery('entryById')).rejects.toSatisfy((error) => {
+      const errorData = getRocClientError(error);
+      console.log(errorData);
+      return (
+        errorData?.code === 'unauthorized' &&
+        errorData?.error === 'entryById is not a view with owner'
+      );
+    });
   });
 });
