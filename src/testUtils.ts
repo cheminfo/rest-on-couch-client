@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import type { INewEntryDocument } from './index.ts';
+import type { RocNewEntryDocument } from './index.ts';
 import { Roc } from './index.ts';
 
 const userToken = 'DanRufB1VWQPmUFa3FGpdxXwL0IQafk2';
@@ -55,7 +55,7 @@ export const testRoc = new Roc({
   url: 'http://localhost:4000',
 });
 
-type TestNewDoc = INewEntryDocument<{ hello: 'world' }, string>;
+type TestNewDoc = RocNewEntryDocument<{ hello: 'world' }, string>;
 
 export function getNewEntry(id: string, groups?: string[]) {
   return {

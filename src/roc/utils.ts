@@ -1,15 +1,15 @@
 import { produce } from 'immer';
 
+import type { RocNewAttachment } from '../types.ts';
 import type {
-  ICouchInlineAttachment,
-  IEntryDocumentDraft,
-  INewAttachment,
-} from '../types.ts';
+  CouchInlineAttachment,
+  EntryDocumentDraft,
+} from '../types_internal.ts';
 import { assert } from '../util/assert.ts';
 
 export async function addInlineUploads<ContentType, IdType>(
-  entry: IEntryDocumentDraft<ContentType, IdType>,
-  attachments: INewAttachment[],
+  entry: EntryDocumentDraft<ContentType, IdType>,
+  attachments: RocNewAttachment[],
 ) {
   const attachmentsBase64 = await Promise.all(
     attachments.map((attachment) => {
@@ -39,31 +39,26 @@ export async function addInlineUploads<ContentType, IdType>(
     }),
   );
 
-  const newEntry = produce(
-    entry,
-    (draft: IEntryDocumentDraft<unknown, unknown>) => {
-      for (let i = 0; i < attachments.length; i++) {
-        const attachment = attachments[i];
-        const data = attachmentsBase64[i];
-        assert(attachment, 'Unreachable: attachment is undefined');
-        assert(data, 'Unreachable: base64 data is undefined');
-        const newAttachment: ICouchInlineAttachment = {
-          content_type: attachment.content_type,
-          data,
-        };
-        if (!draft._attachments) {
-          draft._attachments = {};
-        }
-        draft._attachments[attachment.name] = newAttachment;
+  return produce(entry, (draft: EntryDocumentDraft<unknown, unknown>) => {
+    for (let i = 0; i < attachments.length; i++) {
+      const attachment = attachments[i];
+      const data = attachmentsBase64[i];
+      assert(attachment, 'Unreachable: attachment is undefined');
+      assert(data, 'Unreachable: base64 data is undefined');
+      const newAttachment: CouchInlineAttachment = {
+        content_type: attachment.content_type,
+        data,
+      };
+      if (!draft._attachments) {
+        draft._attachments = {};
       }
-    },
-  );
-
-  return newEntry;
+      draft._attachments[attachment.name] = newAttachment;
+    }
+  });
 }
 
 export function deleteInlineUploads<ContentType, IdType>(
-  entry: IEntryDocumentDraft<ContentType, IdType>,
+  entry: EntryDocumentDraft<ContentType, IdType>,
   attachmentNames: string[],
 ) {
   return produce(entry, (draft) => {

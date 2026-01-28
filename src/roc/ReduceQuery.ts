@@ -1,20 +1,19 @@
 import type { AxiosInstance } from 'axios';
 
-import type { IReduceQueryResult } from '../index.ts';
+import type { RocReduceQueryResult } from '../index.ts';
 import type {
-  IReduceQueryOptions,
-  IRocReduceQueryParams,
-  PromisedReduceQueryResult,
   RocAxiosRequestOptions,
+  RocReduceQueryOptions,
+  RocReduceQueryParams,
 } from '../types.ts';
 
-export default class ReduceQuery<KeyType = unknown, ValueType = unknown> {
+export class ReduceQuery<KeyType = unknown, ValueType = unknown> {
   public readonly viewName: string;
   private request: AxiosInstance;
-  private baseOptions: IReduceQueryOptions;
+  private baseOptions: RocReduceQueryOptions;
   public constructor(
     viewName: string,
-    options: IReduceQueryOptions,
+    options: RocReduceQueryOptions,
     request: AxiosInstance,
   ) {
     this.viewName = viewName;
@@ -23,17 +22,17 @@ export default class ReduceQuery<KeyType = unknown, ValueType = unknown> {
   }
 
   public then(
-    resolve: (value: Array<IReduceQueryResult<KeyType, ValueType>>) => void,
+    resolve: (value: Array<RocReduceQueryResult<KeyType, ValueType>>) => void,
     reject: (error: Error) => void,
   ) {
     this.fetch().then(resolve, reject);
   }
 
   public async fetch(
-    options: IReduceQueryOptions = {},
+    options: RocReduceQueryOptions = {},
     axiosOptions?: RocAxiosRequestOptions,
-  ): PromisedReduceQueryResult<KeyType, ValueType> {
-    const requestOptions: IRocReduceQueryParams = {
+  ): Promise<Array<RocReduceQueryResult<KeyType, ValueType>>> {
+    const requestOptions: RocReduceQueryParams = {
       ...this.baseOptions,
       ...options,
       reduce: true,

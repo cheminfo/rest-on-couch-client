@@ -1,19 +1,19 @@
 import type { AxiosInstance } from 'axios';
 
 import type {
-  IViewOptions,
-  IViewResult,
   RocAxiosRequestOptions,
+  RocViewOptions,
+  RocViewResult,
 } from '../types.ts';
 
 export default class View<ContentType, IdType> {
   private request: AxiosInstance;
-  private options: IViewOptions;
+  private options: RocViewOptions;
   public readonly viewName: string;
 
   public constructor(
     viewName: string,
-    options: IViewOptions,
+    options: RocViewOptions,
     request: AxiosInstance,
   ) {
     this.request = request;
@@ -22,16 +22,16 @@ export default class View<ContentType, IdType> {
   }
 
   public then(
-    resolve: (value: IViewResult<ContentType, IdType>) => void,
+    resolve: (value: RocViewResult<ContentType, IdType>) => void,
     reject: (error: Error) => void,
   ) {
     this.fetch().then(resolve, reject);
   }
 
   public async fetch(
-    options: IViewOptions = {},
+    options: RocViewOptions = {},
     axiosOptions?: RocAxiosRequestOptions,
-  ): Promise<IViewResult<ContentType, IdType>> {
+  ): Promise<RocViewResult<ContentType, IdType>> {
     const params = { ...this.options, ...options };
 
     const response = await this.request({

@@ -1,13 +1,13 @@
 import type { AxiosInstance } from 'axios';
 
 import { RocClientError } from '../Error.ts';
-import type { FetchAttachmentType, IAttachment } from '../index.ts';
+import type { RocAttachment } from '../index.ts';
 import type {
-  IEntryDocument,
-  IEntryDocumentDraft,
-  INewAttachment,
   RocAxiosRequestOptions,
+  RocEntryDocument,
+  RocNewAttachment,
 } from '../types.ts';
+import type { EntryDocumentDraft } from '../types_internal.ts';
 import { assert } from '../util/assert.ts';
 
 import { addInlineUploads, deleteInlineUploads } from './utils.ts';
@@ -19,19 +19,19 @@ export interface RocDocumentOptions {
 const defaultRocOptions: RocDocumentOptions = {
   allowAttachmentOverwrite: true,
 };
-export default class RocDocument<
+export class RocDocument<
   ContentType = Record<string, unknown>,
   IdType = string,
 > {
   private request: AxiosInstance;
   public uuid: string;
   public rev?: string;
-  protected value?: IEntryDocument<ContentType, IdType>;
+  protected value?: RocEntryDocument<ContentType, IdType>;
   public deleted: boolean;
   private options: RocDocumentOptions;
 
   public constructor(
-    data: string | IEntryDocument<ContentType, IdType>,
+    data: string | RocEntryDocument<ContentType, IdType>,
     request: AxiosInstance,
     options: RocDocumentOptions = defaultRocOptions,
   ) {
@@ -49,7 +49,7 @@ export default class RocDocument<
 
   public async fetchAttachment(
     name: string,
-    responseType: FetchAttachmentType<'text' | 'arraybuffer' | 'blob'>,
+    responseType: 'text' | 'arraybuffer' | 'blob',
     axiosOptions?: RocAxiosRequestOptions,
   ): Promise<Buffer | string> {
     const url = new URL(name, this.getBaseUrl()).href;
@@ -64,7 +64,7 @@ export default class RocDocument<
   public async fetch(
     rev?: string,
     axiosOptions?: RocAxiosRequestOptions,
-  ): Promise<IEntryDocument<ContentType, IdType>> {
+  ): Promise<RocEntryDocument<ContentType, IdType>> {
     if (rev) {
       throw new Error('UNIMPLEMENTED fetch with rev');
     }
@@ -75,10 +75,10 @@ export default class RocDocument<
 
   public async update(
     content: ContentType,
-    newAttachments?: INewAttachment[],
+    newAttachments?: RocNewAttachment[],
     deleteAttachments?: string[],
     axiosOptions?: RocAxiosRequestOptions,
-  ): Promise<IEntryDocument<ContentType, IdType>> {
+  ): Promise<RocEntryDocument<ContentType, IdType>> {
     if (content && typeof content === 'object' && '_id' in content) {
       throw new Error(
         'Your content contains an _id proprerty. This is probably an error since you should not pass the entire document, only $content',
@@ -87,7 +87,7 @@ export default class RocDocument<
 
     await this._fetchIfUnfetched();
     assert(this.value, 'Unreachable: fetched value is undefined');
-    let newDoc: IEntryDocumentDraft<ContentType, IdType> = {
+    let newDoc: EntryDocumentDraft<ContentType, IdType> = {
       ...this.value,
       $content: content,
     };
@@ -121,7 +121,7 @@ export default class RocDocument<
     return this.value;
   }
 
-  public getAttachmentList(): IAttachment[] {
+  public getAttachmentList(): RocAttachment[] {
     if (this.value === undefined) {
       throw new RocClientError(
         'You must fetch the document in order to get the attachment list',
@@ -147,7 +147,7 @@ export default class RocDocument<
       throw new Error('document was not deleted');
     }
   }
-  public getAttachment(name: string): IAttachment {
+  public getAttachment(name: string): RocAttachment {
     if (this.value === undefined) {
       throw new RocClientError(
         'You must fetch the document in order to get an attachment',

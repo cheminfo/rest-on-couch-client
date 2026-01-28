@@ -1,33 +1,19 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { resetTestDatabase, testRoc } from '../../testUtils.ts';
-import type { Ok } from '../../types.ts';
-import type { RocGroupPermission } from '../Roc.ts';
+import type { RocOkResponse } from '../../types.ts';
+import { groupRights } from '../../util/constants.ts';
 
-const ok: Ok = { ok: true };
+const ok: RocOkResponse = { ok: true };
 
 beforeAll(async () => {
   await resetTestDatabase();
 });
 
-// Makes sure we are testing all the possible permissions defined by the types
-const groupMap: Record<RocGroupPermission, true> = {
-  addAttachment: true,
-  create: true,
-  createGroup: true,
-  delete: true,
-  owner: true,
-  read: true,
-  readGroup: true,
-  readImport: true,
-  write: true,
-  writeGroup: true,
-};
-const allGroups = Object.keys(groupMap) as RocGroupPermission[];
-
 describe('create and update groups', () => {
   it('create group', async () => {
-    const group = await testRoc.createGroup('group1');
+    const groupName = crypto.randomUUID();
+    const group = await testRoc.createGroup(groupName);
 
     expect(group).toStrictEqual(ok);
   });
@@ -60,7 +46,7 @@ describe('create and update groups', () => {
   it('add permission to group', async () => {
     const groupName = crypto.randomUUID();
     await testRoc.createGroup(groupName);
-    const data = await testRoc.addPermissionToGroup(groupName, 'read');
+    const data = await testRoc.addRightToGroup(groupName, 'read');
 
     expect(data).toStrictEqual(ok);
 
@@ -72,21 +58,21 @@ describe('create and update groups', () => {
   it('adds permission to group', async () => {
     const groupName = crypto.randomUUID();
     await testRoc.createGroup(groupName);
-    for (const permission of allGroups) {
+    for (const permission of groupRights) {
       // rest-on-couch does not support concurrent requests without the possibility of conflicts.
       // eslint-disable-next-line no-await-in-loop
-      await testRoc.addPermissionToGroup(groupName, permission);
+      await testRoc.addRightToGroup(groupName, permission);
     }
     const group = await testRoc.getGroup(groupName);
 
-    expect(group.rights.toSorted()).toStrictEqual(allGroups);
+    expect(group.rights.toSorted()).toStrictEqual(groupRights);
   });
 
   it('remove permissions from group', async () => {
     const groupName = crypto.randomUUID();
     await testRoc.createGroup(groupName);
-    await testRoc.addPermissionToGroup(groupName, 'read');
-    const data = await testRoc.removePermissionFromGroup(groupName, 'read');
+    await testRoc.addRightToGroup(groupName, 'read');
+    const data = await testRoc.removeRightFromGroup(groupName, 'read');
 
     expect(data).toStrictEqual(ok);
 

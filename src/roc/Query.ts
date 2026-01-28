@@ -1,19 +1,15 @@
 import type { AxiosInstance } from 'axios';
 
-import type { IQueryResult } from '../index.ts';
-import type {
-  IQueryOptions,
-  PromisedQueryResult,
-  RocAxiosRequestOptions,
-} from '../types.ts';
+import type { RocQueryResult } from '../index.ts';
+import type { RocAxiosRequestOptions, RocQueryOptions } from '../types.ts';
 
-export default class Query<KeyType, ValueType, ContentType> {
+export class Query<KeyType, ValueType, ContentType> {
   public readonly viewName: string;
-  protected baseOptions: IQueryOptions;
+  protected baseOptions: RocQueryOptions;
   private request: AxiosInstance;
   public constructor(
     viewName: string,
-    options: IQueryOptions,
+    options: RocQueryOptions,
     request: AxiosInstance,
   ) {
     this.request = request;
@@ -23,7 +19,7 @@ export default class Query<KeyType, ValueType, ContentType> {
 
   public then(
     resolve: (
-      value: Array<IQueryResult<KeyType, ValueType, ContentType>>,
+      value: Array<RocQueryResult<KeyType, ValueType, ContentType>>,
     ) => void,
     reject: (error: Error) => void,
   ) {
@@ -31,9 +27,9 @@ export default class Query<KeyType, ValueType, ContentType> {
   }
 
   public async fetch(
-    options: IQueryOptions = {},
+    options: RocQueryOptions = {},
     axiosOptions?: RocAxiosRequestOptions,
-  ): PromisedQueryResult<KeyType, ValueType, ContentType> {
+  ): Promise<Array<RocQueryResult<KeyType, ValueType, ContentType>>> {
     const params = { ...this.baseOptions, ...options };
 
     if (!params.mine) delete params.mine;
