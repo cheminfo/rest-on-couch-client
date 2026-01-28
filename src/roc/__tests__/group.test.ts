@@ -1,90 +1,168 @@
-import { beforeAll, expect, test } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 import { resetTestDatabase, testRoc } from '../../testUtils.ts';
+import type { Ok } from '../../types.ts';
+import type { RocGroupPermission } from '../Roc.ts';
+
+const ok: Ok = { ok: true };
 
 beforeAll(async () => {
   await resetTestDatabase();
 });
 
-test('create group', async () => {
-  const group = await testRoc.createGroup('group1');
+// Makes sure we are testing all the possible permissions defined by the types
+const groupMap: Record<RocGroupPermission, true> = {
+  addAttachment: true,
+  create: true,
+  createGroup: true,
+  delete: true,
+  owner: true,
+  read: true,
+  readGroup: true,
+  readImport: true,
+  write: true,
+  writeGroup: true,
+};
+const allGroups = Object.keys(groupMap) as RocGroupPermission[];
 
-  expect(group).toStrictEqual({ ok: true });
-});
+describe('create and update groups', () => {
+  it('create group', async () => {
+    const group = await testRoc.createGroup('group1');
 
-test('get group', async () => {
-  const group = await testRoc.getGroup('group1');
+    expect(group).toStrictEqual(ok);
+  });
 
-  expect(group).toMatchObject({
-    $owners: ['admin@cheminfo.org'],
-    $type: 'group',
-    customUsers: [],
-    name: 'group1',
-    rights: [],
-    users: [],
+  it('add user to group', async () => {
+    const groupName = crypto.randomUUID();
+    await testRoc.createGroup(groupName);
+    const data = await testRoc.addUserToGroup(groupName, 'john@doe.com');
+
+    expect(data).toStrictEqual(ok);
+
+    const group = await testRoc.getGroup(groupName);
+
+    expect(group.users).toStrictEqual(['john@doe.com']);
+  });
+
+  it('removes user from group', async () => {
+    const groupName = crypto.randomUUID();
+    await testRoc.createGroup(groupName);
+    await testRoc.addUserToGroup(groupName, 'john@doe.com');
+    const data = await testRoc.removeUserFromGroup(groupName, 'john@doe.com');
+
+    expect(data).toStrictEqual(ok);
+
+    const group = await testRoc.getGroup(groupName);
+
+    expect(group.users).toStrictEqual([]);
+  });
+
+  it('add permission to group', async () => {
+    const groupName = crypto.randomUUID();
+    await testRoc.createGroup(groupName);
+    const data = await testRoc.addPermissionToGroup(groupName, 'read');
+
+    expect(data).toStrictEqual(ok);
+
+    const group = await testRoc.getGroup(groupName);
+
+    expect(group.rights).toStrictEqual(['read']);
+  });
+
+  it('adds permission to group', async () => {
+    const groupName = crypto.randomUUID();
+    await testRoc.createGroup(groupName);
+    for (const permission of allGroups) {
+      // rest-on-couch does not support concurrent requests without the possibility of conflicts.
+      // eslint-disable-next-line no-await-in-loop
+      await testRoc.addPermissionToGroup(groupName, permission);
+    }
+    const group = await testRoc.getGroup(groupName);
+
+    expect(group.rights.toSorted()).toStrictEqual(allGroups);
+  });
+
+  it('remove permissions from group', async () => {
+    const groupName = crypto.randomUUID();
+    await testRoc.createGroup(groupName);
+    await testRoc.addPermissionToGroup(groupName, 'read');
+    const data = await testRoc.removePermissionFromGroup(groupName, 'read');
+
+    expect(data).toStrictEqual(ok);
+
+    const group = await testRoc.getGroup(groupName);
+
+    expect(group.rights).toStrictEqual([]);
   });
 });
 
-test('get group info', async () => {
-  const groupInfo = await testRoc.getGroupInfo('group1');
+describe('get groups', () => {
+  it('get group', async () => {
+    const groupName = crypto.randomUUID();
+    await testRoc.createGroup(groupName);
+    const group = await testRoc.getGroup(groupName);
 
-  expect(groupInfo).toMatchObject({
-    name: 'group1',
-    rights: [],
-    users: [],
+    expect(group).toMatchObject({
+      $owners: ['admin@cheminfo.org'],
+      $type: 'group',
+      customUsers: [],
+      name: groupName,
+      rights: [],
+      users: [],
+    });
   });
-});
 
-test('get group info with ldap info', async () => {
-  const groupInfo = await testRoc.getGroupInfo('group1', {
-    ldapInfo: true,
+  it('get group info', async () => {
+    const groupName = crypto.randomUUID();
+    await testRoc.createGroup(groupName);
+    const groupInfo = await testRoc.getGroupInfo(groupName);
+
+    expect(groupInfo).toMatchObject({
+      name: groupName,
+      rights: [],
+      users: [],
+    });
   });
 
-  expect(groupInfo).toMatchObject({
-    name: 'group1',
-    rights: [],
-    users: [],
-    ldapInfo: [],
+  it('get group info with ldap info', async () => {
+    const groupName = crypto.randomUUID();
+    await testRoc.createGroup(groupName);
+    const groupInfo = await testRoc.getGroupInfo(groupName, {
+      ldapInfo: true,
+    });
+
+    expect(groupInfo).toMatchObject({
+      name: groupName,
+      rights: [],
+      users: [],
+      ldapInfo: [],
+    });
   });
-});
 
-test('get groups info', async () => {
-  await testRoc.createGroup('group2');
-  const groupsInfo = await testRoc.getGroupsInfo();
+  it('get groups info', async () => {
+    const groupName = crypto.randomUUID();
+    await testRoc.createGroup(groupName);
+    const groupsInfo = await testRoc.getGroupsInfo();
+    const group = groupsInfo.find((g) => g.name === groupName);
 
-  expect(groupsInfo).toMatchInlineSnapshot(`
-    [
-      {
-        "name": "group1",
-        "rights": [],
-        "users": [],
-      },
-      {
-        "name": "group2",
-        "rights": [],
-        "users": [],
-      },
-    ]
-  `);
-});
+    expect(group).toStrictEqual({
+      name: groupName,
+      rights: [],
+      users: [],
+    });
+  });
 
-test('get groups info with ldap info', async () => {
-  const groupsInfo = await testRoc.getGroupsInfo({ ldapInfo: true });
+  it('get groups info with ldap info', async () => {
+    const groupName = crypto.randomUUID();
+    await testRoc.createGroup(groupName);
+    const groupsInfo = await testRoc.getGroupsInfo({ ldapInfo: true });
+    const group = groupsInfo.find((g) => g.name === groupName);
 
-  expect(groupsInfo).toMatchInlineSnapshot(`
-    [
-      {
-        "ldapInfo": [],
-        "name": "group1",
-        "rights": [],
-        "users": [],
-      },
-      {
-        "ldapInfo": [],
-        "name": "group2",
-        "rights": [],
-        "users": [],
-      },
-    ]
-  `);
+    expect(group).toStrictEqual({
+      ldapInfo: [],
+      name: groupName,
+      rights: [],
+      users: [],
+    });
+  });
 });

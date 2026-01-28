@@ -13,7 +13,7 @@
   "scripts": {
     "check-types": "tsc --noEmit",
     "clean": "rimraf lib",
-    "eslint": "eslint . --cache",
+    "eslint": "eslint . --cache --max-warnings=0",
     "eslint-fix": "npm run eslint -- --fix",
     "prepare": "npm run tsc",
     "prettier": "prettier --check .",

@@ -28,6 +28,18 @@ export interface IRocConfig {
   accessToken?: string;
 }
 
+export type RocGroupPermission =
+  | 'delete'
+  | 'read'
+  | 'write'
+  | 'create'
+  | 'readGroup'
+  | 'writeGroup'
+  | 'createGroup'
+  | 'readImport'
+  | 'owner'
+  | 'addAttachment';
+
 function createAxios(url: string, accessToken?: string) {
   return axios.create({
     baseURL: url,
@@ -179,6 +191,45 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
     axiosOptions?: RocAxiosRequestOptions,
   ): Promise<Ok> {
     const response = await this.dbRequest.put(`group/${name}`, axiosOptions);
+    return response.data;
+  }
+
+  public async addUserToGroup(
+    groupName: string,
+    user: string,
+    axiosOptions?: RocAxiosRequestOptions,
+  ) {
+    const response = await this.dbRequest.put<Ok>(
+      `group/${groupName}/user/${user}`,
+      axiosOptions,
+    );
+    return response.data;
+  }
+
+  public async addPermissionToGroup(
+    groupName: string,
+    permission: RocGroupPermission,
+  ) {
+    const response = await this.dbRequest.put<Ok>(
+      `group/${groupName}/right/${permission}`,
+    );
+    return response.data;
+  }
+
+  public async removeUserFromGroup(groupName: string, user: string) {
+    const response = await this.dbRequest.delete<Ok>(
+      `group/${groupName}/user/${user}`,
+    );
+    return response.data;
+  }
+
+  public async removePermissionFromGroup(
+    groupName: string,
+    permission: RocGroupPermission,
+  ) {
+    const response = await this.dbRequest.delete<Ok>(
+      `group/${groupName}/right/${permission}`,
+    );
     return response.data;
   }
 
