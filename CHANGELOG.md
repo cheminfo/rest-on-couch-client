@@ -1,5 +1,16 @@
 # Changelog
 
+## [7.0.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v6.0.0...v7.0.0) (2026-01-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* * chore: upgrade dependencies and make package ESM only
+
+### Miscellaneous Chores
+
+* upgrade dependencies and make package ESM only ([#57](https://www.github.com/cheminfo/rest-on-couch-client/issues/57)) ([d008a53](https://www.github.com/cheminfo/rest-on-couch-client/commit/d008a537074a90ff32bfd4e81440362a800e2370))
+
 ## [6.0.0](https://www.github.com/cheminfo/rest-on-couch-client/compare/v5.3.1...v6.0.0) (2025-07-15)
 
 
