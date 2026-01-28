@@ -1,6 +1,8 @@
-import { Roc } from '../index';
+import { expect, test } from 'vitest';
 
-global.window = {
+import { Roc } from '../index.ts';
+
+globalThis.window = {
   // @ts-expect-error Monkey-patching for tests.
   location: {
     origin: 'https://www.rocserver.com',
@@ -12,6 +14,7 @@ test('construct urls', () => {
     url: 'https://example.com/roc',
     database: 'exampledb',
   });
+
   // @ts-expect-error Private property.
   expect(roc.url).toBe('https://example.com/roc/');
   // @ts-expect-error Private property.
@@ -23,6 +26,7 @@ test('construct urls when no domain is provided', () => {
     url: '/roc',
     database: 'exampledb',
   });
+
   // @ts-expect-error Private property.
   expect(roc.url).toBe('https://www.rocserver.com/roc/');
   // @ts-expect-error Private property.

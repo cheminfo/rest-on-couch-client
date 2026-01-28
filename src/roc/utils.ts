@@ -1,10 +1,11 @@
 import { produce } from 'immer';
 
-import {
+import type {
   ICouchInlineAttachment,
   IEntryDocumentDraft,
   INewAttachment,
-} from '../types';
+} from '../types.ts';
+import { assert } from '../util/assert.ts';
 
 export async function addInlineUploads<ContentType, IdType>(
   entry: IEntryDocumentDraft<ContentType, IdType>,
@@ -42,14 +43,18 @@ export async function addInlineUploads<ContentType, IdType>(
     entry,
     (draft: IEntryDocumentDraft<unknown, unknown>) => {
       for (let i = 0; i < attachments.length; i++) {
+        const attachment = attachments[i];
+        const data = attachmentsBase64[i];
+        assert(attachment, 'Unreachable: attachment is undefined');
+        assert(data, 'Unreachable: base64 data is undefined');
         const newAttachment: ICouchInlineAttachment = {
-          content_type: attachments[i].content_type,
-          data: attachmentsBase64[i],
+          content_type: attachment.content_type,
+          data,
         };
         if (!draft._attachments) {
           draft._attachments = {};
         }
-        draft._attachments[attachments[i].name] = newAttachment;
+        draft._attachments[attachment.name] = newAttachment;
       }
     },
   );
@@ -63,7 +68,7 @@ export function deleteInlineUploads<ContentType, IdType>(
 ) {
   return produce(entry, (draft) => {
     for (const name of attachmentNames) {
-      delete draft._attachments[name];
+      delete draft._attachments?.[name];
     }
   });
 }

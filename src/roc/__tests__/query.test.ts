@@ -1,9 +1,11 @@
+import { beforeAll, expect, test } from 'vitest';
+
 import {
   getNewDocument,
   getNewEntry,
   resetTestDatabase,
   testRoc,
-} from '../../testUtils';
+} from '../../testUtils.ts';
 
 beforeAll(async () => {
   await resetTestDatabase();
@@ -19,6 +21,7 @@ test('getQuery', async () => {
   });
 
   const data = await query.fetch();
+
   expect(data).toHaveLength(2);
 });
 
@@ -26,9 +29,10 @@ test('getQuery thenable', async () => {
   const data = await testRoc.getQuery('entryByOwnersAndKind', {
     key: 'entry',
   });
+
   expect(data).toHaveLength(2);
 });
 
 test('query a view that does not have the "withOwner" property should fail', async () => {
-  await expect(testRoc.getQuery('entryById')).rejects.toThrow(/401/);
+  await expect(testRoc.getQuery('entryById')).rejects.toThrowError(/401/);
 });

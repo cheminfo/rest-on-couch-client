@@ -1,5 +1,7 @@
-import { RocDocument } from '..';
-import { resetTestDatabase, testRoc } from '../../testUtils';
+import { assert, beforeAll, describe, expect, it } from 'vitest';
+
+import { resetTestDatabase, testRoc } from '../../testUtils.ts';
+import type { RocDocument } from '../index.ts';
 
 beforeAll(async () => {
   await resetTestDatabase();
@@ -13,9 +15,12 @@ describe('documents', () => {
       $content: { hello: 'world' },
       $owners: [],
     });
+
     expect(doc).toBeDefined();
     expect(doc.getValue()).toBeUndefined();
+
     const data = await doc.fetch();
+
     expect(data).toBeDefined();
     expect(typeof data.$modificationDate).toBe('number');
     expect(typeof data.$creationDate).toBe('number');
@@ -42,7 +47,8 @@ describe('documents', () => {
     });
 
     const data = await testRoc.deleteDocument(doc.uuid);
-    await expect(doc.fetch()).rejects.toThrow(/404/);
+
+    await expect(doc.fetch()).rejects.toThrowError(/404/);
     expect(data).toMatchObject({
       ok: true,
     });
@@ -57,7 +63,8 @@ describe('documents', () => {
     });
 
     await doc.delete();
-    await expect(doc.fetch()).rejects.toThrow(/404/);
+
+    await expect(doc.fetch()).rejects.toThrowError(/404/);
     expect(doc.deleted).toBe(true);
   });
 
@@ -70,7 +77,8 @@ describe('documents', () => {
       $owners: [],
     });
     await doc.fetch();
-    await expect(() => doc.update(doc.getValue())).rejects.toThrow(
+
+    await expect(() => doc.update(doc.getValue())).rejects.toThrowError(
       /Your content contains an _id proprerty/,
     );
   });
@@ -86,6 +94,7 @@ describe('attachments', () => {
     });
     const data = await doc.fetch();
     const attachments = doc.getAttachmentList();
+
     expect(attachments).toHaveLength(0);
 
     const bufferContent = 'buffer content';
@@ -101,27 +110,32 @@ describe('attachments', () => {
     const afterAttachments = doc.getAttachmentList();
 
     expect(afterAttachments).toHaveLength(1);
-    expect(afterAttachments[0]).toMatchObject({
+
+    const firstAfterAttachment = afterAttachments[0];
+    assert(firstAfterAttachment);
+
+    expect(firstAfterAttachment).toMatchObject({
       name: 'test.txt',
       revpos: 2,
       length: bufferContent.length,
       stub: true,
     });
-    expect(afterAttachments[0].digest).toMatch(/md5-/);
+    expect(firstAfterAttachment.digest).toMatch(/md5-/);
 
     const oneAttachment = doc.getAttachment('test.txt');
+
     expect(oneAttachment).toStrictEqual(afterAttachments[0]);
 
     const attachmentAsText = await doc.fetchAttachment('test.txt', 'text');
-    if (typeof attachmentAsText !== 'string') {
-      throw new Error('expected contents to be a string');
-    }
+    assert(typeof attachmentAsText === 'string');
+
     expect(attachmentAsText).toBe('buffer content');
 
     const attachmentAsBuffer = await doc.fetchAttachment(
       'test.txt',
       'arraybuffer',
     );
+
     expect(attachmentAsBuffer).toStrictEqual(attachmentData);
   });
 
@@ -130,11 +144,15 @@ describe('attachments', () => {
       key: 'docWithAttachment',
     });
 
+    assert(docContent);
     const doc = testRoc.initializeDocument(docContent);
+
     expect(doc.getAttachmentList()).toHaveLength(1);
 
+    const docValue = doc.getValue();
+    assert(docValue);
     const contents2 = 'buffer contents rev 2';
-    await doc.update(doc.getValue().$content, [
+    await doc.update(docValue.$content, [
       {
         name: 'test.txt',
         content_type: 'text/plain',
@@ -143,10 +161,12 @@ describe('attachments', () => {
     ]);
 
     expect(doc.getAttachmentList()).toHaveLength(1);
+
     const attachmentAsBuffer = await doc.fetchAttachment(
       'test.txt',
       'arraybuffer',
     );
+
     expect(attachmentAsBuffer).toStrictEqual(Buffer.from(contents2));
   });
 
@@ -154,22 +174,27 @@ describe('attachments', () => {
     const [docContent] = await testRoc.getView('entryById', {
       key: 'docWithAttachment',
     });
+    assert(docContent);
 
     const doc = testRoc.initializeDocument(docContent, {
       allowAttachmentOverwrite: false,
     });
+
     expect(doc.getAttachmentList()).toHaveLength(1);
 
     const contents2 = 'buffer contents rev 2';
+    const docValue = doc.getValue();
+    assert(docValue);
+
     await expect(
-      doc.update(doc.getValue().$content, [
+      doc.update(docValue.$content, [
         {
           name: 'test.txt',
           content_type: 'text/plain',
           data: Buffer.from(contents2),
         },
       ]),
-    ).rejects.toThrow(
+    ).rejects.toThrowError(
       'overwriting test.txt, overwriting attachments is forbidden',
     );
   });
@@ -182,10 +207,17 @@ describe('attachments', () => {
 
     expect(data).toHaveLength(1);
 
-    const doc = testRoc.initializeDocument(data[0]);
+    const firstDatum = data[0];
+
+    assert(firstDatum);
+    const doc = testRoc.initializeDocument(firstDatum);
+
+    const docValue = doc.getValue();
+    assert(docValue);
 
     expect(doc.getAttachmentList()).toHaveLength(1);
-    await doc.update(doc.getValue().$content, undefined, ['test.txt']);
+
+    await doc.update(docValue.$content, undefined, ['test.txt']);
 
     expect(doc.getAttachmentList()).toHaveLength(0);
   });
@@ -198,8 +230,12 @@ describe('attachments', () => {
 
     expect(data).toHaveLength(1);
 
-    const doc = testRoc.getDocument(data[0]._id);
-    expect(() => doc.getAttachmentList()).toThrow(
+    const firstDatum = data[0];
+    assert(firstDatum);
+
+    const doc = testRoc.getDocument(firstDatum._id);
+
+    expect(() => doc.getAttachmentList()).toThrowError(
       'You must fetch the document in order to get the attachment list',
     );
   });
@@ -212,8 +248,12 @@ describe('attachments', () => {
 
     expect(data).toHaveLength(1);
 
-    const doc = testRoc.getDocument(data[0]._id);
-    expect(() => doc.getAttachment('test.txt')).toThrow(
+    const firstDatum = data[0];
+
+    assert(firstDatum);
+    const doc = testRoc.getDocument(firstDatum._id);
+
+    expect(() => doc.getAttachment('test.txt')).toThrowError(
       'You must fetch the document in order to get an attachment',
     );
   });
@@ -226,8 +266,13 @@ describe('attachments', () => {
 
     expect(data).toHaveLength(1);
 
-    const doc = testRoc.initializeDocument(data[0]);
-    expect(() => doc.getAttachment('test.txt')).toThrow(
+    const firstDatum = data[0];
+
+    assert(firstDatum);
+
+    const doc = testRoc.initializeDocument(firstDatum);
+
+    expect(() => doc.getAttachment('test.txt')).toThrowError(
       'attachment test.txt does not exist',
     );
   });

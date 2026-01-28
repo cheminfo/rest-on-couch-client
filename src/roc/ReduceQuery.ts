@@ -1,12 +1,12 @@
-import { AxiosInstance } from 'axios';
+import type { AxiosInstance } from 'axios';
 
-import { IReduceQueryResult } from '..';
-import {
+import type { IReduceQueryResult } from '../index.ts';
+import type {
   IReduceQueryOptions,
   IRocReduceQueryParams,
   PromisedReduceQueryResult,
   RocAxiosRequestOptions,
-} from '../types';
+} from '../types.ts';
 
 export default class ReduceQuery<KeyType = unknown, ValueType = unknown> {
   public readonly viewName: string;

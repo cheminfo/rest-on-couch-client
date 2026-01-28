@@ -1,7 +1,8 @@
-import axios, { AxiosInstance } from 'axios';
+import type { AxiosInstance } from 'axios';
+import axios from 'axios';
 
-import { ICouchGroupInfo, IEntryDocument } from '..';
-import {
+import type { ICouchGroupInfo, IEntryDocument } from '../index.ts';
+import type {
   ICouchUser,
   ICouchUserGroup,
   IFindOptions,
@@ -12,13 +13,14 @@ import {
   IViewOptions,
   Ok,
   RocAxiosRequestOptions,
-} from '../types';
+} from '../types.ts';
 
-import Find from './Find';
-import Query from './Query';
-import ReduceQuery from './ReduceQuery';
-import RocDocument, { RocDocumentOptions } from './RocDocument';
-import View from './View';
+import Find from './Find.ts';
+import Query from './Query.ts';
+import ReduceQuery from './ReduceQuery.ts';
+import type { RocDocumentOptions } from './RocDocument.ts';
+import RocDocument from './RocDocument.ts';
+import View from './View.ts';
 
 export interface IRocConfig {
   url: string;

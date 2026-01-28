@@ -1,9 +1,11 @@
+import { beforeAll, expect, test } from 'vitest';
+
 import {
   getNewDocument,
   getNewEntry,
   resetTestDatabase,
   testRoc,
-} from '../../testUtils';
+} from '../../testUtils.ts';
 
 beforeAll(async () => {
   await resetTestDatabase();
@@ -22,6 +24,7 @@ test('getFind', async () => {
   const data = await find.fetch<{ $kind: string }>({
     query: { fields: ['$kind'] },
   });
+
   expect(data.docs).toHaveLength(2);
 });
 
@@ -46,6 +49,7 @@ test('getFind with custom right, selector and sort', async () => {
   const data = await find.fetch<{ $id: string }>({
     query: { fields: ['$id'] },
   });
+
   expect(data.docs).toHaveLength(2);
   expect(data.docs).toStrictEqual([{ $id: 'id3' }, { $id: 'id2' }]);
 });
@@ -54,5 +58,6 @@ test('getFind thenable', async () => {
   const data = await testRoc.getFind<{ $kind: string }>({
     query: { limit: 3 },
   });
+
   expect(data.docs).toHaveLength(3);
 });

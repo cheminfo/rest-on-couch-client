@@ -1,9 +1,11 @@
+import { assert, beforeAll, expect, test } from 'vitest';
+
 import {
   getNewDocument,
   getNewEntry,
   resetTestDatabase,
   testRoc,
-} from '../../testUtils';
+} from '../../testUtils.ts';
 
 beforeAll(async () => {
   await resetTestDatabase();
@@ -19,10 +21,13 @@ test('getView', async () => {
   });
 
   const datas = await query.fetch();
+
   expect(datas).toHaveLength(1);
+
   const data = datas[0];
 
-  expect(data).toBeDefined();
+  assert(data);
+
   expect(typeof data.$modificationDate).toBe('number');
   expect(typeof data.$creationDate).toBe('number');
   expect(typeof data._id).toBe('string');

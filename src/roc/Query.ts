@@ -1,11 +1,11 @@
-import { AxiosInstance } from 'axios';
+import type { AxiosInstance } from 'axios';
 
-import { IQueryResult } from '..';
-import {
+import type { IQueryResult } from '../index.ts';
+import type {
   IQueryOptions,
   PromisedQueryResult,
   RocAxiosRequestOptions,
-} from '../types';
+} from '../types.ts';
 
 export default class Query<KeyType, ValueType, ContentType> {
   public readonly viewName: string;

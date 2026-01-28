@@ -1,6 +1,10 @@
-import { AxiosInstance } from 'axios';
+import type { AxiosInstance } from 'axios';
 
-import { IViewOptions, IViewResult, RocAxiosRequestOptions } from '../types';
+import type {
+  IViewOptions,
+  IViewResult,
+  RocAxiosRequestOptions,
+} from '../types.ts';
 
 export default class View<ContentType, IdType> {
   private request: AxiosInstance;
