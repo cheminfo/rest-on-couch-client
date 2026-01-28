@@ -33,6 +33,7 @@ module.exports = {
   username: 'rest-on-couch',
   superAdministrators: ['admin@goodyear.com'],
   password: process.env.COUCHDB_ROC_SERVER_PASSWORD,
+  adminPassword: process.env.COUCHDB_ROC_ADMIN_PASSWORD,
   logLevel: 'TRACE',
   // Make sure logged audit actions get the ip address from 'X-Forwarded-For' header
   proxy: true,

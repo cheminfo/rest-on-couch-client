@@ -1,7 +1,4 @@
-FROM ghcr.io/cheminfo/rest-on-couch:15
-
-# Install system packages
-RUN apt-get update && apt-get install -y vim
+FROM ghcr.io/cheminfo/rest-on-couch:19
 
 # Copy ROC scripts
 COPY wait.sh start.sh create_db.sh /

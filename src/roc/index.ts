@@ -1,6 +1,6 @@
-import Query from './Query';
-import ReduceQuery from './ReduceQuery';
-import Roc from './Roc';
-import RocDocument from './RocDocument';
+import Query from './Query.ts';
+import ReduceQuery from './ReduceQuery.ts';
+import Roc from './Roc.ts';
+import RocDocument from './RocDocument.ts';
 
-export { Roc, RocDocument, Query, ReduceQuery };
+export { Query, ReduceQuery, Roc, RocDocument };

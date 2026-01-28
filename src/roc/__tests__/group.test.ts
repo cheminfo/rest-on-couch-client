@@ -1,4 +1,6 @@
-import { resetTestDatabase, testRoc } from '../../testUtils';
+import { beforeAll, expect, test } from 'vitest';
+
+import { resetTestDatabase, testRoc } from '../../testUtils.ts';
 
 beforeAll(async () => {
   await resetTestDatabase();
@@ -6,11 +8,13 @@ beforeAll(async () => {
 
 test('create group', async () => {
   const group = await testRoc.createGroup('group1');
+
   expect(group).toStrictEqual({ ok: true });
 });
 
 test('get group', async () => {
   const group = await testRoc.getGroup('group1');
+
   expect(group).toMatchObject({
     $owners: ['admin@cheminfo.org'],
     $type: 'group',
@@ -23,6 +27,7 @@ test('get group', async () => {
 
 test('get group info', async () => {
   const groupInfo = await testRoc.getGroupInfo('group1');
+
   expect(groupInfo).toMatchObject({
     name: 'group1',
     rights: [],
@@ -34,6 +39,7 @@ test('get group info with ldap info', async () => {
   const groupInfo = await testRoc.getGroupInfo('group1', {
     ldapInfo: true,
   });
+
   expect(groupInfo).toMatchObject({
     name: 'group1',
     rights: [],
@@ -45,6 +51,7 @@ test('get group info with ldap info', async () => {
 test('get groups info', async () => {
   await testRoc.createGroup('group2');
   const groupsInfo = await testRoc.getGroupsInfo();
+
   expect(groupsInfo).toMatchInlineSnapshot(`
     [
       {
@@ -63,6 +70,7 @@ test('get groups info', async () => {
 
 test('get groups info with ldap info', async () => {
   const groupsInfo = await testRoc.getGroupsInfo({ ldapInfo: true });
+
   expect(groupsInfo).toMatchInlineSnapshot(`
     [
       {

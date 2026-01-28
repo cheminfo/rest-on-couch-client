@@ -1,14 +1,13 @@
-import { AxiosInstance } from 'axios';
+import type { AxiosInstance } from 'axios';
 
-import {
+import type {
   IFindOptions,
   IFindQueryResult,
   PromisedFindQueryResult,
   RocAxiosRequestOptions,
-} from '../types';
+} from '../types.ts';
 
 export default class Find<ResultType> {
-  public readonly viewName: string;
   protected baseOptions: IFindOptions;
   private request: AxiosInstance;
   public constructor(options: IFindOptions, request: AxiosInstance) {

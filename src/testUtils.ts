@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-import { INewEntryDocument, Roc } from '.';
+import type { INewEntryDocument } from './index.ts';
+import { Roc } from './index.ts';
 
 const userToken = 'DanRufB1VWQPmUFa3FGpdxXwL0IQafk2';
 

@@ -1,15 +1,16 @@
-import { AxiosInstance } from 'axios';
+import type { AxiosInstance } from 'axios';
 
-import { FetchAttachmentType, IAttachment } from '..';
-import { RocClientError } from '../Error';
-import {
+import { RocClientError } from '../Error.ts';
+import type { FetchAttachmentType, IAttachment } from '../index.ts';
+import type {
   IEntryDocument,
   IEntryDocumentDraft,
   INewAttachment,
   RocAxiosRequestOptions,
-} from '../types';
+} from '../types.ts';
+import { assert } from '../util/assert.ts';
 
-import { addInlineUploads, deleteInlineUploads } from './utils';
+import { addInlineUploads, deleteInlineUploads } from './utils.ts';
 
 export interface RocDocumentOptions {
   allowAttachmentOverwrite: boolean;
@@ -78,13 +79,14 @@ export default class RocDocument<
     deleteAttachments?: string[],
     axiosOptions?: RocAxiosRequestOptions,
   ): Promise<IEntryDocument<ContentType, IdType>> {
-    if (typeof content === 'object' && '_id' in content) {
+    if (content && typeof content === 'object' && '_id' in content) {
       throw new Error(
         'Your content contains an _id proprerty. This is probably an error since you should not pass the entire document, only $content',
       );
     }
 
     await this._fetchIfUnfetched();
+    assert(this.value, 'Unreachable: fetched value is undefined');
     let newDoc: IEntryDocumentDraft<ContentType, IdType> = {
       ...this.value,
       $content: content,

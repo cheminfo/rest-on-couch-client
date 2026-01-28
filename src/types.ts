@@ -1,4 +1,4 @@
-import { AxiosRequestConfig, ResponseType } from 'axios';
+import type { AxiosRequestConfig, ResponseType } from 'axios';
 
 // ============================
 // Roc
@@ -31,8 +31,7 @@ export interface INewRevisionMeta {
 }
 
 export interface IBaseEntryDocument<ContentType, IdType>
-  extends INewEntryDocument<ContentType, IdType>,
-    INewRevisionMeta {
+  extends INewEntryDocument<ContentType, IdType>, INewRevisionMeta {
   _id: string;
   $type: 'entry';
   $kind: string;
@@ -40,25 +39,21 @@ export interface IBaseEntryDocument<ContentType, IdType>
   $lastModification: string;
 }
 
-export interface IEntryDocument<ContentType, IdType>
-  extends IBaseEntryDocument<ContentType, IdType> {
+export interface IEntryDocument<ContentType, IdType> extends IBaseEntryDocument<
+  ContentType,
+  IdType
+> {
   _attachments: Record<string, ICouchAttachmentStub>;
 }
 
-export interface IEntryDocumentDraft<ContentType, IdType>
-  extends IBaseEntryDocument<ContentType, IdType> {
+export interface IEntryDocumentDraft<
+  ContentType,
+  IdType,
+> extends IBaseEntryDocument<ContentType, IdType> {
   _attachments?: Record<string, ICouchAttachment | ICouchInlineAttachment>;
 }
 
-const groupRights = {
-  delete: 'delete',
-  read: 'read',
-  write: 'write',
-  owner: 'owner',
-  addAttachment: 'addAttachment',
-} as const;
-
-type GroupRight = keyof typeof groupRights;
+type GroupRight = 'delete' | 'read' | 'write' | 'owner' | 'addAttachment';
 export interface IGroupDocument extends INewRevisionMeta {
   _id: string;
   name: string;
@@ -71,6 +66,7 @@ export interface IGroupDocument extends INewRevisionMeta {
   /**
    * Ldap domain
    */
+
   // eslint-disable-next-line @typescript-eslint/naming-convention
   DN?: string;
   /**
@@ -134,15 +130,17 @@ export interface ICouchViewBase<KeyType> {
 }
 
 // Queries
-export interface IQueryOptions<KeyType = unknown>
-  extends ICouchViewBase<KeyType> {
+export interface IQueryOptions<
+  KeyType = unknown,
+> extends ICouchViewBase<KeyType> {
   mine?: boolean;
   include_docs?: boolean;
 }
 
 // Views
-export interface IReduceQueryOptions<KeyType = unknown>
-  extends ICouchViewBase<KeyType> {
+export interface IReduceQueryOptions<
+  KeyType = unknown,
+> extends ICouchViewBase<KeyType> {
   group?: boolean;
   groupLevel?: number;
 }
