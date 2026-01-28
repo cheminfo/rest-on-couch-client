@@ -1,7 +1,6 @@
 import type { AxiosInstance } from 'axios';
 
 import type {
-  PromisedFindQueryResult,
   RocAxiosRequestOptions,
   RocFindOptions,
   RocFindQueryResult,
@@ -25,7 +24,7 @@ export default class Find<ResultType> {
   public async fetch<ResultType>(
     options: RocFindOptions = {},
     axiosOptions?: RocAxiosRequestOptions,
-  ): PromisedFindQueryResult<ResultType> {
+  ): Promise<RocFindQueryResult<ResultType>> {
     const findOptions = {
       ...this.baseOptions,
       ...options,

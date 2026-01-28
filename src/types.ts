@@ -128,18 +128,14 @@ export interface RocReduceQueryResult<KeyType = unknown, ValueType = unknown> {
   value: ValueType;
 }
 
-export type PromisedFindQueryResult<ResultType> = Promise<
-  RocFindQueryResult<ResultType>
->;
-
 export interface RocFindQueryResult<ResultType> {
   docs: ResultType[];
   warning?: string;
-  execution_status?: RocFindExecutionStatus;
+  execution_status?: FindExecutionStatus;
   bookmark?: string;
 }
 
-interface RocFindExecutionStatus {
+interface FindExecutionStatus {
   total_keys_examined: number;
   total_docs_examined: number;
   total_quorum_docs_examined: number;
