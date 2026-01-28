@@ -26,8 +26,6 @@ test('getView', async () => {
 
   const data = datas[0];
 
-  expect(data).toBeDefined();
-
   assert(data);
 
   expect(typeof data.$modificationDate).toBe('number');

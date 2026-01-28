@@ -209,8 +209,6 @@ describe('attachments', () => {
 
     const firstDatum = data[0];
 
-    expect(firstDatum).toBeDefined();
-
     assert(firstDatum);
     const doc = testRoc.initializeDocument(firstDatum);
 
@@ -252,8 +250,6 @@ describe('attachments', () => {
 
     const firstDatum = data[0];
 
-    expect(firstDatum).toBeDefined();
-
     assert(firstDatum);
     const doc = testRoc.getDocument(firstDatum._id);
 
@@ -271,8 +267,6 @@ describe('attachments', () => {
     expect(data).toHaveLength(1);
 
     const firstDatum = data[0];
-
-    expect(firstDatum).toBeDefined();
 
     assert(firstDatum);
 
