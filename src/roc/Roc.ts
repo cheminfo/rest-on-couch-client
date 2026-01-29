@@ -1,32 +1,31 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
-import type { ICouchGroupInfo, IEntryDocument } from '../index.ts';
 import type {
-  ICouchUser,
-  ICouchUserGroup,
-  IFindOptions,
-  IGroupDocument,
-  INewEntryDocument,
-  IQueryOptions,
-  IReduceQueryOptions,
-  IViewOptions,
-  Ok,
+  RocConfig,
+  RocEntryDocument,
+  RocGroupInfo,
+  RocGroupRight,
+} from '../index.ts';
+import type {
   RocAxiosRequestOptions,
+  RocFindOptions,
+  RocGroupDocument,
+  RocNewEntryDocument,
+  RocOkResponse,
+  RocQueryOptions,
+  RocReduceQueryOptions,
+  RocUserGroup,
+  RocUserSessionData,
+  RocViewOptions,
 } from '../types.ts';
 
 import Find from './Find.ts';
-import Query from './Query.ts';
-import ReduceQuery from './ReduceQuery.ts';
+import { Query } from './Query.ts';
+import { ReduceQuery } from './ReduceQuery.ts';
 import type { RocDocumentOptions } from './RocDocument.ts';
-import RocDocument from './RocDocument.ts';
+import { RocDocument } from './RocDocument.ts';
 import View from './View.ts';
-
-export interface IRocConfig {
-  url: string;
-  database: string;
-  accessToken?: string;
-}
 
 function createAxios(url: string, accessToken?: string) {
   return axios.create({
@@ -51,7 +50,7 @@ function createAxios(url: string, accessToken?: string) {
   });
 }
 
-export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
+export class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
   private url: string;
   private dbUrl: string;
   private accessToken?: string;
@@ -59,7 +58,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
   public readonly request: AxiosInstance;
   public readonly dbRequest: AxiosInstance;
 
-  public constructor(config: IRocConfig) {
+  public constructor(config: RocConfig) {
     this.url = config.url;
     if (!this.url.endsWith('/')) {
       this.url += '/';
@@ -74,7 +73,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
   }
 
   public async create<ContentType, IdType>(
-    newDocument: INewEntryDocument<ContentType, IdType>,
+    newDocument: RocNewEntryDocument<ContentType, IdType>,
     axiosOptions?: RocAxiosRequestOptions,
   ) {
     const response = await this.dbRequest.post(
@@ -86,7 +85,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
   }
 
   public initializeDocument<ContentType, IdType>(
-    data: IEntryDocument<ContentType, IdType>,
+    data: RocEntryDocument<ContentType, IdType>,
     options?: RocDocumentOptions,
   ) {
     const url = new URL(`entry/${data._id}/`, this.dbUrl).href;
@@ -112,7 +111,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
     KeyType = unknown,
     ValueType = unknown,
     ContentType = Record<string, unknown>,
-  >(viewName: string, options: IQueryOptions = {}) {
+  >(viewName: string, options: RocQueryOptions = {}) {
     return new Query<KeyType, ValueType, ContentType>(
       viewName,
       options,
@@ -120,13 +119,13 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
     );
   }
 
-  public getFind<ResultType = unknown>(options: IFindOptions) {
+  public getFind<ResultType = unknown>(options: RocFindOptions) {
     return new Find<ResultType>(options, this.dbRequest);
   }
 
   public getReduceQuery<KeyType = unknown, ValueType = unknown>(
     viewName: string,
-    options: IReduceQueryOptions = {},
+    options: RocReduceQueryOptions = {},
   ) {
     return new ReduceQuery<KeyType, ValueType>(
       viewName,
@@ -142,7 +141,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
     KeyType = unknown,
     ContentType = Record<string, unknown>,
     IdType = unknown,
-  >(viewName: string, options: IViewOptions<KeyType> = {}) {
+  >(viewName: string, options: RocViewOptions<KeyType> = {}) {
     return new View<ContentType, IdType>(
       viewName,
       options,
@@ -155,7 +154,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
 
   public async getUser(
     axiosOptions?: RocAxiosRequestOptions,
-  ): Promise<ICouchUser> {
+  ): Promise<RocUserSessionData> {
     const response = await this.request.get('auth/session', axiosOptions);
     return response.data;
   }
@@ -169,7 +168,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
 
   public async getUserGroups(
     axiosOptions?: RocAxiosRequestOptions,
-  ): Promise<ICouchUserGroup[]> {
+  ): Promise<RocUserGroup[]> {
     const response = await this.dbRequest.get('user/_me/groups', axiosOptions);
     return response.data;
   }
@@ -177,15 +176,48 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
   public async createGroup(
     name: string,
     axiosOptions?: RocAxiosRequestOptions,
-  ): Promise<Ok> {
+  ): Promise<RocOkResponse> {
     const response = await this.dbRequest.put(`group/${name}`, axiosOptions);
+    return response.data;
+  }
+
+  public async addUserToGroup(
+    groupName: string,
+    user: string,
+    axiosOptions?: RocAxiosRequestOptions,
+  ) {
+    const response = await this.dbRequest.put<RocOkResponse>(
+      `group/${groupName}/user/${user}`,
+      axiosOptions,
+    );
+    return response.data;
+  }
+
+  public async addRightToGroup(groupName: string, right: RocGroupRight) {
+    const response = await this.dbRequest.put<RocOkResponse>(
+      `group/${groupName}/right/${right}`,
+    );
+    return response.data;
+  }
+
+  public async removeUserFromGroup(groupName: string, user: string) {
+    const response = await this.dbRequest.delete<RocOkResponse>(
+      `group/${groupName}/user/${user}`,
+    );
+    return response.data;
+  }
+
+  public async removeRightFromGroup(groupName: string, right: RocGroupRight) {
+    const response = await this.dbRequest.delete<RocOkResponse>(
+      `group/${groupName}/right/${right}`,
+    );
     return response.data;
   }
 
   public async getGroup(
     name: string,
     axiosOptions?: RocAxiosRequestOptions,
-  ): Promise<IGroupDocument> {
+  ): Promise<RocGroupDocument> {
     const response = await this.dbRequest.get(`group/${name}`, axiosOptions);
     return response.data;
   }
@@ -195,7 +227,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
       ldapInfo?: boolean;
     },
     axiosOptions?: RocAxiosRequestOptions,
-  ): Promise<Array<ICouchGroupInfo<PublicUserInfo>>> {
+  ): Promise<Array<RocGroupInfo<PublicUserInfo>>> {
     const response = await this.dbRequest.get('groups/info', {
       params: options,
       ...axiosOptions,
@@ -209,7 +241,7 @@ export default class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
       ldapInfo?: boolean;
     },
     axiosOptions?: RocAxiosRequestOptions,
-  ): Promise<ICouchGroupInfo<PublicUserInfo>> {
+  ): Promise<RocGroupInfo<PublicUserInfo>> {
     const response = await this.dbRequest.get(`group/${name}/info`, {
       params: options,
       ...axiosOptions,

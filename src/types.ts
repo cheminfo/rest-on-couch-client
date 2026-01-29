@@ -1,60 +1,36 @@
-import type { AxiosRequestConfig, ResponseType } from 'axios';
+import type { AxiosRequestConfig } from 'axios';
 
-// ============================
-// Roc
-// ============================
-export interface IRocOptions {
+import type {
+  BaseEntryDocument,
+  CouchAttachment,
+  CouchAttachmentBase,
+  RocNewRevisionMeta,
+} from './types_internal.ts';
+import type { groupRights } from './util/constants.ts';
+
+export interface RocConfig {
   url: string;
   database: string;
-  username?: string;
-  password?: string;
-  authTimeout?: number;
+  accessToken?: string;
 }
 
-// ============================
-// Document
-// ============================
-export interface IRocDocumentOptions {
-  pollInterval?: number;
-}
-
-export interface INewEntryDocument<ContentType, IdType> {
+export interface RocNewEntryDocument<ContentType, IdType> {
   $id: IdType;
   $content: ContentType;
   $kind: string;
   $owners: string[];
 }
 
-export interface INewRevisionMeta {
-  $modificationDate: number;
-  _rev: string;
-}
-
-export interface IBaseEntryDocument<ContentType, IdType>
-  extends INewEntryDocument<ContentType, IdType>, INewRevisionMeta {
-  _id: string;
-  $type: 'entry';
-  $kind: string;
-  $creationDate: number;
-  $lastModification: string;
-}
-
-export interface IEntryDocument<ContentType, IdType> extends IBaseEntryDocument<
-  ContentType,
-  IdType
-> {
-  _attachments: Record<string, ICouchAttachmentStub>;
-}
-
-export interface IEntryDocumentDraft<
+export interface RocEntryDocument<
   ContentType,
   IdType,
-> extends IBaseEntryDocument<ContentType, IdType> {
-  _attachments?: Record<string, ICouchAttachment | ICouchInlineAttachment>;
+> extends BaseEntryDocument<ContentType, IdType> {
+  _attachments: Record<string, CouchAttachmentStub>;
 }
 
-type GroupRight = 'delete' | 'read' | 'write' | 'owner' | 'addAttachment';
-export interface IGroupDocument extends INewRevisionMeta {
+export type RocGroupRight = (typeof groupRights)[number];
+
+export interface RocGroupDocument extends RocNewRevisionMeta {
   _id: string;
   name: string;
   $type: 'group';
@@ -73,83 +49,57 @@ export interface IGroupDocument extends INewRevisionMeta {
    * ldap filter
    */
   filter?: string;
-  rights: GroupRight[];
+  rights: RocGroupRight[];
 }
 
-// ============================
-// Attachments
-// ============================
-interface ICouchAttachmentBase {
-  /* The resource's mime type */
-  content_type: string;
-}
-
-interface ICouchAttachment extends ICouchAttachmentBase {
-  /* base64 md5 digest of the resource */
-  digest: string;
-  /* Length in bytes of the resource */
-  length: number;
-  revpos: number;
-}
-export interface INewAttachment extends ICouchAttachmentBase {
+export interface RocNewAttachment extends CouchAttachmentBase {
   /* The name of the resource */
   name: string;
   /* Buffer or base64 encoded url containing attachment data */
   data: Buffer | string | Blob;
 }
 
-export interface ICouchInlineAttachment extends ICouchAttachmentBase {
-  /* base64 string with attachment data */
-  data: string;
-}
-export interface IAttachment extends ICouchAttachmentStub {
+export interface RocAttachment extends CouchAttachmentStub {
   /* The name of the resource */
   name: string;
   /* The url of the resource */
   url: string;
 }
-export interface ICouchAttachmentStub extends ICouchAttachment {
+
+interface CouchAttachmentStub extends CouchAttachment {
   stub: true;
 }
-
-export interface ICouchAttachmentData extends ICouchAttachment {
-  data: string;
-}
-
-export type ICouchAttachments = Record<string, ICouchAttachmentStub>;
-
-export type FetchAttachmentType<T extends ResponseType> = T;
 
 // ============================
 // View and Query
 // ============================
-export interface ICouchViewBase<KeyType> {
+interface CouchViewBase<KeyType> {
   startkey?: KeyType;
   endkey?: KeyType;
   key?: KeyType;
 }
 
 // Queries
-export interface IQueryOptions<
+export interface RocQueryOptions<
   KeyType = unknown,
-> extends ICouchViewBase<KeyType> {
+> extends CouchViewBase<KeyType> {
   mine?: boolean;
   include_docs?: boolean;
 }
 
 // Views
-export interface IReduceQueryOptions<
+export interface RocReduceQueryOptions<
   KeyType = unknown,
-> extends ICouchViewBase<KeyType> {
+> extends CouchViewBase<KeyType> {
   group?: boolean;
   groupLevel?: number;
 }
 
-export interface IRocReduceQueryParams extends IReduceQueryOptions {
+export interface RocReduceQueryParams extends RocReduceQueryOptions {
   reduce: true;
 }
 
-export interface IQueryResult<
+export interface RocQueryResult<
   KeyType = unknown,
   ValueType = unknown,
   ContentType = Record<string, unknown>,
@@ -157,15 +107,15 @@ export interface IQueryResult<
 > {
   id: string;
   key: KeyType;
-  doc?: IEntryDocument<ContentType, IdType>;
+  doc?: RocEntryDocument<ContentType, IdType>;
   value: ValueType;
 }
 
-export type IViewResult<ContentType, IdType> = Array<
-  IEntryDocument<ContentType, IdType>
+export type RocViewResult<ContentType, IdType> = Array<
+  RocEntryDocument<ContentType, IdType>
 >;
 
-export interface IViewOptions<KeyType = unknown> {
+export interface RocViewOptions<KeyType = unknown> {
   limit?: number;
   descending?: boolean;
   attachments?: boolean;
@@ -173,50 +123,38 @@ export interface IViewOptions<KeyType = unknown> {
   startkey?: KeyType;
   endkey?: KeyType;
 }
-export interface IReduceQueryResult<KeyType = unknown, ValueType = unknown> {
+export interface RocReduceQueryResult<KeyType = unknown, ValueType = unknown> {
   key: KeyType;
   value: ValueType;
 }
 
-export type PromisedQueryResult<KeyType, ValueType, ContentType> = Promise<
-  Array<IQueryResult<KeyType, ValueType, ContentType>>
->;
-
-export type PromisedReduceQueryResult<KeyType, ValueType> = Promise<
-  Array<IReduceQueryResult<KeyType, ValueType>>
->;
-
-export type PromisedFindQueryResult<ResultType> = Promise<
-  IFindQueryResult<ResultType>
->;
-
-export interface IFindQueryResult<ResultType> {
+export interface RocFindQueryResult<ResultType> {
   docs: ResultType[];
   warning?: string;
-  execution_status?: IFindExecutionStatus;
+  execution_status?: FindExecutionStatus;
   bookmark?: string;
 }
 
-interface IFindExecutionStatus {
+interface FindExecutionStatus {
   total_keys_examined: number;
   total_docs_examined: number;
   total_quorum_docs_examined: number;
   results_returned: number;
   execution_time_ms: number;
 }
-export interface ICouchUser {
+export interface RocUserSessionData {
   username: string;
   admin: boolean;
   provider: string | null;
   authenticated: boolean;
 }
 
-export interface ICouchUserGroup {
+export interface RocUserGroup {
   name: string;
   rights: string[];
 }
 
-export interface ICouchGroupInfo<PublicUserInfo> {
+export interface RocGroupInfo<PublicUserInfo> {
   name: string;
   description?: string;
   users?: string[];
@@ -224,7 +162,7 @@ export interface ICouchGroupInfo<PublicUserInfo> {
   ldapInfo?: PublicUserInfo[];
 }
 
-export interface Ok {
+export interface RocOkResponse {
   ok: true;
 }
 
@@ -233,14 +171,14 @@ export type RocAxiosRequestOptions = Pick<
   'signal' | 'timeout' | 'timeoutErrorMessage'
 >;
 
-export interface IFindOptions {
-  right?: GroupRight;
+export interface RocFindOptions {
+  right?: RocGroupRight;
   mine?: boolean;
   group?: string;
-  query?: ICouchMangoQueryOptions;
+  query?: RocMangoQueryOptions;
 }
 
-export interface ICouchMangoQueryOptions {
+export interface RocMangoQueryOptions {
   selector?: object;
   fields?: string[];
   limit?: number;

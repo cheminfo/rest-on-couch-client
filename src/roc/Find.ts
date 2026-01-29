@@ -1,31 +1,30 @@
 import type { AxiosInstance } from 'axios';
 
 import type {
-  IFindOptions,
-  IFindQueryResult,
-  PromisedFindQueryResult,
   RocAxiosRequestOptions,
+  RocFindOptions,
+  RocFindQueryResult,
 } from '../types.ts';
 
 export default class Find<ResultType> {
-  protected baseOptions: IFindOptions;
+  protected baseOptions: RocFindOptions;
   private request: AxiosInstance;
-  public constructor(options: IFindOptions, request: AxiosInstance) {
+  public constructor(options: RocFindOptions, request: AxiosInstance) {
     this.request = request;
     this.baseOptions = options;
   }
 
   public then(
-    resolve: (value: IFindQueryResult<ResultType>) => void,
+    resolve: (value: RocFindQueryResult<ResultType>) => void,
     reject: (error: Error) => void,
   ) {
     this.fetch<ResultType>().then(resolve, reject);
   }
 
   public async fetch<ResultType>(
-    options: IFindOptions = {},
+    options: RocFindOptions = {},
     axiosOptions?: RocAxiosRequestOptions,
-  ): PromisedFindQueryResult<ResultType> {
+  ): Promise<RocFindQueryResult<ResultType>> {
     const findOptions = {
       ...this.baseOptions,
       ...options,
