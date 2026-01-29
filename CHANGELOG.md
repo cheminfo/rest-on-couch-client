@@ -1,5 +1,16 @@
 # Changelog
 
+## [8.0.0](https://github.com/cheminfo/rest-on-couch-client/compare/v7.0.0...v8.0.0) (2026-01-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* removed some internal types and renamed public types to be prefixed with `Roc` instead of `I`
+
+### Features
+
+* add group update methods ([#61](https://github.com/cheminfo/rest-on-couch-client/issues/61)) ([2d98a00](https://github.com/cheminfo/rest-on-couch-client/commit/2d98a009979f5940e63d25ff92184e63ef14f99d))
+
 ## [7.0.0](https://github.com/cheminfo/rest-on-couch-client/compare/v6.0.0...v7.0.0) (2026-01-28)
 
 
