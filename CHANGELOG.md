@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.1](https://github.com/cheminfo/rest-on-couch-client/compare/v8.0.0...v8.0.1) (2026-02-18)
+
+
+### Bug Fixes
+
+* improve document URL handling ([#63](https://github.com/cheminfo/rest-on-couch-client/issues/63)) ([064f277](https://github.com/cheminfo/rest-on-couch-client/commit/064f277da06d08dd2f5986b84b6740917edcd67a))
+
 ## [8.0.0](https://github.com/cheminfo/rest-on-couch-client/compare/v7.0.0...v8.0.0) (2026-01-29)
 
 
