@@ -88,7 +88,7 @@ export class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
     data: RocEntryDocument<ContentType, IdType>,
     options?: RocDocumentOptions,
   ) {
-    const url = new URL(`entry/${data._id}/`, this.dbUrl).href;
+    const url = new URL(`entry/${data._id}`, this.dbUrl).href;
     return new RocDocument(data, createAxios(url, this.accessToken), options);
   }
 
@@ -96,7 +96,7 @@ export class Roc<PublicUserInfo = unknown, PrivateUserInfo = unknown> {
     uuid: string,
     options?: RocDocumentOptions,
   ): RocDocument<ContentType, IdType> {
-    const url = new URL(`entry/${uuid}/`, this.dbUrl).href;
+    const url = new URL(`entry/${uuid}`, this.dbUrl).href;
     return new RocDocument(uuid, createAxios(url, this.accessToken), options);
   }
 

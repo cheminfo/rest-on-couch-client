@@ -52,9 +52,7 @@ export class RocDocument<
     responseType: 'text' | 'arraybuffer' | 'blob',
     axiosOptions?: RocAxiosRequestOptions,
   ): Promise<Buffer | string> {
-    const url = new URL(name, this.getBaseUrl()).href;
-    const response = await this.request({
-      url,
+    const response = await this.request.get(name, {
       responseType,
       ...axiosOptions,
     });
@@ -68,7 +66,7 @@ export class RocDocument<
     if (rev) {
       throw new Error('UNIMPLEMENTED fetch with rev');
     }
-    const response = await this.request.get('/', axiosOptions);
+    const response = await this.request.get('', axiosOptions);
     this.value = response.data;
     return response.data;
   }
@@ -111,7 +109,7 @@ export class RocDocument<
     }
 
     // Send the new doc
-    await this.request.put('/', newDoc, axiosOptions);
+    await this.request.put('', newDoc, axiosOptions);
 
     // Get the new document
     // With updated properties ($lastModifification...)
@@ -139,7 +137,7 @@ export class RocDocument<
   }
 
   public async delete(axiosOptions?: RocAxiosRequestOptions) {
-    const response = await this.request.delete('/', axiosOptions);
+    const response = await this.request.delete('', axiosOptions);
     if (response.data.ok) {
       this.value = undefined;
       this.deleted = true;
@@ -147,6 +145,7 @@ export class RocDocument<
       throw new Error('document was not deleted');
     }
   }
+
   public getAttachment(name: string): RocAttachment {
     if (this.value === undefined) {
       throw new RocClientError(
@@ -161,7 +160,7 @@ export class RocDocument<
     return {
       ...attachments[name],
       name,
-      url: `${this.getBaseUrl()}${name}`,
+      url: this.request.getUri({ url: name }),
     };
   }
 
@@ -182,9 +181,6 @@ export class RocDocument<
     return response.data;
   }
 
-  protected getBaseUrl() {
-    return this.request.defaults.baseURL || '';
-  }
   private async _fetchIfUnfetched() {
     if (this.value === undefined) {
       await this.fetch();
