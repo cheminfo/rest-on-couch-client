@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.1.0](https://github.com/cheminfo/rest-on-couch-client/compare/v8.0.1...v8.1.0) (2026-06-11)
+
+
+### Features
+
+* add `doc.getValueChecked` and `doc.hasValue` methods ([22e6b29](https://github.com/cheminfo/rest-on-couch-client/commit/22e6b29387e64ae4866e10b3e9e0cc6012903ce4))
+* export `CouchAttachmentStub` type ([b7c0118](https://github.com/cheminfo/rest-on-couch-client/commit/b7c0118fb480fb667fdc7135b7bdaf38c591fe36))
+
 ## [8.0.1](https://github.com/cheminfo/rest-on-couch-client/compare/v8.0.0...v8.0.1) (2026-02-18)
 
 
