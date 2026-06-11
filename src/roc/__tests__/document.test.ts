@@ -48,7 +48,7 @@ describe('documents', () => {
 
     const data = await testRoc.deleteDocument(doc.uuid);
 
-    await expect(doc.fetch()).rejects.toThrowError(/404/);
+    await expect(doc.fetch()).rejects.toThrow(/404/);
     expect(data).toMatchObject({
       ok: true,
     });
@@ -64,7 +64,7 @@ describe('documents', () => {
 
     await doc.delete();
 
-    await expect(doc.fetch()).rejects.toThrowError(/404/);
+    await expect(doc.fetch()).rejects.toThrow(/404/);
     expect(doc.deleted).toBe(true);
   });
 
@@ -78,7 +78,7 @@ describe('documents', () => {
     });
     await doc.fetch();
 
-    await expect(() => doc.update(doc.getValue())).rejects.toThrowError(
+    await expect(() => doc.update(doc.getValue())).rejects.toThrow(
       /Your content contains an _id proprerty/,
     );
   });
@@ -194,7 +194,7 @@ describe('attachments', () => {
           data: Buffer.from(contents2),
         },
       ]),
-    ).rejects.toThrowError(
+    ).rejects.toThrow(
       'overwriting test.txt, overwriting attachments is forbidden',
     );
   });
@@ -235,7 +235,7 @@ describe('attachments', () => {
 
     const doc = testRoc.getDocument(firstDatum._id);
 
-    expect(() => doc.getAttachmentList()).toThrowError(
+    expect(() => doc.getAttachmentList()).toThrow(
       'You must fetch the document in order to get the attachment list',
     );
   });
@@ -253,7 +253,7 @@ describe('attachments', () => {
     assert(firstDatum);
     const doc = testRoc.getDocument(firstDatum._id);
 
-    expect(() => doc.getAttachment('test.txt')).toThrowError(
+    expect(() => doc.getAttachment('test.txt')).toThrow(
       'You must fetch the document in order to get an attachment',
     );
   });
@@ -272,7 +272,7 @@ describe('attachments', () => {
 
     const doc = testRoc.initializeDocument(firstDatum);
 
-    expect(() => doc.getAttachment('test.txt')).toThrowError(
+    expect(() => doc.getAttachment('test.txt')).toThrow(
       'attachment test.txt does not exist',
     );
   });

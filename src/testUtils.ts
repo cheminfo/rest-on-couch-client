@@ -1,4 +1,4 @@
-import axios from 'axios';
+import * as axios from 'axios';
 
 import type { RocNewEntryDocument } from './index.ts';
 import { Roc } from './index.ts';

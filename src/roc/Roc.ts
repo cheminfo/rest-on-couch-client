@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios';
-import axios from 'axios';
+import * as axios from 'axios';
 
 import type {
   RocConfig,

@@ -34,5 +34,5 @@ test('getQuery thenable', async () => {
 });
 
 test('query a view that does not have the "withOwner" property should fail', async () => {
-  await expect(testRoc.getQuery('entryById')).rejects.toThrowError(/401/);
+  await expect(testRoc.getQuery('entryById')).rejects.toThrow(/401/);
 });
