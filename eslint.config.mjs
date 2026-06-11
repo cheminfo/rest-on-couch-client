@@ -3,7 +3,7 @@ import ts from 'eslint-config-zakodium/ts';
 import vitest from 'eslint-config-zakodium/vitest-ts';
 
 export default defineConfig(
-  globalIgnores(['rest-on-couch/**', 'lib/**']),
+  globalIgnores(['rest-on-couch', 'lib']),
   ts,
   vitest,
   {
