@@ -164,7 +164,28 @@ export class RocDocument<
     };
   }
 
+  /**
+   * Returns whether the document has a value.
+   */
+  public hasValue() {
+    return this.value !== undefined;
+  }
+
+  /**
+   * Returns the document's value or `undefined`.
+   */
   public getValue() {
+    return this.value;
+  }
+
+  /**
+   * Validates that the document has a value before returning it.
+   * Throws an error if the value is not available.
+   */
+  public getValueChecked() {
+    if (this.value === undefined) {
+      throw new Error('document has not been fetched');
+    }
     return this.value;
   }
 
