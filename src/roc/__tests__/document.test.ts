@@ -17,11 +17,18 @@ describe('documents', () => {
     });
 
     expect(doc).toBeDefined();
+    expect(doc.hasValue()).toBe(false);
+    expect(() => doc.getValueChecked()).toThrow(
+      'document has not been fetched',
+    );
     expect(doc.getValue()).toBeUndefined();
 
     const data = await doc.fetch();
 
+    expect(doc.hasValue()).toBe(true);
     expect(data).toBeDefined();
+    expect(doc.getValue()).toBe(data);
+    expect(doc.getValueChecked()).toBe(data);
     expect(typeof data.$modificationDate).toBe('number');
     expect(typeof data.$creationDate).toBe('number');
     expect(typeof data._id).toBe('string');
@@ -149,8 +156,7 @@ describe('attachments', () => {
 
     expect(doc.getAttachmentList()).toHaveLength(1);
 
-    const docValue = doc.getValue();
-    assert(docValue);
+    const docValue = doc.getValueChecked();
     const contents2 = 'buffer contents rev 2';
     await doc.update(docValue.$content, [
       {
@@ -183,8 +189,7 @@ describe('attachments', () => {
     expect(doc.getAttachmentList()).toHaveLength(1);
 
     const contents2 = 'buffer contents rev 2';
-    const docValue = doc.getValue();
-    assert(docValue);
+    const docValue = doc.getValueChecked();
 
     await expect(
       doc.update(docValue.$content, [
@@ -212,8 +217,7 @@ describe('attachments', () => {
     assert(firstDatum);
     const doc = testRoc.initializeDocument(firstDatum);
 
-    const docValue = doc.getValue();
-    assert(docValue);
+    const docValue = doc.getValueChecked();
 
     expect(doc.getAttachmentList()).toHaveLength(1);
 
