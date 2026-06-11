@@ -66,7 +66,7 @@ export interface RocAttachment extends CouchAttachmentStub {
   url: string;
 }
 
-interface CouchAttachmentStub extends CouchAttachment {
+export interface CouchAttachmentStub extends CouchAttachment {
   stub: true;
 }
 
