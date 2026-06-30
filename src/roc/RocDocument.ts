@@ -10,7 +10,11 @@ import type {
 import type { EntryDocumentDraft } from '../types_internal.ts';
 import { assert } from '../util/assert.ts';
 
-import { addInlineUploads, deleteInlineUploads } from './utils.ts';
+import {
+  addInlineUploads,
+  deleteInlineUploads,
+  encodeAttachmentName,
+} from './utils.ts';
 
 export interface RocDocumentOptions {
   allowAttachmentOverwrite: boolean;
@@ -52,7 +56,7 @@ export class RocDocument<
     responseType: 'text' | 'arraybuffer' | 'blob',
     axiosOptions?: RocAxiosRequestOptions,
   ): Promise<Buffer | string> {
-    const response = await this.request.get(name, {
+    const response = await this.request.get(encodeAttachmentName(name), {
       responseType,
       ...axiosOptions,
     });
@@ -160,7 +164,7 @@ export class RocDocument<
     return {
       ...attachments[name],
       name,
-      url: this.request.getUri({ url: name }),
+      url: this.request.getUri({ url: encodeAttachmentName(name) }),
     };
   }
 
