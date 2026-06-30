@@ -7,6 +7,19 @@ import type {
 } from '../types_internal.ts';
 import { assert } from '../util/assert.ts';
 
+/**
+ * Percent-encodes an attachment name for use in a request URL.
+ * Each path segment is encoded individually so that `/` separators are kept,
+ * while characters like `+` or spaces become `%2B` / `%20`. Without this, a
+ * literal `+` in a filename reaches the server unencoded and is decoded back
+ * to a space, so the attachment is not found.
+ * @param name - The attachment name (may contain `/`).
+ * @returns The encoded name safe to append to the document URL.
+ */
+export function encodeAttachmentName(name: string): string {
+  return name.split('/').map(encodeURIComponent).join('/');
+}
+
 export async function addInlineUploads<ContentType, IdType>(
   entry: EntryDocumentDraft<ContentType, IdType>,
   attachments: RocNewAttachment[],
